@@ -105,3 +105,8 @@ C:\Users\user\Desktop\personal_projects\luciana\backend\obj\Debug\net8.0\refint\
 C:\Users\user\Desktop\personal_projects\luciana\backend\obj\Debug\net8.0\backend.pdb
 C:\Users\user\Desktop\personal_projects\luciana\backend\obj\Debug\net8.0\backend.genruntimeconfig.cache
 C:\Users\user\Desktop\personal_projects\luciana\backend\obj\Debug\net8.0\ref\backend.dll
+C:\Users\user\Desktop\personal_projects\luciana\backend\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
+C:\Users\user\Desktop\personal_projects\luciana\backend\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\user\Desktop\personal_projects\luciana\backend\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
+C:\Users\user\Desktop\personal_projects\luciana\backend\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
+C:\Users\user\Desktop\personal_projects\luciana\backend\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
