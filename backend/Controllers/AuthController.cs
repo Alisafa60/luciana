@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using backend.Data;
 using System.Threading.Tasks;
+using backend.Helpers;
 
 [Route("api/auth")]
 [ApiController]
@@ -24,9 +25,11 @@ public class AuthController : ControllerBase{
                 return Conflict("Email is already registered");
             }
 
+            string hashedPassword = PasswordHasher.HashPassword(model.Password);
+
             var user = new User{
                 Email = model.Email,
-                Password = model.Password,
+                Password = hashedPassword,
                 FirstName = model.FirstName,
                 LastName = model.LastName,
                 DateOfBirth = model.DateOfBirth.ToUniversalTime(),
