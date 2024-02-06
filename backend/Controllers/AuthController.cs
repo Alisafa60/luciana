@@ -29,7 +29,7 @@ public class AuthController : ControllerBase{
                 Password = model.Password,
                 FirstName = model.FirstName,
                 LastName = model.LastName,
-                DateOfBirth = model.DateOfBirth,
+                DateOfBirth = model.DateOfBirth.ToUniversalTime(),
                 PhoneNumber = model.PhoneNumber,
                 Address = model.Address,
                 Gender = model.Gender

@@ -16,6 +16,9 @@ public class Startup
     public IConfiguration Configuration { get; }
 
     public void ConfigureServices(IServiceCollection services){
+
+        services.AddControllers();
+        
         var connectionString = Configuration.GetConnectionString("DefaultConnection");
         Console.WriteLine($"Connection String: {connectionString}");
 
