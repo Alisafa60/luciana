@@ -1,10 +1,5 @@
 # Luciana Scarves
 
-## Table of Contents
-- [Frontend](#frontend)
-- [Backend](#backend)
-- [Database](#database)
-
 ## Frontend
 The frontend of this project is being built using React with Typescript.
 
