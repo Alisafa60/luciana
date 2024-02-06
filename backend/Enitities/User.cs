@@ -14,6 +14,8 @@ public class User{
 
       public required string LastName {get; set;}
 
+      public required DateTime DateOfBirth { get; set; }
+
       public string? PhoneNumber {get; set;}
       
       public string? Address {get; set;}
