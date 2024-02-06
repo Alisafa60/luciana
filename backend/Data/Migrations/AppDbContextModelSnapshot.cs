@@ -30,12 +30,25 @@ namespace backend.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("UserRole")
-                        .HasColumnType("integer");
+                    b.Property<string>("UserRole")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Role");
+                    b.ToTable("Roles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            UserRole = "Admin"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            UserRole = "Customer"
+                        });
                 });
 
             modelBuilder.Entity("User", b =>
