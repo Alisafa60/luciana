@@ -33,5 +33,11 @@ public class User{
 
     [ForeignKey(nameof(RoleId))]
     public Role Role {get; set;}
+
+    public int SkinToneId {get; set;}
+
+    [ForeignKey(nameof(SkinToneId))]
+    public SkinTone SkinTone {get; set;}
+
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 }
