@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using backend.Data;
@@ -11,9 +12,11 @@ using backend.Data;
 namespace backend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240207184957_Color_and_Compatibility_Pivot")]
+    partial class Color_and_Compatibility_Pivot
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,30 +24,6 @@ namespace backend.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
-
-            modelBuilder.Entity("Color", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Description")
-                        .HasColumnType("text");
-
-                    b.Property<string>("HexValue")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Colors");
-                });
 
             modelBuilder.Entity("Role", b =>
                 {
@@ -93,24 +72,6 @@ namespace backend.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("SkinTones");
-                });
-
-            modelBuilder.Entity("SkinToneColorCompatibility", b =>
-                {
-                    b.Property<int>("ColorId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("CompatibilityScore")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("SkinToneId")
-                        .HasColumnType("integer");
-
-                    b.HasIndex("ColorId");
-
-                    b.HasIndex("SkinToneId");
-
-                    b.ToTable("SkinToneColorCompatibilities");
                 });
 
             modelBuilder.Entity("User", b =>
@@ -163,25 +124,6 @@ namespace backend.Migrations
                     b.HasIndex("SkinToneId");
 
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("SkinToneColorCompatibility", b =>
-                {
-                    b.HasOne("Color", "Color")
-                        .WithMany()
-                        .HasForeignKey("ColorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SkinTone", "SkinTone")
-                        .WithMany()
-                        .HasForeignKey("SkinToneId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Color");
-
-                    b.Navigation("SkinTone");
                 });
 
             modelBuilder.Entity("User", b =>

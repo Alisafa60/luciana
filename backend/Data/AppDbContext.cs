@@ -10,6 +10,8 @@ namespace backend.Data
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<SkinTone> SkinTones { get; set; } 
+        public DbSet<Color> Colors { get; set; }
+        public DbSet<SkinToneColorCompatibility> SkinToneColorCompatibilities { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -25,6 +27,8 @@ namespace backend.Data
                 new Role { Id = 1, UserRole = UserRole.Admin },
                 new Role { Id = 2, UserRole = UserRole.Customer }
             );
+
+            modelBuilder.Entity<SkinToneColorCompatibility>().HasNoKey();
         }
     }
 }
