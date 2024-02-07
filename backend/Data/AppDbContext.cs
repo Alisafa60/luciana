@@ -13,8 +13,9 @@ namespace backend.Data
         public DbSet<Color> Colors { get; set; }
         public DbSet<SkinToneColorCompatibility> SkinToneColorCompatibilities { get; set; }
         public DbSet<Product> Products { get; set; }
-        public DbSet<TexturePattern> TexturePattern { get; set; }
+        public DbSet<TexturePattern> TexturePatterns { get; set; }
         public DbSet<ProductTexturePattern> ProductTexturePatterns { get; set; }
+        public DbSet<ProductColor> ProductColors{ get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -45,6 +46,19 @@ namespace backend.Data
                 .HasOne(ptp => ptp.TexturePattern)
                 .WithMany()
                 .HasForeignKey(ptp => ptp.TexturePatternId);
+                
+            modelBuilder.Entity<ProductColor>()
+                .HasKey(pc => new { pc.ProductId, pc.ColorId});   
+
+            modelBuilder.Entity<ProductColor>()
+                .HasOne(pc => pc.Product)
+                .WithMany(p => p.ProductColors)
+                .HasForeignKey(pc => pc.ProductId);
+
+            modelBuilder.Entity<ProductColor>()
+                .HasOne(pc => pc.Color)
+                .WithMany()
+                .HasForeignKey(pc => pc.ColorId); 
         }
     }
 }
