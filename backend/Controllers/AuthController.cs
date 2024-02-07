@@ -89,7 +89,6 @@ public class AuthController : ControllerBase{
             var secretKey = _configuration["JwtSettings:SecretKey"];
 
             if (string.IsNullOrEmpty(secretKey)){
-                 _logger.LogError("Secret key is not configured");
                 return StatusCode(500, "Secret key is not configured");
             }
 

@@ -1,5 +1,6 @@
-using System.ComponentModel.DataAnnotations;
 #pragma warning disable CS8618 
+using System.ComponentModel.DataAnnotations;
+
 public class Color{
     public int Id {get; set; }
 

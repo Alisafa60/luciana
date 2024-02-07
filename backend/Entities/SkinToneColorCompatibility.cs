@@ -13,7 +13,6 @@ public class SkinToneColorCompatibility{
 
     public Color Color {get; set;}
 
-
     [Required]
     public int SkinToneId {get; set;}
 
@@ -24,4 +23,3 @@ public class SkinToneColorCompatibility{
     public int CompatibilityScore {get; set;}
 
 }
-#pragma warning restore CS8618 
