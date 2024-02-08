@@ -17,4 +17,5 @@ public class Product{
     public ICollection<ProductTexturePattern> ProductTexturePatterns {get; set;}
     public ICollection<ProductColor> ProductColors { get; set; }
     public ICollection<ProductFabric> ProductFabrics{ get; set;}
+    public ICollection<ProductCategory> ProductCategories{ get; set;}
 }

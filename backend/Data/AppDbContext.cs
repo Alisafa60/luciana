@@ -17,7 +17,7 @@ namespace backend.Data
         public DbSet<ProductTexturePattern> ProductTexturePatterns { get; set; }
         public DbSet<ProductColor> ProductColors{ get; set; }
         public DbSet<ProductFabric> ProductFabrics{ get; set; }
-
+        public DbSet<ProductCategory> ProductCategories { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -62,18 +62,31 @@ namespace backend.Data
                 .WithMany()
                 .HasForeignKey(pc => pc.ColorId);
 
-             modelBuilder.Entity<ProductFabric>()
-                .HasKey(pc => new { pc.ProductId, pc.FabricId});   
+            modelBuilder.Entity<ProductFabric>()
+                .HasKey(pf => new { pf.ProductId, pf.FabricId});   
 
             modelBuilder.Entity<ProductFabric>()
-                .HasOne(pc => pc.Product)
+                .HasOne(pf => pf.Product)
                 .WithMany(p => p.ProductFabrics)
-                .HasForeignKey(pc => pc.ProductId);
+                .HasForeignKey(pf => pf.ProductId);
 
             modelBuilder.Entity<ProductFabric>()
-                .HasOne(pc => pc.Fabric)
+                .HasOne(pf => pf.Fabric)
                 .WithMany()
-                .HasForeignKey(pc => pc.FabricId);
+                .HasForeignKey(pf => pf.FabricId);
+
+            modelBuilder.Entity<ProductCategory>()
+                .HasKey(pct => new { pct.ProductId, pct.CategoryId});
+
+            modelBuilder.Entity<ProductCategory>()
+                .HasOne(pct => pct.Product)
+                .WithMany(p => p.ProductCategories)
+                .HasForeignKey(pct => pct.ProductId);
+
+            modelBuilder.Entity<ProductCategory>()
+                .HasOne(pct => pct.Category)
+                .WithMany()
+                .HasForeignKey(pct => pct.CategoryId);
         }
     }
 }
