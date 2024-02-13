@@ -11,6 +11,8 @@ namespace backend.Data
         public DbSet<Role> Roles { get; set; }
         public DbSet<SkinTone> SkinTones { get; set; } 
         public DbSet<Color> Colors { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Fabric> Fabrics { get; set; }
         public DbSet<SkinToneColorCompatibility> SkinToneColorCompatibilities { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<TexturePattern> TexturePatterns { get; set; }
