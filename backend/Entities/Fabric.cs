@@ -12,5 +12,5 @@ public class Fabric{
     public int? ParentFabricId { get; set; }
 
     [ForeignKey(nameof(ParentFabricId))]
-    public Fabric ParentFabric { get; set;}
+    public ParentFabric ParentFabric { get; set;}
 }
