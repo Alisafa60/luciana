@@ -23,6 +23,7 @@ namespace backend.Data
         public DbSet<ParentCategory> ParentCategories { get; set; }
         public DbSet<ParentColor> ParentColors { get; set; }
         public DbSet<ParentFabric> ParentFabrics { get; set; }
+        public DbSet<Size> Sizes { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder

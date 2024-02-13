@@ -1,5 +1,6 @@
 #pragma warning disable CS8618 
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 public class Product{
     public int Id { get; set; }
@@ -15,6 +16,13 @@ public class Product{
     public int? Stock { get; set; }
 
     public bool ForChildren { get; set; }
+
+    public decimal Weight { get; set; }
+
+    public int ProductSizeId { get; set; }
+
+    [ForeignKey(nameof(ProductSizeId))]
+    public Size Size { get; set; }
 
     public ICollection<ProductTexturePattern> ProductTexturePatterns {get; set;}
     public ICollection<ProductColor> ProductColors { get; set; }
