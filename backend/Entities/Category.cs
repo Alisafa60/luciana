@@ -12,5 +12,5 @@ public class Category{
     public int? ParentCategotyId { get; set; }
 
     [ForeignKey(nameof(ParentCategotyId))]
-    public Category ParentCategory { get; set;}
+    public ParentCategory ParentCategory { get; set;}
 }
