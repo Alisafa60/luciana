@@ -14,6 +14,8 @@ public class Product{
 
     public int? Stock { get; set; }
 
+    public bool ForChildren { get; set; }
+
     public ICollection<ProductTexturePattern> ProductTexturePatterns {get; set;}
     public ICollection<ProductColor> ProductColors { get; set; }
     public ICollection<ProductFabric> ProductFabrics{ get; set;}
