@@ -96,9 +96,8 @@ public class AuthController : ControllerBase{
             var tokenDescriptor = new SecurityTokenDescriptor{
 
                 Subject = new ClaimsIdentity(new Claim[]{
-
-                    new Claim(ClaimTypes.Name, user.Email),
-                    new Claim(ClaimTypes.Role, user.Role.UserRole.ToString()) 
+                    new(ClaimTypes.Name, user.Email),
+                    new(ClaimTypes.Role, user.Role.UserRole.ToString()) 
                 }),
 
                 Expires = DateTime.UtcNow.AddDays(30),

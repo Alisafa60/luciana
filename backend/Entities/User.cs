@@ -34,7 +34,7 @@ public class User{
     [ForeignKey(nameof(RoleId))]
     public Role Role {get; set;}
 
-    public int SkinToneId {get; set;}
+    public int? SkinToneId {get; set;}
 
     [ForeignKey(nameof(SkinToneId))]
     public SkinTone SkinTone {get; set;}
