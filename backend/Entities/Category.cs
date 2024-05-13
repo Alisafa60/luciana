@@ -9,8 +9,8 @@ public class Category{
     [Required]
     public string Name { get; set; }
 
-    public int? ParentCategotyId { get; set; }
+    public int? ParentCategoryId { get; set; }
 
-    [ForeignKey(nameof(ParentCategotyId))]
+    [ForeignKey(nameof(ParentCategoryId))]
     public ParentCategory ParentCategory { get; set;}
 }
