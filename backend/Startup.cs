@@ -50,7 +50,7 @@ public class Startup {
 
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILogger<Startup> logger) {
-        // Create a scope to resolve scoped services
+    // Create a scope to resolve scoped services
         using (var scope = app.ApplicationServices.CreateScope()) {
             var serviceProvider = scope.ServiceProvider;
 
@@ -73,7 +73,16 @@ public class Startup {
         app.UseCors("AllowAllOrigins");
         app.UseAuthentication();
         app.UseAuthorization();
-        // app.UseMiddleware<AdminMiddleware>();
+
+        app.Map("/api/admin", adminApp => {
+            adminApp.UseMiddleware<AdminMiddleware>();
+            adminApp.UseRouting(); 
+            adminApp.UseAuthentication();
+            adminApp.UseAuthorization();
+            adminApp.UseEndpoints(endpoints => {
+                endpoints.MapControllers();
+            });
+        });
 
         app.UseEndpoints(endpoints => {
             endpoints.MapControllers();
