@@ -7,6 +7,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using System.Text;
 
 public class Startup {
     public Startup(IConfiguration configuration) {
@@ -24,7 +27,27 @@ public class Startup {
         services.AddDbContext<AppDbContext>(options =>
             options.UseNpgsql(connectionString)
         );
+
+        var secretKey = Configuration["JwtSettings:SecretKey"];
+        if (secretKey == null) {
+            throw new InvalidOperationException("JwtSettings:SecretKey configuration is missing or null.");
+        }
+
+        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options => {
+                options.TokenValidationParameters = new TokenValidationParameters{
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    //ValidIssuer = Configuration["JwtSettings:Issuer"],
+                    //ValidAudience = Configuration["JwtSettings:Audience"],
+                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey)),
+                };
+            });
     }
+
+
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILogger<Startup> logger) {
         // Create a scope to resolve scoped services
@@ -47,11 +70,10 @@ public class Startup {
         logger.LogInformation("Application started.");
 
         app.UseRouting();
-
         app.UseCors("AllowAllOrigins");
-
-        app.UseMiddleware<AuthMiddleware>();
-        app.UseMiddleware<AdminMiddleware>();
+        app.UseAuthentication();
+        app.UseAuthorization();
+        // app.UseMiddleware<AdminMiddleware>();
 
         app.UseEndpoints(endpoints => {
             endpoints.MapControllers();
