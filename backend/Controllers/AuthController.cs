@@ -1,15 +1,16 @@
+using System;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging; 
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using backend.Data;
-using System.Threading.Tasks;
 using backend.Helpers;
 using System.Text;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
-using System;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Logging; 
+
 
 [Route("api/auth")]
 [ApiController]
@@ -82,7 +83,7 @@ public class AuthController : ControllerBase{
                 }
 
             if (!PasswordHasher.VerifyPassword(model.Password, user.Password)){
-                return Unauthorized("Icorrect Credentials");
+                return Unauthorized("Incorrect Credentials");
             }
 
             var tokenHandler = new JwtSecurityTokenHandler();
