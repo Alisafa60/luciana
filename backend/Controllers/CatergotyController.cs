@@ -7,16 +7,16 @@ using backend.Data;
 
 [Route("api/category")]
 [ApiController]
-public class CategoryController : Controller{
+public class CategoryController : Controller {
     private readonly AppDbContext _context;
     
-    public CategoryController(AppDbContext context){
+    public CategoryController(AppDbContext context) {
         _context = context;
     }
 
     [HttpPost]
     [Authorize(Roles = "Admin")]
-    public ActionResult<CategoryModel> CreateCategory(CategoryModel categoryModel){
+    public ActionResult<CategoryModel> CreateCategory(CategoryModel categoryModel) {
         var category = new Category{
             Name = categoryModel.Name,
             ParentCategoryId = categoryModel.ParentCategoryId
@@ -29,7 +29,7 @@ public class CategoryController : Controller{
     }
 
     [HttpGet]
-    public ActionResult<IEnumerable<CategoryModel>> GetCategories(){
+    public ActionResult<IEnumerable<CategoryModel>> GetCategories() {
         var categories = _context.Categories
             .Select( c => new CategoryModel {
                 Id = c.Id,
@@ -42,7 +42,7 @@ public class CategoryController : Controller{
     }
 
     [HttpGet("{id}")]
-    public ActionResult<CategoryModel> GetCategory(int id){
+    public ActionResult<CategoryModel> GetCategory(int id) {
         var category = _context.Categories.Find(id);
         if (category == null){
             return NotFound();

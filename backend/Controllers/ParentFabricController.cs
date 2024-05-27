@@ -39,7 +39,6 @@ public class ParentFabricController : ControllerBase {
     }
 
     [HttpGet("{id}")]
-
     public ActionResult<ParentFabricModel> GetParentFabric(int id) {
         var parentFabric = _context.ParentFabrics.Find(id);
         if (parentFabric == null) {
@@ -52,6 +51,37 @@ public class ParentFabricController : ControllerBase {
         };
 
         return parentFabricModel;
+    }
+
+    [HttpGet("name/{name}")]
+    public ActionResult<ParentFabricModel> GetParentFabricByName(String name) { 
+        var parentFabric = _context.ParentFabrics
+            .FirstOrDefault( pf => pf.Name == name);
+
+        if (parentFabric == null) {
+            return NotFound();
+        }
+
+        var parentFabricModel = new ParentFabricModel {
+                Id = parentFabric.Id,
+                Name= parentFabric.Name,
+        };
+
+        return Ok(parentFabricModel);
+    }
+
+    [HttpDelete("{id}")]
+    [Authorize(Roles = "Admin")]
+    public IActionResult DeleteParentFabric(int id) {
+        var parentFabric = _context.ParentFabrics.Find(id);
+        if (parentFabric == null) { 
+            return NotFound(); 
+        }
+
+        _context.ParentFabrics.Remove(parentFabric);
+        _context.SaveChanges();
+
+        return NoContent();
     }
 }
 
