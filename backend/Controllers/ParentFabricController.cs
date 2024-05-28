@@ -54,7 +54,7 @@ public class ParentFabricController : ControllerBase {
     }
 
     [HttpGet("name/{name}")]
-    public ActionResult<ParentFabricModel> GetParentFabricByName(String name) { 
+    public ActionResult<ParentFabricModel> GetParentFabricByName(string name) { 
         var parentFabric = _context.ParentFabrics
             .FirstOrDefault( pf => pf.Name == name);
 

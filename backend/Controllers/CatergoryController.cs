@@ -7,7 +7,7 @@ using backend.Data;
 
 [Route("api/category")]
 [ApiController]
-public class CategoryController : Controller {
+public class CategoryController : ControllerBase {
     private readonly AppDbContext _context;
     
     public CategoryController(AppDbContext context) {
@@ -44,6 +44,7 @@ public class CategoryController : Controller {
     [HttpGet("{id}")]
     public ActionResult<CategoryModel> GetCategory(int id) {
         var category = _context.Categories.Find(id);
+        
         if (category == null){
             return NotFound();
         }
