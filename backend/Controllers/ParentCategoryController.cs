@@ -18,21 +18,29 @@ public class ParentCategoryController : ControllerBase
 
     [HttpPost]
     [Authorize(Roles = "Admin")]
-    public ActionResult<ParentCategory> CreateParentCategory(ParentCategory category)
+    public ActionResult<ParentCategory> CreateParentCategory(ParentCategoryModel categoryModel)
     {
+        var category = new ParentCategory{Name = categoryModel.Name};
         _context.ParentCategories.Add(category);
         _context.SaveChanges();
+
         return CreatedAtAction(nameof(GetParentCategory), new { id = category.Id }, category);
     }
 
     [HttpGet]
-    public ActionResult<IEnumerable<ParentCategory>> GetParentCategories()
-    {
-        return _context.ParentCategories.ToList();
+    public ActionResult<IEnumerable<ParentCategory>> GetParentCategories() {
+        var categories = _context.ParentCategories
+            .Select(pc => new ParentCategory{
+                Id = pc.Id,
+                Name = pc.Name,
+            })
+            .ToList();
+
+        return categories;
     }
 
     [HttpGet("{id}")]
-    public ActionResult<ParentCategory> GetParentCategory(int id)
+    public ActionResult<ParentCategoryModel> GetParentCategory(int id)
     {
         var category = _context.ParentCategories.Find(id);
         if (category == null)
@@ -40,6 +48,11 @@ public class ParentCategoryController : ControllerBase
             return NotFound();
         }
 
-        return category;
+        var categoryModel = new ParentCategoryModel{
+            Id = category.Id,
+            Name = category.Name,
+        };
+
+        return categoryModel;
     }
 }
