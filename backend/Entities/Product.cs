@@ -1,6 +1,7 @@
 #pragma warning disable CS8618 
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Runtime.CompilerServices;
 
 public class Product{
     public int Id { get; set; }
@@ -20,6 +21,8 @@ public class Product{
     public decimal Weight { get; set; }
 
     public int ProductSizeId { get; set; }
+
+    public string ProductPicture { get; set; }
 
     [ForeignKey(nameof(ProductSizeId))]
     public Size Size { get; set; }
