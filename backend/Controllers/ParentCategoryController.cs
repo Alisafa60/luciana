@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
@@ -18,66 +19,85 @@ public class ParentCategoryController : ControllerBase {
     [HttpPost]
     [Authorize(Roles = "Admin")]
     public async Task<ActionResult<ParentCategory>> CreateParentCategory(ParentCategoryModel categoryModel) {
-        var category = new ParentCategory{Name = categoryModel.Name};
-        await _context.ParentCategories.AddAsync(category);
-        await _context.SaveChangesAsync();
+        try {
+            var category = new ParentCategory{Name = categoryModel.Name};
+            await _context.ParentCategories.AddAsync(category);
+            await _context.SaveChangesAsync();
 
-        return CreatedAtAction(nameof(GetParentCategory), new { id = category.Id }, category);
+            return CreatedAtAction(nameof(GetParentCategory), new { id = category.Id }, category);
+        } catch (Exception ex) {
+            return StatusCode(500, $"Internal server error: {ex.Message}");
+        }
     }
 
     [HttpGet]
     public async Task<ActionResult<IEnumerable<ParentCategory>>> GetParentCategories() {
-        var categories = await _context.ParentCategories
-            .Select(pc => new ParentCategory{
-                Id = pc.Id,
-                Name = pc.Name,
-            })
-            .ToListAsync();
+        try {
+            var categories = await _context.ParentCategories
+                .Select(pc => new ParentCategory{
+                    Id = pc.Id,
+                    Name = pc.Name,
+                })
+                .ToListAsync();
 
-        return categories;
+            return categories;
+        } catch (Exception ex) {
+            return StatusCode(500, $"Internal server error: {ex.Message}");
+        }
     }
 
     [HttpGet("{id}")]
     public async Task<ActionResult<ParentCategoryModel>> GetParentCategory(int id) {
-        var category = await _context.ParentCategories.FindAsync(id);
-        if (category == null) {
-            return NotFound();
+        try {
+            var category = await _context.ParentCategories.FindAsync(id);
+            if (category == null) {
+                return NotFound();
+            }
+
+            var categoryModel = new ParentCategoryModel {
+                Id = category.Id,
+                Name = category.Name,
+            };
+
+            return categoryModel;
+        } catch (Exception ex) {
+            return StatusCode(500, $"Internal server error: {ex.Message}");
         }
-
-        var categoryModel = new ParentCategoryModel {
-            Id = category.Id,
-            Name = category.Name,
-        };
-
-        return categoryModel;
     }
 
     [HttpGet("name/{name}")]
     public async Task<ActionResult<ParentCategoryModel>> GetParentCategoryByName(string name) {
-        var category = await _context.ParentCategories.FirstOrDefaultAsync(pc => pc.Name == name);
-        if (category == null) {
-            return NotFound();
+        try {
+            var category = await _context.ParentCategories.FirstOrDefaultAsync(pc => pc.Name == name);
+            if (category == null) {
+                return NotFound();
+            }
+
+            var categoryModel = new ParentCategoryModel {
+                Id = category.Id,
+                Name = category.Name
+            };
+
+            return Ok(categoryModel);
+        } catch (Exception ex) {
+            return StatusCode(500, $"Internal server error: {ex.Message}");
         }
-
-        var categoryModel = new ParentCategoryModel {
-            Id = category.Id,
-            Name = category.Name
-        };
-
-        return Ok(categoryModel);
     }
 
     [HttpDelete("{id}")]
     public async Task<ActionResult> DeleteParentCategory(int id) {
-        var category = await _context.ParentCategories.FindAsync(id);
-        if (category == null) {
-            return NotFound();
+        try {
+            var category = await _context.ParentCategories.FindAsync(id);
+            if (category == null) {
+                return NotFound();
+            }
+
+            _context.ParentCategories.Remove(category);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        } catch (Exception ex) {
+            return StatusCode(500, $"Internal server error: {ex.Message}");
         }
-
-        _context.ParentCategories.Remove(category);
-        await _context.SaveChangesAsync();
-
-        return NoContent();
     }
-
 }
