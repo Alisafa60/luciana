@@ -4,51 +4,47 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using backend.Data;
+using System.Threading.Tasks;
 
 [Route("api/parentcategory")]
 [ApiController]
-public class ParentCategoryController : ControllerBase
-{
+public class ParentCategoryController : ControllerBase {
     private readonly AppDbContext _context;
 
-    public ParentCategoryController(AppDbContext context)
-    {
+    public ParentCategoryController(AppDbContext context) {
         _context = context;
     }
 
     [HttpPost]
     [Authorize(Roles = "Admin")]
-    public ActionResult<ParentCategory> CreateParentCategory(ParentCategoryModel categoryModel)
-    {
+    public async Task<ActionResult<ParentCategory>> CreateParentCategory(ParentCategoryModel categoryModel) {
         var category = new ParentCategory{Name = categoryModel.Name};
-        _context.ParentCategories.Add(category);
-        _context.SaveChanges();
+        await _context.ParentCategories.AddAsync(category);
+        await _context.SaveChangesAsync();
 
         return CreatedAtAction(nameof(GetParentCategory), new { id = category.Id }, category);
     }
 
     [HttpGet]
-    public ActionResult<IEnumerable<ParentCategory>> GetParentCategories() {
-        var categories = _context.ParentCategories
+    public async Task<ActionResult<IEnumerable<ParentCategory>>> GetParentCategories() {
+        var categories = await _context.ParentCategories
             .Select(pc => new ParentCategory{
                 Id = pc.Id,
                 Name = pc.Name,
             })
-            .ToList();
+            .ToListAsync();
 
         return categories;
     }
 
     [HttpGet("{id}")]
-    public ActionResult<ParentCategoryModel> GetParentCategory(int id)
-    {
-        var category = _context.ParentCategories.Find(id);
-        if (category == null)
-        {
+    public async Task<ActionResult<ParentCategoryModel>> GetParentCategory(int id) {
+        var category = await _context.ParentCategories.FindAsync(id);
+        if (category == null) {
             return NotFound();
         }
 
-        var categoryModel = new ParentCategoryModel{
+        var categoryModel = new ParentCategoryModel {
             Id = category.Id,
             Name = category.Name,
         };
@@ -57,8 +53,8 @@ public class ParentCategoryController : ControllerBase
     }
 
     [HttpGet("name/{name}")]
-    public ActionResult<ParentCategoryModel> GetParentCategoryByName(string name) {
-        var category = _context.ParentCategories.FirstOrDefault(pc => pc.Name == name);
+    public async Task<ActionResult<ParentCategoryModel>> GetParentCategoryByName(string name) {
+        var category = await _context.ParentCategories.FirstOrDefaultAsync(pc => pc.Name == name);
         if (category == null) {
             return NotFound();
         }
@@ -72,8 +68,8 @@ public class ParentCategoryController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    public ActionResult DeleteParentCategory(int id) {
-        var category = _context.ParentCategories.Find(id);
+    public async Task<ActionResult> DeleteParentCategory(int id) {
+        var category = await _context.ParentCategories.FindAsync(id);
         if (category == null) {
             return NotFound();
         }
