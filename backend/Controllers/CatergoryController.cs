@@ -16,34 +16,34 @@ public class CategoryController : ControllerBase {
 
     [HttpPost]
     [Authorize(Roles = "Admin")]
-    public ActionResult<CategoryModel> CreateCategory(CategoryModel categoryModel) {
+    public async Task<ActionResult<CategoryModel>> CreateCategory(CategoryModel categoryModel) {
         var category = new Category{
             Name = categoryModel.Name,
             ParentCategoryId = categoryModel.ParentCategoryId
         };
 
-        _context.Categories.Add(category);
-        _context.SaveChanges();
+        await _context.Categories.AddAsync(category);
+        await _context.SaveChangesAsync();
 
         return CreatedAtAction(nameof(GetCategory), new {id = category.Id}, categoryModel);
     }
 
     [HttpGet]
-    public ActionResult<IEnumerable<CategoryModel>> GetCategories() {
-        var categories = _context.Categories
+    public async Task<ActionResult<IEnumerable<CategoryModel>>> GetCategories() {
+        var categories = await _context.Categories
             .Select( c => new CategoryModel {
                 Id = c.Id,
                 Name = c.Name,
                 ParentCategoryId = c.ParentCategoryId
             })
-            .ToList();
+            .ToListAsync();
 
         return categories;
     }
 
     [HttpGet("{id}")]
-    public ActionResult<CategoryModel> GetCategory(int id) {
-        var category = _context.Categories.Find(id);
+    public async Task<ActionResult<CategoryModel>> GetCategory(int id) {
+        var category = await _context.Categories.FindAsync(id);
         
         if (category == null){
             return NotFound();
@@ -56,5 +56,35 @@ public class CategoryController : ControllerBase {
         };
 
         return categoryModel;
+    }
+
+    [HttpGet("name/{name}")]
+    public async Task<ActionResult<CategoryModel>> GetCategoryByName(string name) {
+        var category = await _context.Categories.FirstOrDefaultAsync(c => c.Name == name);
+        if (category == null) {
+            return NotFound();
+        }
+
+        var categoryModel = new CategoryModel{
+            Id = category.Id,
+            Name = category.Name,
+            ParentCategoryId = category.ParentCategoryId
+        };
+
+        return categoryModel;
+    }
+
+    [HttpDelete("{id}")]
+    [Authorize(Roles = "Admin")]
+    public async Task<ActionResult> DeleteCategory(int id){
+        var category = await _context.Categories.FindAsync(id);
+        if(category == null) {
+            return NotFound("");
+        }
+
+        _context.Categories.Remove(category);
+        await _context.SaveChangesAsync();
+
+        return NoContent();
     }
 }
