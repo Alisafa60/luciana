@@ -71,4 +71,17 @@ public class FabricController : ControllerBase {
 
         return Ok(fabricModel);
     }
+
+    [HttpDelete("{id}")]
+    public ActionResult DeleteFabric(int id) {
+        var fabric = _context.Fabrics.Find(id);
+        if (fabric == null) {
+            return NotFound();
+        }
+
+        _context.Fabrics.Remove(fabric);
+        _context.SaveChanges();
+
+        return NoContent();
+    }
 }
