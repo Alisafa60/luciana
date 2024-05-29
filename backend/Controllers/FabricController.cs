@@ -1,6 +1,7 @@
 using backend.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,15 +17,15 @@ public class FabricController : ControllerBase {
 
     [HttpPost]
     [Authorize(Roles = "Admin")]
-    public ActionResult<FabricModel> CreateFabric(FabricModel fabricModel) {
+    public async Task<ActionResult<FabricModel>> CreateFabric(FabricModel fabricModel) {
         try {
             var fabric = new Fabric {
                 Name = fabricModel.Name,
                 ParentFabricId = fabricModel.ParentFabricId,
             };
 
-            _context.Fabrics.Add(fabric);
-            _context.SaveChanges();
+            await _context.Fabrics.AddAsync(fabric);
+            await _context.SaveChangesAsync();
 
             return CreatedAtAction(nameof(GetFabric), new { id = fabric.Id }, fabricModel);
         } catch (Exception ex) {
@@ -33,15 +34,15 @@ public class FabricController : ControllerBase {
     }
 
     [HttpGet]
-    public ActionResult<IEnumerable<FabricModel>> GetFabrics() {
+    public async Task<ActionResult<IEnumerable<FabricModel>>> GetFabrics() {
         try {
-            var fabrics = _context.Fabrics
+            var fabrics = await _context.Fabrics
                 .Select(f => new FabricModel {
                     Id = f.Id,
                     Name = f.Name,
                     ParentFabricId = f.ParentFabricId,
                 })
-                .ToList();
+                .ToListAsync();
 
             return fabrics;
         } catch (Exception ex) {
@@ -50,9 +51,9 @@ public class FabricController : ControllerBase {
     }
 
     [HttpGet("{id}")]
-    public ActionResult<FabricModel> GetFabric(int id) {
+    public async Task<ActionResult<FabricModel>> GetFabric(int id) {
         try {
-            var fabric = _context.Fabrics.Find(id);
+            var fabric = await _context.Fabrics.FindAsync(id);
 
             if (fabric == null) {
                 return NotFound();
@@ -71,9 +72,9 @@ public class FabricController : ControllerBase {
     }
 
     [HttpGet("name/{name}")]
-    public ActionResult<FabricModel> GetFabricByName(string name) {
+    public async Task<ActionResult<FabricModel>> GetFabricByName(string name) {
         try {
-            var fabric = _context.Fabrics.FirstOrDefault(f => f.Name == name);
+            var fabric = await _context.Fabrics.FirstOrDefaultAsync(f => f.Name == name);
 
             if (fabric == null) {
                 return NotFound();
@@ -92,15 +93,15 @@ public class FabricController : ControllerBase {
     }
 
     [HttpDelete("{id}")]
-    public ActionResult DeleteFabric(int id) {
+    public async Task<ActionResult> DeleteFabric(int id) {
         try {
-            var fabric = _context.Fabrics.Find(id);
+            var fabric = await _context.Fabrics.FindAsync(id);
             if (fabric == null) {
                 return NotFound();
             }
 
             _context.Fabrics.Remove(fabric);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             return NoContent();
         } catch (Exception ex) {
