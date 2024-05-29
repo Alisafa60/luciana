@@ -93,7 +93,7 @@ public class CategoryController : ControllerBase {
 
     [HttpDelete("{id}")]
     [Authorize(Roles = "Admin")]
-    public async Task<ActionResult> DeleteCategory(int id) {
+    public async Task<IActionResult> DeleteCategory(int id) {
         try {
             var category = await _context.Categories.FindAsync(id);
             if (category == null) {

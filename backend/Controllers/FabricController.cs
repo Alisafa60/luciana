@@ -44,7 +44,7 @@ public class FabricController : ControllerBase {
                 })
                 .ToListAsync();
 
-            return fabrics;
+            return Ok(fabrics);
         } catch (Exception ex) {
             return StatusCode(500, $"Internal server error: {ex.Message}");
         }
@@ -65,7 +65,7 @@ public class FabricController : ControllerBase {
                 ParentFabricId = fabric.ParentFabricId,
             };
 
-            return fabricModel;
+            return Ok(fabricModel);
         } catch (Exception ex) {
             return StatusCode(500, $"Internal server error: {ex.Message}");
         }
@@ -93,7 +93,7 @@ public class FabricController : ControllerBase {
     }
 
     [HttpDelete("{id}")]
-    public async Task<ActionResult> DeleteFabric(int id) {
+    public async Task<IActionResult> DeleteFabric(int id) {
         try {
             var fabric = await _context.Fabrics.FindAsync(id);
             if (fabric == null) {

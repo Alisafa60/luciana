@@ -18,7 +18,7 @@ public class ParentCategoryController : ControllerBase {
 
     [HttpPost]
     [Authorize(Roles = "Admin")]
-    public async Task<ActionResult<ParentCategory>> CreateParentCategory(ParentCategoryModel categoryModel) {
+    public async Task<ActionResult<ParentCategoryModel>> CreateParentCategory(ParentCategoryModel categoryModel) {
         try {
             var category = new ParentCategory{Name = categoryModel.Name};
             await _context.ParentCategories.AddAsync(category);
@@ -31,16 +31,16 @@ public class ParentCategoryController : ControllerBase {
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<ParentCategory>>> GetParentCategories() {
+    public async Task<ActionResult<IEnumerable<ParentCategoryModel>>> GetParentCategories() {
         try {
             var categories = await _context.ParentCategories
-                .Select(pc => new ParentCategory{
+                .Select(pc => new ParentCategoryModel{
                     Id = pc.Id,
                     Name = pc.Name,
                 })
                 .ToListAsync();
 
-            return categories;
+            return Ok(categories);
         } catch (Exception ex) {
             return StatusCode(500, $"Internal server error: {ex.Message}");
         }
@@ -59,7 +59,7 @@ public class ParentCategoryController : ControllerBase {
                 Name = category.Name,
             };
 
-            return categoryModel;
+            return Ok(categoryModel);
         } catch (Exception ex) {
             return StatusCode(500, $"Internal server error: {ex.Message}");
         }
@@ -85,7 +85,7 @@ public class ParentCategoryController : ControllerBase {
     }
 
     [HttpDelete("{id}")]
-    public async Task<ActionResult> DeleteParentCategory(int id) {
+    public async Task<IActionResult> DeleteParentCategory(int id) {
         try {
             var category = await _context.ParentCategories.FindAsync(id);
             if (category == null) {
