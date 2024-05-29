@@ -19,28 +19,28 @@ public class ParentFabricController : ControllerBase {
 
     [HttpPost]
     [Authorize(Roles = "Admin")]
-    public ActionResult<ParentFabricModel> CreateParentFabric(ParentFabricModel parentFabricModel) {
+    public async Task<ActionResult<ParentFabricModel>> CreateParentFabric(ParentFabricModel parentFabricModel) {
         var parentFabric = new ParentFabric{
             Name = parentFabricModel.Name,
         };
 
-        _context.ParentFabrics.Add(parentFabric);
-        _context.SaveChanges();
+        await _context.ParentFabrics.AddAsync(parentFabric);
+        await _context.SaveChangesAsync();
 
         return CreatedAtAction(nameof(GetParentFabric), new {id = parentFabric.Id}, parentFabricModel);
     }
 
     [HttpGet]
-    public ActionResult<IEnumerable<ParentFabricModel>> GetParentFabrics() {
-        var parentFabrics = _context.ParentFabrics
-            .Select ( pf => new ParentFabricModel {Name = pf.Name,}).ToList();
+    public async Task<ActionResult<IEnumerable<ParentFabricModel>>> GetParentFabrics() {
+        var parentFabrics = await _context.ParentFabrics
+            .Select( pf => new ParentFabricModel {Name = pf.Name,}).ToListAsync();
 
             return parentFabrics;
     }
 
     [HttpGet("{id}")]
-    public ActionResult<ParentFabricModel> GetParentFabric(int id) {
-        var parentFabric = _context.ParentFabrics.Find(id);
+    public async Task<ActionResult<ParentFabricModel>> GetParentFabric(int id) {
+        var parentFabric = await _context.ParentFabrics.FindAsync(id);
         if (parentFabric == null) {
             return NotFound();
         }
@@ -54,9 +54,9 @@ public class ParentFabricController : ControllerBase {
     }
 
     [HttpGet("name/{name}")]
-    public ActionResult<ParentFabricModel> GetParentFabricByName(string name) { 
-        var parentFabric = _context.ParentFabrics
-            .FirstOrDefault( pf => pf.Name == name);
+    public async Task<ActionResult<ParentFabricModel>> GetParentFabricByName(string name) { 
+        var parentFabric = await _context.ParentFabrics
+            .FirstOrDefaultAsync( pf => pf.Name == name);
 
         if (parentFabric == null) {
             return NotFound();
@@ -72,14 +72,14 @@ public class ParentFabricController : ControllerBase {
 
     [HttpDelete("{id}")]
     [Authorize(Roles = "Admin")]
-    public IActionResult DeleteParentFabric(int id) {
-        var parentFabric = _context.ParentFabrics.Find(id);
+    public async Task<IActionResult> DeleteParentFabric(int id) {
+        var parentFabric = await _context.ParentFabrics.FindAsync(id);
         if (parentFabric == null) { 
             return NotFound(); 
         }
 
         _context.ParentFabrics.Remove(parentFabric);
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
 
         return NoContent();
     }
