@@ -75,8 +75,9 @@ public class ParentCategoryController : ControllerBase {
         }
 
         _context.ParentCategories.Remove(category);
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
 
         return NoContent();
     }
+
 }
