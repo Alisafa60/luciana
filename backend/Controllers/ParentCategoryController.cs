@@ -55,4 +55,32 @@ public class ParentCategoryController : ControllerBase
 
         return categoryModel;
     }
+
+    [HttpGet("name/{name}")]
+    public ActionResult<ParentCategoryModel> GetParentCategoryByName(string name) {
+        var category = _context.ParentCategories.FirstOrDefault(pc => pc.Name == name);
+        if (category == null) {
+            return NotFound();
+        }
+
+        var categoryModel = new ParentCategoryModel {
+            Id = category.Id,
+            Name = category.Name
+        };
+
+        return Ok(categoryModel);
+    }
+
+    [HttpDelete("{id}")]
+    public ActionResult DeleteParentCategory(int id) {
+        var category = _context.ParentCategories.Find(id);
+        if (category == null) {
+            return NotFound();
+        }
+
+        _context.ParentCategories.Remove(category);
+        _context.SaveChanges();
+
+        return NoContent();
+    }
 }
