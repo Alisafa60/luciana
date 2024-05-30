@@ -92,6 +92,19 @@ namespace backend.Data
                 .HasOne(pct => pct.Category)
                 .WithMany()
                 .HasForeignKey(pct => pct.CategoryId);
+
+            modelBuilder.Entity<ProductPromotion>()
+                .HasKey(pp => new { pp.ProductId, pp.PromotionId });
+
+            modelBuilder.Entity<ProductPromotion>()
+                .HasOne(pp => pp.Product)
+                .WithMany(p => p.ProductPromotions)
+                .HasForeignKey(pp => pp.ProductId);
+            
+            modelBuilder.Entity<ProductPromotion>()
+                .HasOne(pp => pp.Promotion)
+                .WithMany(p => p.ProductPromotions)
+                .HasForeignKey(pp => pp.PromotionId);
         }
     }
 }
