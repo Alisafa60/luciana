@@ -33,7 +33,8 @@ public class CategoryController : ControllerBase {
 
             var createdCategoryModel = new CategoryModel {
                 Name = category.Name,
-                Id = category.Id
+                Id = category.Id,
+                ParentCategoryId = category.ParentCategoryId
             };
 
             return CreatedAtAction(nameof(GetCategory), new { id = category.Id }, createdCategoryModel);
