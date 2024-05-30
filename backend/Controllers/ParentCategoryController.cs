@@ -28,6 +28,11 @@ public class ParentCategoryController : ControllerBase {
             await _context.ParentCategories.AddAsync(category);
             await _context.SaveChangesAsync();
 
+            var createdCategoryModel = new ParentCategoryModel {
+                Name = category.Name,
+                Id = category.Id,
+            };
+
             return CreatedAtAction(nameof(GetParentCategory), new { id = category.Id }, category);
         } catch (Exception ex) {
             return StatusCode(500, $"Internal server error: {ex.Message}");

@@ -27,7 +27,13 @@ public class SizeController : ControllerBase {
             await _context.Sizes.AddAsync(size);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetSize), new {id = size.Id}, sizeModel);
+            var createdSize = new SizeModel {
+                Height = size.Height,
+                Width = size.Width,
+                Id = size.Id,
+            };
+
+            return CreatedAtAction(nameof(GetSize), new {id = size.Id}, createdSize);
         } catch (Exception ex){
             return StatusCode(500, $"Internal Server Error {ex.Message}");
         }

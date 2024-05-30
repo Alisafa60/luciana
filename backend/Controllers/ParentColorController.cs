@@ -27,6 +27,11 @@ public class ParentColorController : ControllerBase {
             await _context.ParentColors.AddAsync(parentColor);
             await _context.SaveChangesAsync();
 
+            var createdColorModel = new ParentColorModel {
+                Name = parentColor.Name,
+                Id = parentColor.Id,
+            };
+
             return CreatedAtAction(nameof(GetParentColor), new { id = parentColor.Id }, parentColor);
         } catch (Exception ex){
             return StatusCode(500, $"Internal server error {ex.Message}");
