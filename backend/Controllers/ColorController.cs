@@ -2,6 +2,8 @@ using backend.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 [Route("api/color")]
 [ApiController]
@@ -19,7 +21,7 @@ public class ColorController : ControllerBase {
         }
 
         try {
-            var color = new Color{
+            var color = new Color {
                 Name = colorModel.Name,
                 ParentColorId = colorModel.ParentColorId,
             };
@@ -27,16 +29,22 @@ public class ColorController : ControllerBase {
             await _context.Colors.AddAsync(color);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetColor), new { id = color.Id}, colorModel);
+            var createdColorModel = new ColorModel {
+                Id = color.Id,
+                Name = color.Name,
+                ParentColorId = color.ParentColorId
+            };
+
+            return CreatedAtAction(nameof(GetColor), new { id = color.Id }, createdColorModel);
         } catch (Exception ex) {
-            return StatusCode(500, $"Internal Server Error {ex.Message}");
-        }   
+            return StatusCode(500, $"Internal Server Error: {ex.Message}");
+        }
     }
 
     [HttpGet]
     public async Task<ActionResult<IEnumerable<ColorModel>>> GetColors() {
         try {
-             var colors = await _context.Colors
+            var colors = await _context.Colors
                 .Select(c => new ColorModel {
                     Id = c.Id,
                     Name = c.Name,
@@ -46,9 +54,8 @@ public class ColorController : ControllerBase {
 
             return Ok(colors);
         } catch (Exception ex) {
-            return StatusCode(500, $"Internal Server Error {ex.Message}");
+            return StatusCode(500, $"Internal Server Error: {ex.Message}");
         }
-       
     }
 
     [HttpGet("{id}")]
@@ -67,7 +74,7 @@ public class ColorController : ControllerBase {
 
             return Ok(colorModel);
         } catch (Exception ex) {
-            return StatusCode(500, $"Internal Server Error {ex.Message}");
+            return StatusCode(500, $"Internal Server Error: {ex.Message}");
         }
     }
 
@@ -87,21 +94,25 @@ public class ColorController : ControllerBase {
 
             return Ok(colorModel);
         } catch (Exception ex) {
-            return StatusCode(500, $"Internal Server Error {ex.Message}");
+            return StatusCode(500, $"Internal Server Error: {ex.Message}");
         }
     }
 
     [HttpDelete("{id}")]
     [Authorize(Roles = "Admin")]
-    public async Task<IActionResult> DeleteColor( int id) {
-        var color = await _context.Colors.FindAsync(id);
-        if (color == null) {
-            return NotFound();
+    public async Task<IActionResult> DeleteColor(int id) {
+        try {
+            var color = await _context.Colors.FindAsync(id);
+            if (color == null) {
+                return NotFound();
+            }
+
+            _context.Colors.Remove(color);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        } catch (Exception ex) {
+            return StatusCode(500, $"Internal Server Error: {ex.Message}");
         }
-
-        _context.Colors.Remove(color);
-        await _context.SaveChangesAsync();
-
-        return NoContent();
     }
 }
