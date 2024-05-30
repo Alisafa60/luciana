@@ -31,7 +31,12 @@ public class CategoryController : ControllerBase {
             await _context.Categories.AddAsync(category);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetCategory), new { id = category.Id }, categoryModel);
+            var createdCategoryModel = new CategoryModel {
+                Name = category.Name,
+                Id = category.Id
+            };
+
+            return CreatedAtAction(nameof(GetCategory), new { id = category.Id }, createdCategoryModel);
         } catch (Exception ex) {
             return StatusCode(500, $"Internal server error: {ex.Message}");
         }
