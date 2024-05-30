@@ -26,7 +26,12 @@ public class TexturePatternController : ControllerBase {
             await _context.TexturePatterns.AddAsync(texturePattern);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetTexturePattern), new {id = texturePatternModel.Id});
+            var createdTP = new TexturePatternModel {
+                Name = texturePattern.Name,
+                Id = texturePattern.Id,
+            };
+
+            return CreatedAtAction(nameof(GetTexturePattern), new {id = texturePatternModel.Id}, createdTP);
         } catch(Exception ex) {
             return StatusCode(500, $"Internal Server Error {ex.Message}");
         }
