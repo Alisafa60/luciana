@@ -27,7 +27,12 @@ public class ParentFabricController : ControllerBase {
             await _context.ParentFabrics.AddAsync(parentFabric);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetParentFabric), new { id = parentFabric.Id }, parentFabricModel);
+            var createdParentFabricModel = new ParentFabricModel {
+                Id = parentFabric.Id, 
+                Name = parentFabric.Name,
+            };
+
+            return CreatedAtAction(nameof(GetParentFabric), new { id = parentFabric.Id }, createdParentFabricModel);
         } catch (Exception ex) {
             return StatusCode(500, $"Internal server error: {ex.Message}");
         }
