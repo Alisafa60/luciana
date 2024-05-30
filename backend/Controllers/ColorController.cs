@@ -32,6 +32,8 @@ public class ColorController : ControllerBase {
             var createdColorModel = new ColorModel {
                 Id = color.Id,
                 Name = color.Name,
+                HexValue = color.HexValue,
+                Description = color.Description,
                 ParentColorId = color.ParentColorId
             };
 
@@ -69,6 +71,8 @@ public class ColorController : ControllerBase {
             var colorModel = new ColorModel {
                 Id = color.Id,
                 Name = color.Name,
+                Description = color.Description,
+                HexValue = color.HexValue,
                 ParentColorId = color.ParentColorId
             };
 
@@ -89,6 +93,8 @@ public class ColorController : ControllerBase {
             var colorModel = new ColorModel {
                 Id = color.Id,
                 Name = color.Name,
+                Description = color.Description,
+                HexValue = color.HexValue,
                 ParentColorId = color.ParentColorId,
             };
 
