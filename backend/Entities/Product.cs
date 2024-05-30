@@ -31,4 +31,5 @@ public class Product{
     public ICollection<ProductColor> ProductColors { get; set; }
     public ICollection<ProductFabric> ProductFabrics{ get; set;}
     public ICollection<ProductCategory> ProductCategories{ get; set;}
+    public ICollection<ProductPromotion> ProductPromotions { get; set; }
 }
