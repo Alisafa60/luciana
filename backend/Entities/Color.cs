@@ -5,8 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 public class Color{
     public int Id {get; set; }
 
-    [Required]
-    public string HexValue {get; set; }
+    public string? HexValue {get; set; }
 
 
     [Required]

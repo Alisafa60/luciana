@@ -3,8 +3,7 @@ using System.ComponentModel.DataAnnotations;
 public class ColorModel {
     public int Id { get; set; }
 
-    [Required]
-    public string HexValue { get; set; }
+    public string? HexValue { get; set; }
 
     [Required]
     public string Name { get; set; }
