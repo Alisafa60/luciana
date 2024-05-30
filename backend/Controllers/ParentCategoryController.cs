@@ -19,6 +19,10 @@ public class ParentCategoryController : ControllerBase {
     [HttpPost]
     [Authorize(Roles = "Admin")]
     public async Task<ActionResult<ParentCategoryModel>> CreateParentCategory(ParentCategoryModel categoryModel) {
+        if (!ModelState.IsValid) {
+            return BadRequest(ModelState);
+        }
+        
         try {
             var category = new ParentCategory{Name = categoryModel.Name};
             await _context.ParentCategories.AddAsync(category);

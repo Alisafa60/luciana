@@ -18,6 +18,10 @@ public class FabricController : ControllerBase {
     [HttpPost]
     [Authorize(Roles = "Admin")]
     public async Task<ActionResult<FabricModel>> CreateFabric(FabricModel fabricModel) {
+        if (!ModelState.IsValid) {
+            return BadRequest(ModelState);
+        }
+        
         try {
             var fabric = new Fabric {
                 Name = fabricModel.Name,

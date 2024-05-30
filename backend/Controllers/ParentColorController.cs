@@ -15,7 +15,11 @@ public class ParentColorController : ControllerBase {
     [HttpPost]
     [Authorize(Roles = "Admin")]
     public async Task<ActionResult<ParentColorModel>> CreateParentColor(ParentColorModel parentColorModel) {
-       try {
+        if (!ModelState.IsValid) {
+            return BadRequest(ModelState);
+        }
+        
+        try {
             var parentColor = new ParentColor {
                 Name = parentColorModel.Name,
             };
@@ -24,7 +28,7 @@ public class ParentColorController : ControllerBase {
             await _context.SaveChangesAsync();
 
             return CreatedAtAction(nameof(GetParentColor), new { id = parentColor.Id }, parentColor);
-       } catch (Exception ex){
+        } catch (Exception ex){
             return StatusCode(500, $"Internal server error {ex.Message}");
        }
     }

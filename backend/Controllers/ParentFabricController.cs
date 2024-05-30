@@ -87,6 +87,10 @@ public class ParentFabricController : ControllerBase {
     [HttpDelete("{id}")]
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> DeleteParentFabric(int id) {
+        if (!ModelState.IsValid) {
+            return BadRequest(ModelState);
+        }
+        
         try {
             var parentFabric = await _context.ParentFabrics.FindAsync(id);
             if (parentFabric == null) {

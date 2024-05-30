@@ -18,6 +18,10 @@ public class CategoryController : ControllerBase {
     [HttpPost]
     [Authorize(Roles = "Admin")]
     public async Task<ActionResult<CategoryModel>> CreateCategory(CategoryModel categoryModel) {
+        if (!ModelState.IsValid) {
+            return BadRequest(ModelState);
+        }
+        
         try {
             var category = new Category {
                 Name = categoryModel.Name,
