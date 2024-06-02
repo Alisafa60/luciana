@@ -123,6 +123,49 @@ public class ProductController : ControllerBase {
         }
     }
 
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdateProduct(int id, ProductModel productModel) {
+        if (id != productModel.Id) {
+            return BadRequest();
+        }
+
+        var product = await _context.Products
+            .Include(p => p.ProductTexturePatterns)
+            .Include(p => p.ProductColors)
+            .Include(p => p.ProductFabrics)
+            .Include(p => p.ProductCategories)
+            .Include(p => p.ProductPromotions)
+            .FirstOrDefaultAsync(p => p.Id == id);
+
+        if (product == null) {
+            return NotFound();
+        }
+
+        try {
+            product.Name = productModel.Name;
+            product.Description = productModel.Description;
+            product.Price = productModel.Price;
+            product.Stock = productModel.Stock;
+            product.ForChildren = productModel.ForChildren;
+            product.Weight = productModel.Weight;
+            product.ProductSizeId = productModel.ProductSizeId;
+            product.ProductPicture = productModel.ProductPicture;
+
+            product.ProductTexturePatterns = productModel.ProductTexturePatternIds.Select(tid => new ProductTexturePattern { ProductId = productModel.Id, TexturePatternId = tid }).ToList();
+            product.ProductColors = productModel.ProductColorIds.Select(cid => new ProductColor { ProductId = productModel.Id, ColorId = cid }).ToList();
+            product.ProductFabrics = productModel.ProductFabricIds.Select(fid => new ProductFabric {ProductId = productModel.Id, FabricId = fid }).ToList();
+            product.ProductCategories = productModel.ProductCategoryIds.Select(cid => new ProductCategory { ProductId = productModel.Id, CategoryId = cid }).ToList();
+            product.ProductPromotions = productModel.ProductPromotionIds.Select(pid => new ProductPromotion { ProductId = productModel.Id, PromotionId = pid }).ToList();
+
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+        catch (Exception ex) {
+            return StatusCode(500, $"Internal server error: {ex.Message}");
+        }
+    }
+    
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteProduct(int id) {
         var product = await _context.Products.FindAsync(id);
