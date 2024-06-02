@@ -22,7 +22,7 @@ public class Product{
 
     public int ProductSizeId { get; set; }
 
-    public string ProductPicture { get; set; }
+    public string ProductPicturePath { get; set; }
 
     [ForeignKey(nameof(ProductSizeId))]
     public Size Size { get; set; }
