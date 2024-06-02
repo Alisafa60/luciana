@@ -4,6 +4,9 @@ using backend.Data;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using System;
+using System.IO;
 
 [Route("api/product")]
 [ApiController]
@@ -21,6 +24,12 @@ public class ProductController : ControllerBase {
         }
 
         try {
+            string picturePath = null;
+            if (productModel.Picture != null && productModel.Picture.Length > 0) {
+                picturePath = await SavePicture(productModel.Picture);
+                productModel.ProductPicturePath = picturePath;
+            }
+
             var product = new Product {
                 Name = productModel.Name,
                 Description = productModel.Description,
@@ -29,7 +38,7 @@ public class ProductController : ControllerBase {
                 ForChildren = productModel.ForChildren,
                 Weight = productModel.Weight,
                 ProductSizeId = productModel.ProductSizeId,
-                ProductPicture = productModel.ProductPicture,
+                ProductPicturePath = picturePath,
                 ProductTexturePatterns = productModel.ProductTexturePatternIds.Select(id => new ProductTexturePattern { TexturePatternId = id }).ToList(),
                 ProductCategories = productModel.ProductCategoryIds.Select(id => new ProductCategory { CategoryId = id }).ToList(),
                 ProductColors = productModel.ProductColorIds.Select(id => new ProductColor { ColorId = id }).ToList(),
@@ -66,7 +75,7 @@ public class ProductController : ControllerBase {
                     ForChildren = p.ForChildren,
                     Weight = p.Weight,
                     ProductSizeId = p.ProductSizeId,
-                    ProductPicture = p.ProductPicture,
+                    ProductPicturePath = p.ProductPicturePath,
                     ProductTexturePatternIds = p.ProductTexturePatterns.Select(ptp => ptp.TexturePatternId).ToList(),
                     ProductColorIds = p.ProductColors.Select(pc => pc.ColorId).ToList(),
                     ProductFabricIds = p.ProductFabrics.Select(pf => pf.FabricId).ToList(),
@@ -105,7 +114,7 @@ public class ProductController : ControllerBase {
                 ForChildren = product.ForChildren,
                 Weight = product.Weight,
                 ProductSizeId = product.ProductSizeId,
-                ProductPicture = product.ProductPicture,
+                ProductPicturePath = product.ProductPicturePath,
                 ProductTexturePatternIds = product.ProductTexturePatterns.Select(ptp => ptp.TexturePatternId).ToList(),
                 ProductColorIds = product.ProductColors.Select(pc => pc.ColorId).ToList(),
                 ProductFabricIds = product.ProductFabrics.Select(pf => pf.FabricId).ToList(),
@@ -138,6 +147,12 @@ public class ProductController : ControllerBase {
         }
 
         try {
+            string picturePath = null;
+            if (productModel.Picture != null && productModel.Picture.Length > 0) {
+                picturePath = await SavePicture(productModel.Picture);
+                productModel.ProductPicturePath = picturePath;
+            }
+
             product.Name = productModel.Name;
             product.Description = productModel.Description;
             product.Price = productModel.Price;
@@ -145,7 +160,7 @@ public class ProductController : ControllerBase {
             product.ForChildren = productModel.ForChildren;
             product.Weight = productModel.Weight;
             product.ProductSizeId = productModel.ProductSizeId;
-            product.ProductPicture = productModel.ProductPicture;
+            product.ProductPicturePath = picturePath ?? product.ProductPicturePath;
 
             product.ProductTexturePatterns = productModel.ProductTexturePatternIds.Select(tid => new ProductTexturePattern { ProductId = productModel.Id, TexturePatternId = tid }).ToList();
             product.ProductColors = productModel.ProductColorIds.Select(cid => new ProductColor { ProductId = productModel.Id, ColorId = cid }).ToList();
@@ -183,6 +198,31 @@ public class ProductController : ControllerBase {
             return NoContent();
         } catch (Exception ex) {
             return StatusCode(500, $"Internal server error: {ex.Message}");
+        }
+    }
+
+    private async Task<string> SavePicture(IFormFile pictureFile) {
+        try {
+            if (pictureFile != null && pictureFile.Length > 0) {
+                var uploadsDir = Path.Combine(Directory.GetCurrentDirectory(), "uploads");
+
+                if(!Directory.Exists(uploadsDir)){
+                    Directory.CreateDirectory(uploadsDir);
+                }
+
+                var uniqueFileName = $"{Guid.NewGuid()}_{Path.GetFileName(pictureFile.FileName)}";
+                var filePath = Path.Combine(uploadsDir, uniqueFileName);
+
+                using (var fileStream = new FileStream(filePath, FileMode.Create)) {
+                    await pictureFile.CopyToAsync(fileStream);
+                }
+                return filePath;
+            } else {
+                return null;
+            } 
+        } catch (Exception ex) {
+            Console.WriteLine($"Error saving picture file: {ex.Message}");
+            return null;
         }
     }
 }
