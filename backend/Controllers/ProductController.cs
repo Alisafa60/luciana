@@ -4,8 +4,6 @@ using backend.Data;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Runtime.Intrinsics.X86;
-using backend.Migrations;
 
 [Route("api/product")]
 [ApiController]
@@ -32,10 +30,11 @@ public class ProductController : ControllerBase {
                 Weight = productModel.Weight,
                 ProductSizeId = productModel.ProductSizeId,
                 ProductPicture = productModel.ProductPicture,
-                ProductTexturePatterns = productModel.ProductTexturePatternIds.Select ( id => new ProductTexturePattern { TexturePatternId = id, }).ToList(),
-                ProductCategories = productModel.ProductCategoryIds.Select( id => new ProductCategory { CategoryId = id,}).ToList(),
-                ProductColors = productModel.ProductColorIds.Select( id => new ProductColor { ColorId = id, }).ToList(),
-                ProductPromotions = productModel.ProductPromotionIds.Select( id => new ProductPromotion { PromotionId = id,}).ToList(),
+                ProductTexturePatterns = productModel.ProductTexturePatternIds.Select(id => new ProductTexturePattern { TexturePatternId = id }).ToList(),
+                ProductCategories = productModel.ProductCategoryIds.Select(id => new ProductCategory { CategoryId = id }).ToList(),
+                ProductColors = productModel.ProductColorIds.Select(id => new ProductColor { ColorId = id }).ToList(),
+                ProductFabrics = productModel.ProductFabricIds.Select(id => new ProductFabric { FabricId = id }).ToList(),
+                ProductPromotions = productModel.ProductPromotionIds.Select(id => new ProductPromotion { PromotionId = id }).ToList()
             };
 
             await _context.Products.AddAsync(product);
@@ -44,8 +43,7 @@ public class ProductController : ControllerBase {
             productModel.Id = product.Id;
 
             return CreatedAtAction(nameof(GetProduct), new { id = product.Id }, productModel);
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             return StatusCode(500, $"Internal server error: {ex.Message}");
         }
     }
@@ -78,8 +76,7 @@ public class ProductController : ControllerBase {
                 .ToListAsync();
 
             return Ok(products);
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             return StatusCode(500, $"Internal server error: {ex.Message}");
         }
     }
@@ -113,12 +110,11 @@ public class ProductController : ControllerBase {
                 ProductColorIds = product.ProductColors.Select(pc => pc.ColorId).ToList(),
                 ProductFabricIds = product.ProductFabrics.Select(pf => pf.FabricId).ToList(),
                 ProductCategoryIds = product.ProductCategories.Select(pc => pc.CategoryId).ToList(),
-                ProductPromotionIds = product.ProductPromotions.Select(pp => pp.PromotionId).ToList(),
+                ProductPromotionIds = product.ProductPromotions.Select(pp => pp.PromotionId).ToList()
             };
 
             return Ok(productModel);
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             return StatusCode(500, $"Internal server error: {ex.Message}");
         }
     }
@@ -153,19 +149,26 @@ public class ProductController : ControllerBase {
 
             product.ProductTexturePatterns = productModel.ProductTexturePatternIds.Select(tid => new ProductTexturePattern { ProductId = productModel.Id, TexturePatternId = tid }).ToList();
             product.ProductColors = productModel.ProductColorIds.Select(cid => new ProductColor { ProductId = productModel.Id, ColorId = cid }).ToList();
-            product.ProductFabrics = productModel.ProductFabricIds.Select(fid => new ProductFabric {ProductId = productModel.Id, FabricId = fid }).ToList();
+            product.ProductFabrics = productModel.ProductFabricIds.Select(fid => new ProductFabric { ProductId = productModel.Id, FabricId = fid }).ToList();
             product.ProductCategories = productModel.ProductCategoryIds.Select(cid => new ProductCategory { ProductId = productModel.Id, CategoryId = cid }).ToList();
             product.ProductPromotions = productModel.ProductPromotionIds.Select(pid => new ProductPromotion { ProductId = productModel.Id, PromotionId = pid }).ToList();
+
+            _context.Entry(product).State = EntityState.Modified;
 
             await _context.SaveChangesAsync();
 
             return NoContent();
-        }
-        catch (Exception ex) {
+        } catch (DbUpdateConcurrencyException) {
+            if (!_context.Products.Any(p => p.Id == id)) {
+                return NotFound();
+            } else {
+                throw;
+            }
+        } catch (Exception ex) {
             return StatusCode(500, $"Internal server error: {ex.Message}");
         }
     }
-    
+
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteProduct(int id) {
         var product = await _context.Products.FindAsync(id);
@@ -178,8 +181,7 @@ public class ProductController : ControllerBase {
             _context.Products.Remove(product);
             await _context.SaveChangesAsync();
             return NoContent();
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             return StatusCode(500, $"Internal server error: {ex.Message}");
         }
     }
