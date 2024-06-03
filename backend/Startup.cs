@@ -28,6 +28,8 @@ public class Startup {
             options.UseNpgsql(connectionString)
         );
 
+        services.AddScoped<ICategoryRepository, CategoryRepository>();
+
         var secretKey = Configuration["JwtSettings:SecretKey"];
         if (secretKey == null) {
             throw new InvalidOperationException("JwtSettings:SecretKey configuration is missing or null.");
