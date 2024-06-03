@@ -27,7 +27,6 @@ public class ProductController : ControllerBase {
             string picturePath = null;
             if (productModel.Picture != null && productModel.Picture.Length > 0) {
                 picturePath = await SavePicture(productModel.Picture);
-                productModel.ProductPicturePath = picturePath;
             }
 
             var product = new Product {
@@ -75,7 +74,6 @@ public class ProductController : ControllerBase {
                     ForChildren = p.ForChildren,
                     Weight = p.Weight,
                     ProductSizeId = p.ProductSizeId,
-                    ProductPicturePath = p.ProductPicturePath,
                     ProductTexturePatternIds = p.ProductTexturePatterns.Select(ptp => ptp.TexturePatternId).ToList(),
                     ProductColorIds = p.ProductColors.Select(pc => pc.ColorId).ToList(),
                     ProductFabricIds = p.ProductFabrics.Select(pf => pf.FabricId).ToList(),
@@ -114,7 +112,6 @@ public class ProductController : ControllerBase {
                 ForChildren = product.ForChildren,
                 Weight = product.Weight,
                 ProductSizeId = product.ProductSizeId,
-                ProductPicturePath = product.ProductPicturePath,
                 ProductTexturePatternIds = product.ProductTexturePatterns.Select(ptp => ptp.TexturePatternId).ToList(),
                 ProductColorIds = product.ProductColors.Select(pc => pc.ColorId).ToList(),
                 ProductFabricIds = product.ProductFabrics.Select(pf => pf.FabricId).ToList(),
@@ -150,7 +147,6 @@ public class ProductController : ControllerBase {
             string picturePath = null;
             if (productModel.Picture != null && productModel.Picture.Length > 0) {
                 picturePath = await SavePicture(productModel.Picture);
-                productModel.ProductPicturePath = picturePath;
             }
 
             product.Name = productModel.Name;
@@ -206,7 +202,7 @@ public class ProductController : ControllerBase {
             if (pictureFile != null && pictureFile.Length > 0) {
                 var uploadsDir = Path.Combine(Directory.GetCurrentDirectory(), "uploads");
 
-                if(!Directory.Exists(uploadsDir)){
+                if (!Directory.Exists(uploadsDir)) {
                     Directory.CreateDirectory(uploadsDir);
                 }
 
@@ -219,7 +215,7 @@ public class ProductController : ControllerBase {
                 return filePath;
             } else {
                 return null;
-            } 
+            }
         } catch (Exception ex) {
             Console.WriteLine($"Error saving picture file: {ex.Message}");
             return null;
