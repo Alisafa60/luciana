@@ -20,8 +20,6 @@ public class ProductModel {
 
     public int ProductSizeId { get; set; }
 
-    public string ProductPicturePath { get; set; } 
-
     public ICollection<int> ProductTexturePatternIds { get; set; } = new List<int>();
     public ICollection<int> ProductColorIds { get; set; } = new List<int>();
     public ICollection<int> ProductFabricIds { get; set; } = new List<int>();
