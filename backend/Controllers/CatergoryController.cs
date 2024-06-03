@@ -9,10 +9,10 @@ using System.Threading.Tasks;
 [Route("api/category")]
 [ApiController]
 public class CategoryController : ControllerBase {
-    private readonly AppDbContext _context;
+    private readonly ICategoryRepository _categoryRepository;
 
-    public CategoryController(AppDbContext context) {
-        _context = context;
+    public CategoryController(ICategoryRepository categoryRepository) {
+        _categoryRepository = categoryRepository;
     }
 
     [HttpPost]
@@ -28,8 +28,7 @@ public class CategoryController : ControllerBase {
                 ParentCategoryId = categoryModel.ParentCategoryId
             };
 
-            await _context.Categories.AddAsync(category);
-            await _context.SaveChangesAsync();
+            await _categoryRepository.AddAsync(category);
 
             var createdCategoryModel = new CategoryModel {
                 Name = category.Name,
@@ -46,13 +45,7 @@ public class CategoryController : ControllerBase {
     [HttpGet]
     public async Task<ActionResult<IEnumerable<CategoryModel>>> GetCategories() {
         try {
-            var categories = await _context.Categories
-                .Select(c => new CategoryModel {
-                    Id = c.Id,
-                    Name = c.Name,
-                    ParentCategoryId = c.ParentCategoryId
-                })
-                .ToListAsync();
+            var categories = await _categoryRepository.GetAllAsync();
 
             return Ok(categories);
         } catch (Exception ex) {
@@ -63,7 +56,7 @@ public class CategoryController : ControllerBase {
     [HttpGet("{id}")]
     public async Task<ActionResult<CategoryModel>> GetCategory(int id) {
         try {
-            var category = await _context.Categories.FindAsync(id);
+            var category = await _categoryRepository.GetByIdAsync(id);
 
             if (category == null) {
                 return NotFound();
@@ -84,7 +77,7 @@ public class CategoryController : ControllerBase {
     [HttpGet("name/{name}")]
     public async Task<ActionResult<CategoryModel>> GetCategoryByName(string name) {
         try {
-            var category = await _context.Categories.FirstOrDefaultAsync(c => c.Name == name);
+            var category = await _categoryRepository.GetByNameAsync(name);
             if (category == null) {
                 return NotFound();
             }
@@ -105,14 +98,7 @@ public class CategoryController : ControllerBase {
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> DeleteCategory(int id) {
         try {
-            var category = await _context.Categories.FindAsync(id);
-            if (category == null) {
-                return NotFound();
-            }
-
-            _context.Categories.Remove(category);
-            await _context.SaveChangesAsync();
-
+            await _categoryRepository.DeleteAsync(id);
             return NoContent();
         } catch (Exception ex) {
             return StatusCode(500, $"Internal server error: {ex.Message}");
