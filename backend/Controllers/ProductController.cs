@@ -24,11 +24,14 @@ public class ProductController : ControllerBase {
         }
 
         try {
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
             string picturePath = null;
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
             if (productModel.Picture != null && productModel.Picture.Length > 0) {
                 picturePath = await SavePicture(productModel.Picture);
             }
 
+#pragma warning disable CS8601 // Possible null reference assignment.
             var product = new Product {
                 Name = productModel.Name,
                 Description = productModel.Description,
@@ -44,6 +47,7 @@ public class ProductController : ControllerBase {
                 ProductFabrics = productModel.ProductFabricIds.Select(id => new ProductFabric { FabricId = id }).ToList(),
                 ProductPromotions = productModel.ProductPromotionIds.Select(id => new ProductPromotion { PromotionId = id }).ToList()
             };
+#pragma warning restore CS8601 // Possible null reference assignment.
 
             await _context.Products.AddAsync(product);
             await _context.SaveChangesAsync();
@@ -144,7 +148,9 @@ public class ProductController : ControllerBase {
         }
 
         try {
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
             string picturePath = null;
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
             if (productModel.Picture != null && productModel.Picture.Length > 0) {
                 picturePath = await SavePicture(productModel.Picture);
             }
@@ -214,6 +220,7 @@ public class ProductController : ControllerBase {
                 }
                 return filePath;
             } else {
+#pragma warning disable CS8603 // Possible null reference return.
                 return null;
             }
         } catch (Exception ex) {
