@@ -36,7 +36,8 @@ public class Startup {
         services.AddScoped<IParentFabricRepository, ParentFabricRepository>();
         services.AddScoped<ITagRepository, TagRepository>();
         services.AddScoped<ISizeRepository, SizeRepository>();
-        services.AddScoped<TexturePatternRepository, TexturePatternRepository>();
+        services.AddScoped<ITexturePatternRepository, TexturePatternRepository>();
+        services.AddScoped<IProductRepository, ProductRepository>();
 
         var secretKey = Configuration["JwtSettings:SecretKey"];
         if (secretKey == null) {

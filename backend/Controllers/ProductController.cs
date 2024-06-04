@@ -7,14 +7,15 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.IO;
+using Microsoft.AspNetCore.Authorization;
 
 [Route("api/product")]
 [ApiController]
 public class ProductController : ControllerBase {
-    private readonly AppDbContext _context;
+    private readonly IProductRepository _productRepository;
 
-    public ProductController(AppDbContext context) {
-        _context = context;
+    public ProductController(IProductRepository productRepository) {
+        _productRepository = productRepository;
     }
 
     [HttpPost]
@@ -24,14 +25,13 @@ public class ProductController : ControllerBase {
         }
 
         try {
-#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
+
             string picturePath = null;
-#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
+
             if (productModel.Picture != null && productModel.Picture.Length > 0) {
                 picturePath = await SavePicture(productModel.Picture);
             }
 
-#pragma warning disable CS8601 // Possible null reference assignment.
             var product = new Product {
                 Name = productModel.Name,
                 Description = productModel.Description,
@@ -47,10 +47,8 @@ public class ProductController : ControllerBase {
                 ProductFabrics = productModel.ProductFabricIds.Select(id => new ProductFabric { FabricId = id }).ToList(),
                 ProductPromotions = productModel.ProductPromotionIds.Select(id => new ProductPromotion { PromotionId = id }).ToList()
             };
-#pragma warning restore CS8601 // Possible null reference assignment.
 
-            await _context.Products.AddAsync(product);
-            await _context.SaveChangesAsync();
+            await _productRepository.AddAsync(product);
 
             productModel.Id = product.Id;
 
@@ -63,28 +61,29 @@ public class ProductController : ControllerBase {
     [HttpGet]
     public async Task<ActionResult<IEnumerable<ProductModel>>> GetProducts() {
         try {
-            var products = await _context.Products
-                .Include(p => p.ProductTexturePatterns)
-                .Include(p => p.ProductColors)
-                .Include(p => p.ProductFabrics)
-                .Include(p => p.ProductCategories)
-                .Include(p => p.ProductPromotions)
-                .Select(p => new ProductModel {
-                    Id = p.Id,
-                    Name = p.Name,
-                    Description = p.Description,
-                    Price = p.Price,
-                    Stock = p.Stock,
-                    ForChildren = p.ForChildren,
-                    Weight = p.Weight,
-                    ProductSizeId = p.ProductSizeId,
-                    ProductTexturePatternIds = p.ProductTexturePatterns.Select(ptp => ptp.TexturePatternId).ToList(),
-                    ProductColorIds = p.ProductColors.Select(pc => pc.ColorId).ToList(),
-                    ProductFabricIds = p.ProductFabrics.Select(pf => pf.FabricId).ToList(),
-                    ProductCategoryIds = p.ProductCategories.Select(pc => pc.CategoryId).ToList(),
-                    ProductPromotionIds = p.ProductPromotions.Select(pp => pp.PromotionId).ToList()
-                })
-                .ToListAsync();
+            var products = await _productRepository.GetAllAsync();
+            // var products = await _context.Products
+            //     .Include(p => p.ProductTexturePatterns)
+            //     .Include(p => p.ProductColors)
+            //     .Include(p => p.ProductFabrics)
+            //     .Include(p => p.ProductCategories)
+            //     .Include(p => p.ProductPromotions)
+            //     .Select(p => new ProductModel {
+            //         Id = p.Id,
+            //         Name = p.Name,
+            //         Description = p.Description,
+            //         Price = p.Price,
+            //         Stock = p.Stock,
+            //         ForChildren = p.ForChildren,
+            //         Weight = p.Weight,
+            //         ProductSizeId = p.ProductSizeId,
+            //         ProductTexturePatternIds = p.ProductTexturePatterns.Select(ptp => ptp.TexturePatternId).ToList(),
+            //         ProductColorIds = p.ProductColors.Select(pc => pc.ColorId).ToList(),
+            //         ProductFabricIds = p.ProductFabrics.Select(pf => pf.FabricId).ToList(),
+            //         ProductCategoryIds = p.ProductCategories.Select(pc => pc.CategoryId).ToList(),
+            //         ProductPromotionIds = p.ProductPromotions.Select(pp => pp.PromotionId).ToList()
+            //     })
+            //     .ToListAsync();
 
             return Ok(products);
         } catch (Exception ex) {
@@ -95,13 +94,14 @@ public class ProductController : ControllerBase {
     [HttpGet("{id}")]
     public async Task<ActionResult<ProductModel>> GetProduct(int id) {
         try {
-            var product = await _context.Products
-                .Include(p => p.ProductTexturePatterns)
-                .Include(p => p.ProductColors)
-                .Include(p => p.ProductFabrics)
-                .Include(p => p.ProductCategories)
-                .Include(p => p.ProductPromotions)
-                .FirstOrDefaultAsync(p => p.Id == id);
+            var product = await _productRepository.GetByIdAsync(id);
+            // var product = await _context.Products
+            //     .Include(p => p.ProductTexturePatterns)
+            //     .Include(p => p.ProductColors)
+            //     .Include(p => p.ProductFabrics)
+            //     .Include(p => p.ProductCategories)
+            //     .Include(p => p.ProductPromotions)
+            //     .FirstOrDefaultAsync(p => p.Id == id);
 
             if (product == null) {
                 return NotFound();
@@ -129,74 +129,82 @@ public class ProductController : ControllerBase {
         }
     }
 
-    [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateProduct(int id, ProductModel productModel) {
-        if (id != productModel.Id) {
-            return BadRequest();
-        }
-
-        var product = await _context.Products
-            .Include(p => p.ProductTexturePatterns)
-            .Include(p => p.ProductColors)
-            .Include(p => p.ProductFabrics)
-            .Include(p => p.ProductCategories)
-            .Include(p => p.ProductPromotions)
-            .FirstOrDefaultAsync(p => p.Id == id);
-
-        if (product == null) {
-            return NotFound();
-        }
-
+    [HttpGet("name/{name}")]
+    public async Task<ActionResult<ProductModel>> GetProductByName(string name) {
         try {
-#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
-            string picturePath = null;
-#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
-            if (productModel.Picture != null && productModel.Picture.Length > 0) {
-                picturePath = await SavePicture(productModel.Picture);
-            }
-
-            product.Name = productModel.Name;
-            product.Description = productModel.Description;
-            product.Price = productModel.Price;
-            product.Stock = productModel.Stock;
-            product.ForChildren = productModel.ForChildren;
-            product.Weight = productModel.Weight;
-            product.ProductSizeId = productModel.ProductSizeId;
-            product.ProductPicturePath = picturePath ?? product.ProductPicturePath;
-
-            product.ProductTexturePatterns = productModel.ProductTexturePatternIds.Select(tid => new ProductTexturePattern { ProductId = productModel.Id, TexturePatternId = tid }).ToList();
-            product.ProductColors = productModel.ProductColorIds.Select(cid => new ProductColor { ProductId = productModel.Id, ColorId = cid }).ToList();
-            product.ProductFabrics = productModel.ProductFabricIds.Select(fid => new ProductFabric { ProductId = productModel.Id, FabricId = fid }).ToList();
-            product.ProductCategories = productModel.ProductCategoryIds.Select(cid => new ProductCategory { ProductId = productModel.Id, CategoryId = cid }).ToList();
-            product.ProductPromotions = productModel.ProductPromotionIds.Select(pid => new ProductPromotion { ProductId = productModel.Id, PromotionId = pid }).ToList();
-
-            _context.Entry(product).State = EntityState.Modified;
-
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        } catch (DbUpdateConcurrencyException) {
-            if (!_context.Products.Any(p => p.Id == id)) {
+            var product = await _productRepository.GetByNameAsync(name);
+            if (product == null) {
                 return NotFound();
-            } else {
-                throw;
             }
+
+            return Ok(product);
         } catch (Exception ex) {
-            return StatusCode(500, $"Internal server error: {ex.Message}");
+            return StatusCode(500, $"Internal Server Error {ex.Message}");
         }
     }
 
+    // [HttpPut("{id}")]
+    // [Authorize(Roles = "Admin")]
+    // public async Task<IActionResult> UpdateProduct(int id, ProductModel productModel) {
+    //     if (id != productModel.Id) {
+    //         return BadRequest();
+    //     }
+
+    //     var product = await _context.Products
+    //         .Include(p => p.ProductTexturePatterns)
+    //         .Include(p => p.ProductColors)
+    //         .Include(p => p.ProductFabrics)
+    //         .Include(p => p.ProductCategories)
+    //         .Include(p => p.ProductPromotions)
+    //         .FirstOrDefaultAsync(p => p.Id == id);
+
+    //     if (product == null) {
+    //         return NotFound();
+    //     }
+
+    //     try {
+    //         string picturePath = null;
+    //         if (productModel.Picture != null && productModel.Picture.Length > 0) {
+    //             picturePath = await SavePicture(productModel.Picture);
+    //         }
+
+    //         product.Name = productModel.Name;
+    //         product.Description = productModel.Description;
+    //         product.Price = productModel.Price;
+    //         product.Stock = productModel.Stock;
+    //         product.ForChildren = productModel.ForChildren;
+    //         product.Weight = productModel.Weight;
+    //         product.ProductSizeId = productModel.ProductSizeId;
+    //         product.ProductPicturePath = picturePath ?? product.ProductPicturePath;
+
+    //         product.ProductTexturePatterns = productModel.ProductTexturePatternIds.Select(tid => new ProductTexturePattern { ProductId = productModel.Id, TexturePatternId = tid }).ToList();
+    //         product.ProductColors = productModel.ProductColorIds.Select(cid => new ProductColor { ProductId = productModel.Id, ColorId = cid }).ToList();
+    //         product.ProductFabrics = productModel.ProductFabricIds.Select(fid => new ProductFabric { ProductId = productModel.Id, FabricId = fid }).ToList();
+    //         product.ProductCategories = productModel.ProductCategoryIds.Select(cid => new ProductCategory { ProductId = productModel.Id, CategoryId = cid }).ToList();
+    //         product.ProductPromotions = productModel.ProductPromotionIds.Select(pid => new ProductPromotion { ProductId = productModel.Id, PromotionId = pid }).ToList();
+
+    //         _context.Entry(product).State = EntityState.Modified;
+
+    //         await _context.SaveChangesAsync();
+
+    //         return NoContent();
+    //     } catch (DbUpdateConcurrencyException) {
+    //         if (!_context.Products.Any(p => p.Id == id)) {
+    //             return NotFound();
+    //         } else {
+    //             throw;
+    //         }
+    //     } catch (Exception ex) {
+    //         return StatusCode(500, $"Internal server error: {ex.Message}");
+    //     }
+    // }
+
     [HttpDelete("{id}")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> DeleteProduct(int id) {
-        var product = await _context.Products.FindAsync(id);
-
-        if (product == null) {
-            return NotFound();
-        }
-
+        
         try {
-            _context.Products.Remove(product);
-            await _context.SaveChangesAsync();
+            await _productRepository.DeleteAsync(id);
             return NoContent();
         } catch (Exception ex) {
             return StatusCode(500, $"Internal server error: {ex.Message}");
@@ -220,7 +228,6 @@ public class ProductController : ControllerBase {
                 }
                 return filePath;
             } else {
-#pragma warning disable CS8603 // Possible null reference return.
                 return null;
             }
         } catch (Exception ex) {
