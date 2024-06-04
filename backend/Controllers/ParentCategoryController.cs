@@ -10,10 +10,10 @@ using System.Threading.Tasks;
 [Route("api/parentcategory")]
 [ApiController]
 public class ParentCategoryController : ControllerBase {
-    private readonly AppDbContext _context;
+    private readonly IParentCategoryRepository _parentCategoryRepository;
 
-    public ParentCategoryController(AppDbContext context) {
-        _context = context;
+    public ParentCategoryController(IParentCategoryRepository parentCategoryRepository) {
+        _parentCategoryRepository = parentCategoryRepository;
     }
 
     [HttpPost]
@@ -25,8 +25,7 @@ public class ParentCategoryController : ControllerBase {
         
         try {
             var category = new ParentCategory{Name = categoryModel.Name};
-            await _context.ParentCategories.AddAsync(category);
-            await _context.SaveChangesAsync();
+            await _parentCategoryRepository.AddAsync(category);
 
             var createdCategoryModel = new ParentCategoryModel {
                 Name = category.Name,
@@ -42,12 +41,7 @@ public class ParentCategoryController : ControllerBase {
     [HttpGet]
     public async Task<ActionResult<IEnumerable<ParentCategoryModel>>> GetParentCategories() {
         try {
-            var categories = await _context.ParentCategories
-                .Select(pc => new ParentCategoryModel{
-                    Id = pc.Id,
-                    Name = pc.Name,
-                })
-                .ToListAsync();
+            var categories = await _parentCategoryRepository.GetAllAsync();
 
             return Ok(categories);
         } catch (Exception ex) {
@@ -58,7 +52,7 @@ public class ParentCategoryController : ControllerBase {
     [HttpGet("{id}")]
     public async Task<ActionResult<ParentCategoryModel>> GetParentCategory(int id) {
         try {
-            var category = await _context.ParentCategories.FindAsync(id);
+            var category = await _parentCategoryRepository.GetByIdAsync(id);
             if (category == null) {
                 return NotFound();
             }
@@ -77,7 +71,7 @@ public class ParentCategoryController : ControllerBase {
     [HttpGet("name/{name}")]
     public async Task<ActionResult<ParentCategoryModel>> GetParentCategoryByName(string name) {
         try {
-            var category = await _context.ParentCategories.FirstOrDefaultAsync(pc => pc.Name == name);
+            var category = await _parentCategoryRepository.GetByNameAsync(name);
             if (category == null) {
                 return NotFound();
             }
@@ -96,14 +90,7 @@ public class ParentCategoryController : ControllerBase {
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteParentCategory(int id) {
         try {
-            var category = await _context.ParentCategories.FindAsync(id);
-            if (category == null) {
-                return NotFound();
-            }
-
-            _context.ParentCategories.Remove(category);
-            await _context.SaveChangesAsync();
-
+            await _parentCategoryRepository.DeleteAsync(id);
             return NoContent();
         } catch (Exception ex) {
             return StatusCode(500, $"Internal server error: {ex.Message}");

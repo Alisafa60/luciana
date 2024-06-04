@@ -29,6 +29,7 @@ public class Startup {
         );
 
         services.AddScoped<ICategoryRepository, CategoryRepository>();
+        services.AddScoped<IParentCategoryRepository, ParentCategoryRepository>();
 
         var secretKey = Configuration["JwtSettings:SecretKey"];
         if (secretKey == null) {
