@@ -30,6 +30,13 @@ public class Startup {
 
         services.AddScoped<ICategoryRepository, CategoryRepository>();
         services.AddScoped<IParentCategoryRepository, ParentCategoryRepository>();
+        services.AddScoped<IColorRepository, ColorRepository>();
+        services.AddScoped<IParentColorRepository, ParentColorRepository>();
+        services.AddScoped<IFabricRepository, FabricRepository>();
+        services.AddScoped<IParentFabricRepository, ParentFabricRepository>();
+        services.AddScoped<ITagRepository, TagRepository>();
+        services.AddScoped<ISizeRepository, SizeRepository>();
+        services.AddScoped<TexturePatternRepository, TexturePatternRepository>();
 
         var secretKey = Configuration["JwtSettings:SecretKey"];
         if (secretKey == null) {
