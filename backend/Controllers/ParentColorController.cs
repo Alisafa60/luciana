@@ -63,4 +63,35 @@ public class ParentColorController : ControllerBase {
             return StatusCode(500, $"Internal Server Error {ex.Message}");
         }
     }
+
+    [HttpGet("name/{name}")]
+    public async Task<ActionResult<ParentColorModel>> GetParentColorByName(string name) {
+        try {
+            var parentColor = await _parentColorRepository.GetByNameAsync(name);
+            if (parentColor == null) {
+                return NotFound();
+            }
+
+            var parentColorModel = new ParentColorModel {
+                Id = parentColor.Id,
+                Name = parentColor.Name
+            };
+
+            return Ok(parentColorModel);
+        } catch (Exception ex) {
+            return StatusCode(500, $"Internal Server Error {ex.Message}");
+        }
+    }
+
+    [HttpDelete("{id}")]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> DeleteById(int id) {
+        try{
+            await _parentColorRepository.DeleteAsync(id);
+            return NoContent();
+        } catch(Exception ex) {
+            return StatusCode(500, $"Internal Server Error {ex.Message}");
+        }
+    }
+
 }
