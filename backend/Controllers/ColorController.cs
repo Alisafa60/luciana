@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 [Route("api/color")]
 [ApiController]
 public class ColorController : ControllerBase {
-    private readonly AppDbContext _context;
-    public ColorController(AppDbContext context) {
-        _context = context;
+    private readonly IColorRepository _colorRepository;
+    public ColorController(IColorRepository colorRepository) {
+        _colorRepository = colorRepository;
     }
 
     [HttpPost]
@@ -26,8 +26,7 @@ public class ColorController : ControllerBase {
                 ParentColorId = colorModel.ParentColorId,
             };
 
-            await _context.Colors.AddAsync(color);
-            await _context.SaveChangesAsync();
+            await _colorRepository.AddAsync(color);
 
             var createdColorModel = new ColorModel {
                 Id = color.Id,
@@ -46,14 +45,7 @@ public class ColorController : ControllerBase {
     [HttpGet]
     public async Task<ActionResult<IEnumerable<ColorModel>>> GetColors() {
         try {
-            var colors = await _context.Colors
-                .Select(c => new ColorModel {
-                    Id = c.Id,
-                    Name = c.Name,
-                    ParentColorId = c.ParentColorId,
-                })
-                .ToListAsync();
-
+            var colors = await _colorRepository.GetAllAsync();
             return Ok(colors);
         } catch (Exception ex) {
             return StatusCode(500, $"Internal Server Error: {ex.Message}");
@@ -63,7 +55,7 @@ public class ColorController : ControllerBase {
     [HttpGet("{id}")]
     public async Task<ActionResult<ColorModel>> GetColor(int id) {
         try {
-            var color = await _context.Colors.FindAsync(id);
+            var color = await _colorRepository.GetByIdAsync(id);
             if (color == null) {
                 return NotFound();
             }
@@ -85,7 +77,7 @@ public class ColorController : ControllerBase {
     [HttpGet("name/{name}")]
     public async Task<ActionResult<ColorModel>> GetColorByName(string name) {
         try {
-            var color = await _context.Colors.FirstOrDefaultAsync(c => c.Name == name);
+            var color = await _colorRepository.GetByNameAsync(name);
             if (color == null) {
                 return NotFound();
             }
@@ -108,15 +100,9 @@ public class ColorController : ControllerBase {
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> DeleteColor(int id) {
         try {
-            var color = await _context.Colors.FindAsync(id);
-            if (color == null) {
-                return NotFound();
-            }
-
-            _context.Colors.Remove(color);
-            await _context.SaveChangesAsync();
-
+            await _colorRepository.DeleteAsync(id);
             return NoContent();
+
         } catch (Exception ex) {
             return StatusCode(500, $"Internal Server Error: {ex.Message}");
         }
