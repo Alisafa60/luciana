@@ -6,10 +6,10 @@ using Microsoft.EntityFrameworkCore;
 [Route("api/parentcolor")]
 [ApiController]
 public class ParentColorController : ControllerBase {
-    private readonly AppDbContext _context;
+    private readonly IParentColorRepository _parentColorRepository;
 
-    public ParentColorController(AppDbContext context) {
-        _context = context;
+    public ParentColorController(IParentColorRepository parentColorRepository) {
+        _parentColorRepository = parentColorRepository;
     }
 
     [HttpPost]
@@ -24,8 +24,7 @@ public class ParentColorController : ControllerBase {
                 Name = parentColorModel.Name,
             };
 
-            await _context.ParentColors.AddAsync(parentColor);
-            await _context.SaveChangesAsync();
+            await _parentColorRepository.AddAsync(parentColor);
 
             var createdColorModel = new ParentColorModel {
                 Name = parentColor.Name,
@@ -41,14 +40,9 @@ public class ParentColorController : ControllerBase {
     [HttpGet]
     public async Task<ActionResult<IEnumerable<ParentColorModel>>> GetParentColors() {
        try{
-            var parentColors = await _context.ParentColors
-                .Select(pc => new ParentColorModel {
-                    Id = pc.Id,
-                    Name = pc.Name,
-                })
-                .ToListAsync();
-
+            var parentColors = await _parentColorRepository.GetAllAsync();
             return Ok(parentColors);
+
        } catch(Exception ex) {
             return StatusCode(500, $"Internal Server Error {ex.Message}");
        }
@@ -57,10 +51,7 @@ public class ParentColorController : ControllerBase {
     [HttpGet("{id}")]
     public async Task<ActionResult<ParentColorModel>> GetParentColor(int id) {
         try {
-            var parentColor = await _context.ParentColors.FindAsync(id);
-            if (parentColor == null) {
-                return NotFound();
-            }
+            var parentColor = await _parentColorRepository.GetByIdAsync(id);
 
             var parentColorModel = new ParentColorModel {
                 Id = parentColor.Id,
