@@ -10,10 +10,10 @@ using System.Threading.Tasks;
 [Route("api/parentfabric")]
 [ApiController]
 public class ParentFabricController : ControllerBase {
-    private readonly AppDbContext _context;
+    private readonly IParentFabricRepository _parentFabricRepository;
     
-    public ParentFabricController(AppDbContext context) {
-        _context = context;
+    public ParentFabricController(IParentFabricRepository parentFabricRepository) {
+        _parentFabricRepository = parentFabricRepository;
     }
 
     [HttpPost]
@@ -24,8 +24,7 @@ public class ParentFabricController : ControllerBase {
                 Name = parentFabricModel.Name,
             };
 
-            await _context.ParentFabrics.AddAsync(parentFabric);
-            await _context.SaveChangesAsync();
+            await _parentFabricRepository.AddAsync(parentFabric);
 
             var createdParentFabricModel = new ParentFabricModel {
                 Id = parentFabric.Id, 
@@ -41,11 +40,9 @@ public class ParentFabricController : ControllerBase {
     [HttpGet]
     public async Task<ActionResult<IEnumerable<ParentFabricModel>>> GetParentFabrics() {
         try {
-            var parentFabrics = await _context.ParentFabrics
-                .Select(pf => new ParentFabricModel { Name = pf.Name })
-                .ToListAsync();
+            var parentFabrics = await _parentFabricRepository.GetAllAsync();
 
-            return parentFabrics;
+            return Ok(parentFabrics);
         } catch (Exception ex) {
             return StatusCode(500, $"Internal server error: {ex.Message}");
         }
@@ -54,7 +51,7 @@ public class ParentFabricController : ControllerBase {
     [HttpGet("{id}")]
     public async Task<ActionResult<ParentFabricModel>> GetParentFabric(int id) {
         try {
-            var parentFabric = await _context.ParentFabrics.FindAsync(id);
+            var parentFabric = await _parentFabricRepository.GetByIdAsync(id);
             if (parentFabric == null) {
                 return NotFound();
             }
@@ -64,7 +61,7 @@ public class ParentFabricController : ControllerBase {
                 Name = parentFabric.Name,
             };
 
-            return parentFabricModel;
+            return Ok(parentFabricModel);
         } catch (Exception ex) {
             return StatusCode(500, $"Internal server error: {ex.Message}");
         }
@@ -73,7 +70,7 @@ public class ParentFabricController : ControllerBase {
     [HttpGet("name/{name}")]
     public async Task<ActionResult<ParentFabricModel>> GetParentFabricByName(string name) {
         try {
-            var parentFabric = await _context.ParentFabrics.FirstOrDefaultAsync(pf => pf.Name == name);
+            var parentFabric = await _parentFabricRepository.GetByNameAsync(name);
             if (parentFabric == null) {
                 return NotFound();
             }
@@ -97,14 +94,7 @@ public class ParentFabricController : ControllerBase {
         }
         
         try {
-            var parentFabric = await _context.ParentFabrics.FindAsync(id);
-            if (parentFabric == null) {
-                return NotFound();
-            }
-
-            _context.ParentFabrics.Remove(parentFabric);
-            await _context.SaveChangesAsync();
-
+            await _parentFabricRepository.DeleteAsync(id);
             return NoContent();
         } catch (Exception ex) {
             return StatusCode(500, $"Internal server error: {ex.Message}");
