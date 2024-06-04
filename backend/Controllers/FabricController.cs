@@ -9,10 +9,10 @@ using System.Linq;
 [Route("api/fabric")]
 [ApiController]
 public class FabricController : ControllerBase {
-    private readonly AppDbContext _context;
+    private readonly IFabricRepository _fabricRepository;
 
-    public FabricController(AppDbContext context) {
-        _context = context;
+    public FabricController(IFabricRepository fabricRepository) {
+        _fabricRepository = fabricRepository;
     }
 
     [HttpPost]
@@ -28,8 +28,7 @@ public class FabricController : ControllerBase {
                 ParentFabricId = fabricModel.ParentFabricId,
             };
 
-            await _context.Fabrics.AddAsync(fabric);
-            await _context.SaveChangesAsync();
+            await _fabricRepository.AddAsync(fabric);
 
             var createdFabricModel = new FabricModel {
                 Name = fabric.Name,
@@ -46,15 +45,9 @@ public class FabricController : ControllerBase {
     [HttpGet]
     public async Task<ActionResult<IEnumerable<FabricModel>>> GetFabrics() {
         try {
-            var fabrics = await _context.Fabrics
-                .Select(f => new FabricModel {
-                    Id = f.Id,
-                    Name = f.Name,
-                    ParentFabricId = f.ParentFabricId,
-                })
-                .ToListAsync();
-
+            var fabrics = await _fabricRepository.GetAllAsync();
             return Ok(fabrics);
+
         } catch (Exception ex) {
             return StatusCode(500, $"Internal server error: {ex.Message}");
         }
@@ -63,7 +56,7 @@ public class FabricController : ControllerBase {
     [HttpGet("{id}")]
     public async Task<ActionResult<FabricModel>> GetFabric(int id) {
         try {
-            var fabric = await _context.Fabrics.FindAsync(id);
+            var fabric = await _fabricRepository.GetByIdAsync(id);
 
             if (fabric == null) {
                 return NotFound();
@@ -84,7 +77,7 @@ public class FabricController : ControllerBase {
     [HttpGet("name/{name}")]
     public async Task<ActionResult<FabricModel>> GetFabricByName(string name) {
         try {
-            var fabric = await _context.Fabrics.FirstOrDefaultAsync(f => f.Name == name);
+            var fabric = await _fabricRepository.GetByNameAsync(name);
 
             if (fabric == null) {
                 return NotFound();
@@ -105,14 +98,7 @@ public class FabricController : ControllerBase {
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteFabric(int id) {
         try {
-            var fabric = await _context.Fabrics.FindAsync(id);
-            if (fabric == null) {
-                return NotFound();
-            }
-
-            _context.Fabrics.Remove(fabric);
-            await _context.SaveChangesAsync();
-
+            await _fabricRepository.DeleteAsync(id);
             return NoContent();
         } catch (Exception ex) {
             return StatusCode(500, $"Internal server error: {ex.Message}");
