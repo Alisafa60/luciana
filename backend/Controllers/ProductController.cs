@@ -19,6 +19,7 @@ public class ProductController : ControllerBase {
     }
 
     [HttpPost]
+    [Authorize(Roles = "Admin")]
     public async Task<ActionResult<ProductModel>> CreateProduct(ProductModel productModel) {
         if (!ModelState.IsValid) {
             return BadRequest(ModelState);
