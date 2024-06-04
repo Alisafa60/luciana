@@ -13,7 +13,9 @@ public class ParentColorRepository : IParentColorRepository {
     }
 
     public async Task<ParentColor> GetByNameAsync(string name) {
-        return await _context.ParentColors.FirstOrDefaultAsync(pc => pc.Name == name);
+        return await _context.ParentColors
+            .Where( pc => pc.Name.ToLower() == name.ToLower())
+            .FirstOrDefaultAsync();
     }
 
     public async Task<IEnumerable<ParentColor>> GetAllAsync() {

@@ -1,3 +1,4 @@
+using System.Runtime.Intrinsics.X86;
 using backend.Data;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
@@ -21,7 +22,9 @@ public class ParentCategoryRepository : IParentCategoryRepository {
     }
 
     public async Task<ParentCategory> GetByNameAsync(string name) {
-        return await _context.ParentCategories.FirstOrDefaultAsync(pc => pc.Name == name);
+        return await _context.ParentCategories
+            .Where(pc => pc.Name.ToLower() == name.ToLower())
+            .FirstOrDefaultAsync();
     }
 
     public async Task<ParentCategory> AddAsync(ParentCategory parentCategory) {

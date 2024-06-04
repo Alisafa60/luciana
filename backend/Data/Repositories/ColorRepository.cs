@@ -17,7 +17,9 @@ public class ColorRepository : IColorRepository {
     }
 
     public async Task<Color> GetByNameAsync(string name) {
-        return await _context.Colors.FirstOrDefaultAsync(c => c.Name == name);
+        return await _context.Colors
+            .Where(c => c.Name.ToLower() == name.ToLower())
+            .FirstOrDefaultAsync();
     }
 
     public async Task<Color> AddAsync(Color color) {

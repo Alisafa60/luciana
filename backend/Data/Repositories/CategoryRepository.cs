@@ -17,7 +17,9 @@ public class CategoryRepository : ICategoryRepository{
     }
 
     public async Task<Category> GetByNameAsync(string name) {
-        return await _context.Categories.FirstOrDefaultAsync(c => c.Name == name);
+        return await _context.Categories
+            .Where(c => c.Name.ToLower() == name.ToLower())
+            .FirstOrDefaultAsync();
     }
 
     public async Task<Category> AddAsync(Category category) {

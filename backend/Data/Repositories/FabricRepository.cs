@@ -13,7 +13,9 @@ public class FabricRepository : IFabricRepository {
     }
 
     public async Task<Fabric> GetByNameAsync(string name) {
-        return await _context.Fabrics.FirstOrDefaultAsync(f => f.Name == name);
+        return await _context.Fabrics
+            .Where(f => f.Name.ToLower() == name.ToLower())
+            .FirstOrDefaultAsync();
     }
 
     public async Task<IEnumerable<Fabric>> GetAllAsync() {

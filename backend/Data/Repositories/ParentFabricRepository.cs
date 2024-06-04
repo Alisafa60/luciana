@@ -16,7 +16,9 @@ public class ParentFabricRepository : IParentFabricRepository {
     }
 
     public async Task<ParentFabric> GetByNameAsync(string name) {
-        return await _context.ParentFabrics.FirstOrDefaultAsync(pf => pf.Name == name);
+        return await _context.ParentFabrics
+            .Where(pf => pf.Name.ToLower() == name.ToLower())
+            .FirstOrDefaultAsync();
     }
 
     public async Task<ParentFabric> AddAsync(ParentFabric parentFabric) {
