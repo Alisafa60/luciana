@@ -1,3 +1,4 @@
+#pragma warning disable CS8603 // Possible null reference return.
 using backend.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,7 +8,6 @@ public class CategoryRepository : ICategoryRepository{
     public CategoryRepository(AppDbContext context) {
         _context = context;
     }
-#pragma warning disable CS8603 // Possible null reference return.
     public async Task<Category> GetByIdAsync(int id) {
         return await _context.Categories.FindAsync(id);
     }
@@ -19,7 +19,7 @@ public class CategoryRepository : ICategoryRepository{
     public async Task<Category> GetByNameAsync(string name) {
         return await _context.Categories.FirstOrDefaultAsync(c => c.Name == name);
     }
-#pragma warning restore CS8603 // Possible null reference return.
+
     public async Task<Category> AddAsync(Category category) {
         await _context.Categories.AddAsync(category);
         await _context.SaveChangesAsync();
@@ -34,3 +34,5 @@ public class CategoryRepository : ICategoryRepository{
         }
     }
 }
+
+#pragma warning restore CS8603 // Possible null reference return
