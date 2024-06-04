@@ -1,6 +1,7 @@
 using backend.Data;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
+#pragma warning disable CS8603 // Possible null reference return.
 
 public class ParentCategoryRepository : IParentCategoryRepository {
     private readonly AppDbContext _context;
@@ -10,7 +11,9 @@ public class ParentCategoryRepository : IParentCategoryRepository {
     }
 
     public async Task<ParentCategory> GetByIdAsync(int id) {
+
         return await _context.ParentCategories.FindAsync(id);
+
     }
 
     public async Task<IEnumerable<ParentCategory>> GetAllAsync() {
@@ -18,7 +21,7 @@ public class ParentCategoryRepository : IParentCategoryRepository {
     }
 
     public async Task<ParentCategory> GetByNameAsync(string name) {
-        return await _context.ParentCategories.FirstOrDefaultAsync(c => c.Name == name);
+        return await _context.ParentCategories.FirstOrDefaultAsync(pc => pc.Name == name);
     }
 
     public async Task<ParentCategory> AddAsync(ParentCategory parentCategory) {
@@ -35,3 +38,5 @@ public class ParentCategoryRepository : IParentCategoryRepository {
         }
     }
 }
+
+#pragma warning restore CS8603 // Possible null reference return.
