@@ -6,9 +6,9 @@ using Microsoft.EntityFrameworkCore;
 [Route("api/size")]
 [ApiController]
 public class SizeController : ControllerBase {
-    private readonly AppDbContext _context;
-    public SizeController(AppDbContext context) {
-        _context = context;
+    private readonly ISizeRepository _sizeRepository;
+    public SizeController(ISizeRepository sizeRepository) {
+        _sizeRepository = sizeRepository;
     }
 
     [HttpPost]
@@ -24,8 +24,7 @@ public class SizeController : ControllerBase {
                 Width = sizeModel.Width,
             };
 
-            await _context.Sizes.AddAsync(size);
-            await _context.SaveChangesAsync();
+            await _sizeRepository.AddAsync(size);
 
             var createdSize = new SizeModel {
                 Height = size.Height,
@@ -42,13 +41,7 @@ public class SizeController : ControllerBase {
     [HttpGet]
     public async Task<ActionResult<IEnumerable<SizeModel>>> GetSizes () {
        try {
-            var sizes = await _context.Sizes
-                .Select( s => new SizeModel {
-                    Height = s.Height,
-                    Width = s.Width,
-                    Id = s.Id,
-                })
-                .ToListAsync();
+            var sizes = await _sizeRepository.GetAllAsync();
 
             return Ok(sizes);
        } catch (Exception ex) {
@@ -59,7 +52,7 @@ public class SizeController : ControllerBase {
     [HttpGet("{id}")]
     public async Task<ActionResult<SizeModel>> GetSize(int id) {
        try {
-            var size = await _context.Sizes.FindAsync(id);
+            var size = await _sizeRepository.GetByIdAsync(id);
             if (size == null) {
                 return NotFound();
             }
@@ -80,15 +73,9 @@ public class SizeController : ControllerBase {
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> DeleteSize(int id) {
         try {
-            var size = await _context.Sizes.FindAsync(id);
-            if (size == null) {
-                return NotFound();
-            }
-
-            _context.Sizes.Remove(size);
-            await _context.SaveChangesAsync();
-
+            await _sizeRepository.DeleteAsync(id);
             return NoContent();
+            
         } catch(Exception ex) {
             return StatusCode(500, $"Internal Server Error {ex.Message}");
         }

@@ -5,10 +5,10 @@ using Microsoft.EntityFrameworkCore;
 [Route("api/tag")]
 [ApiController]
 public class TagController : ControllerBase {
-    private readonly AppDbContext _context;
+    private readonly ITagRepository _tagRepository;
 
-    public TagController(AppDbContext context) {
-        _context = context;
+    public TagController(ITagRepository tagRepository) {
+        _tagRepository = tagRepository;
     }
 
     [HttpPost]
@@ -25,8 +25,7 @@ public class TagController : ControllerBase {
                 Type = (Tag.TagType)tagModel.Type,
             };
 
-            await _context.Tags.AddAsync(tag);
-            await _context.SaveChangesAsync();
+            await _tagRepository.AddAsync(tag);
 
             var createdTag = new TagModel {
                 Name = tag.Name,
@@ -42,23 +41,14 @@ public class TagController : ControllerBase {
 
     [HttpGet]
     public async Task<ActionResult<IEnumerable<TagModel>>> GetTags() {
-        var tags = await _context.Tags
-            .Select(t => new TagModel {
-                Id = t.Id,
-                Name = t.Name,
-                Description = t.Description,
-                Type = (TagModel.TagType)t.Type,
-            }).ToListAsync();
-
+        var tags = await _tagRepository.GetAllAsync();
             return Ok(tags);
+
     }
 
     [HttpGet("{id}")]
     public async Task<ActionResult<TagModel>> GetTag(int id) {
-        var tag = await _context.Tags.FindAsync(id);
-        if (tag == null) {
-            return NotFound();
-        }
+        var tag = await _tagRepository.GetByIdAsync(id);
 
         var tagModel = new TagModel {
             Id = tag.Id,
@@ -74,14 +64,7 @@ public class TagController : ControllerBase {
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> DeleteTag(int id) {
         try {
-            var tag = await _context.Tags.FindAsync(id);
-            if (tag == null) {
-                return NotFound();
-            }
-
-            _context.Tags.Remove(tag);
-            await _context.SaveChangesAsync();
-
+            await _tagRepository.DeleteAsync(id);
             return NoContent();
         } catch (Exception ex) {
             return StatusCode(500, $"Internal Server Error ${ex.Message}");
