@@ -14,9 +14,9 @@ public class ProductModel {
 
     public int? Stock { get; set; }
 
-    public bool ForChildren { get; set; }
+    public string? ForChildren { get; set; }
 
-    public decimal Weight { get; set; }
+    public decimal? Weight { get; set; }
 
     public int ProductSizeId { get; set; }
 

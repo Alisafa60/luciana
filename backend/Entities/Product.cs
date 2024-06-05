@@ -16,9 +16,9 @@ public class Product{
 
     public int? Stock { get; set; }
 
-    public bool ForChildren { get; set; }
+    public string? ForChildren { get; set; }
 
-    public decimal Weight { get; set; }
+    public decimal? Weight { get; set; }
 
     public int ProductSizeId { get; set; }
 
@@ -33,4 +33,11 @@ public class Product{
     public ICollection<ProductCategory> ProductCategories{ get; set;}
     public ICollection<ProductPromotion> ProductPromotions { get; set; }
     public ICollection<ProductTag> ProductTags { get; set; }
+}
+
+public enum forChildrenOption {
+    True,
+    False,
+    Both
+
 }
