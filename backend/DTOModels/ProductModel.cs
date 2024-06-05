@@ -25,6 +25,7 @@ public class ProductModel {
     public ICollection<int> ProductFabricIds { get; set; } = new List<int>();
     public ICollection<int> ProductCategoryIds { get; set; } = new List<int>();
     public ICollection<int> ProductPromotionIds { get; set; } = new List<int>();
+    public ICollection<int> ProductTagIds { get; set; } = new List<int>();
     
     public IFormFile Picture { get; set; }
 }

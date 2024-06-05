@@ -44,7 +44,8 @@ public class ProductController : ControllerBase {
                 ProductCategories = productModel.ProductCategoryIds.Select(id => new ProductCategory { CategoryId = id }).ToList(),
                 ProductColors = productModel.ProductColorIds.Select(id => new ProductColor { ColorId = id }).ToList(),
                 ProductFabrics = productModel.ProductFabricIds.Select(id => new ProductFabric { FabricId = id }).ToList(),
-                ProductPromotions = productModel.ProductPromotionIds.Select(id => new ProductPromotion { PromotionId = id }).ToList()
+                ProductPromotions = productModel.ProductPromotionIds.Select(id => new ProductPromotion { PromotionId = id }).ToList(),
+                ProductTags = productModel.ProductTagIds.Select(id => new ProductTag { TagId = id }).ToList()
             };
 
             await _productRepository.AddAsync(product);

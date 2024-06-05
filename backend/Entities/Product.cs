@@ -35,9 +35,3 @@ public class Product{
     public ICollection<ProductTag> ProductTags { get; set; }
 }
 
-public enum forChildrenOption {
-    True,
-    False,
-    Both
-
-}
