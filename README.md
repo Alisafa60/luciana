@@ -8,5 +8,6 @@ The backend is being developed with ASP.NET core.
 
 ## Database
 The database management system used in this project is PostgreSQL.
-![ER Diagram](https://github.com/Alisafa60/luciana/raw/main/lucianaER.png)
+
+![ER Diagram](https://github.com/Alisafa60/luciana/blob/main/lucianaER.png)
 
