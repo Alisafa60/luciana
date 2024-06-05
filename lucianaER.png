@@ -1,0 +1,2295 @@
+Creator	"DbVis"
+Whatever	"Stuff"
+graph
+[
+	label	""
+	directed	1
+	node
+	[
+		id	0
+		graphics
+		[
+			x	125.0
+			y	1425.0
+			w	275.0
+			h	67.14735794067383
+			customconfiguration	"DEFAULT"
+			fill	"#FFFFCC"
+			outline	"#808080"
+		]
+		LabelGraphics
+		[
+			text	"__EFMigrationsHistory"
+			fontSize	12
+			fontName	"Inter"
+			anchor	"t"
+		]
+		LabelGraphics
+		[
+		]
+		LabelGraphics
+		[
+			text	"MigrationId"
+			fontSize	11
+			fontStyle	"bold"
+			fontName	"Inter"
+			x	11.5
+			y	1419.948678970337
+		]
+		LabelGraphics
+		[
+			text	"CHARACTER VARYING(150)"
+			fontSize	11
+			fontName	"Inter"
+			x	103.5
+			y	1419.948678970337
+		]
+		LabelGraphics
+		[
+		]
+		LabelGraphics
+		[
+			text	"ProductVersion"
+			fontSize	11
+			fontStyle	"bold"
+			fontName	"Inter"
+			x	11.5
+			y	1439.261178970337
+		]
+		LabelGraphics
+		[
+			text	"CHARACTER VARYING(32)"
+			fontSize	11
+			fontName	"Inter"
+			x	103.5
+			y	1439.261178970337
+		]
+	]
+	node
+	[
+		id	1
+		graphics
+		[
+			x	900.0
+			y	25.0
+			w	124.0
+			h	67.14735794067383
+			customconfiguration	"DEFAULT"
+			fill	"#FFFFCC"
+			outline	"#808080"
+		]
+		LabelGraphics
+		[
+			text	"ParentCategories"
+			fontSize	12
+			fontName	"Inter"
+			anchor	"t"
+		]
+		LabelGraphics
+		[
+		]
+		LabelGraphics
+		[
+			text	"Id"
+			fontSize	11
+			fontStyle	"bold"
+			fontName	"Inter"
+			x	862.0
+			y	19.948678970336914
+		]
+		LabelGraphics
+		[
+			text	"INTEGER"
+			fontSize	11
+			fontName	"Inter"
+			x	899.0
+			y	19.948678970336914
+		]
+		LabelGraphics
+		[
+		]
+		LabelGraphics
+		[
+			text	"Name"
+			fontSize	11
+			fontStyle	"bold"
+			fontName	"Inter"
+			x	862.0
+			y	39.261178970336914
+		]
+		LabelGraphics
+		[
+			text	"TEXT"
+			fontSize	11
+			fontName	"Inter"
+			x	899.0
+			y	39.261178970336914
+		]
+	]
+	node
+	[
+		id	2
+		graphics
+		[
+			x	900.0
+			y	150.0
+			w	200.0
+			h	86.45985794067383
+			customconfiguration	"DEFAULT"
+			fill	"#FFFFCC"
+			outline	"#808080"
+		]
+		LabelGraphics
+		[
+			text	"Categories"
+			fontSize	12
+			fontName	"Inter"
+			anchor	"t"
+		]
+		LabelGraphics
+		[
+		]
+		LabelGraphics
+		[
+			text	"Id"
+			fontSize	11
+			fontStyle	"bold"
+			fontName	"Inter"
+			x	824.0
+			y	135.2924289703369
+		]
+		LabelGraphics
+		[
+			text	"INTEGER"
+			fontSize	11
+			fontName	"Inter"
+			x	921.0
+			y	135.2924289703369
+		]
+		LabelGraphics
+		[
+		]
+		LabelGraphics
+		[
+			text	"Name"
+			fontSize	11
+			fontStyle	"bold"
+			fontName	"Inter"
+			x	824.0
+			y	154.6049289703369
+		]
+		LabelGraphics
+		[
+			text	"TEXT"
+			fontSize	11
+			fontName	"Inter"
+			x	921.0
+			y	154.6049289703369
+		]
+		LabelGraphics
+		[
+		]
+		LabelGraphics
+		[
+			text	"ParentCategoryId"
+			fontSize	11
+			fontName	"Inter"
+			x	824.0
+			y	173.9174289703369
+		]
+		LabelGraphics
+		[
+			text	"INTEGER"
+			fontSize	11
+			fontName	"Inter"
+			x	921.0
+			y	173.9174289703369
+		]
+	]
+	node
+	[
+		id	3
+		graphics
+		[
+			x	1125.0
+			y	150.0
+			w	169.0
+			h	67.14735794067383
+			customconfiguration	"DEFAULT"
+			fill	"#FFFFCC"
+			outline	"#808080"
+		]
+		LabelGraphics
+		[
+			text	"ProductCategories"
+			fontSize	12
+			fontName	"Inter"
+			anchor	"t"
+		]
+		LabelGraphics
+		[
+		]
+		LabelGraphics
+		[
+			text	"ProductId"
+			fontSize	11
+			fontStyle	"bold"
+			fontName	"Inter"
+			x	1064.5
+			y	144.9486789703369
+		]
+		LabelGraphics
+		[
+			text	"INTEGER"
+			fontSize	11
+			fontName	"Inter"
+			x	1130.5
+			y	144.9486789703369
+		]
+		LabelGraphics
+		[
+		]
+		LabelGraphics
+		[
+			text	"CategoryId"
+			fontSize	11
+			fontStyle	"bold"
+			fontName	"Inter"
+			x	1064.5
+			y	164.2611789703369
+		]
+		LabelGraphics
+		[
+			text	"INTEGER"
+			fontSize	11
+			fontName	"Inter"
+			x	1130.5
+			y	164.2611789703369
+		]
+	]
+	node
+	[
+		id	4
+		graphics
+		[
+			x	250.0
+			y	1300.0
+			w	124.0
+			h	67.14735794067383
+			customconfiguration	"DEFAULT"
+			fill	"#FFFFCC"
+			outline	"#808080"
+		]
+		LabelGraphics
+		[
+			text	"ParentColors"
+			fontSize	12
+			fontName	"Inter"
+			anchor	"t"
+		]
+		LabelGraphics
+		[
+		]
+		LabelGraphics
+		[
+			text	"Id"
+			fontSize	11
+			fontStyle	"bold"
+			fontName	"Inter"
+			x	212.0
+			y	1294.948678970337
+		]
+		LabelGraphics
+		[
+			text	"INTEGER"
+			fontSize	11
+			fontName	"Inter"
+			x	249.0
+			y	1294.948678970337
+		]
+		LabelGraphics
+		[
+		]
+		LabelGraphics
+		[
+			text	"Name"
+			fontSize	11
+			fontStyle	"bold"
+			fontName	"Inter"
+			x	212.0
+			y	1314.261178970337
+		]
+		LabelGraphics
+		[
+			text	"TEXT"
+			fontSize	11
+			fontName	"Inter"
+			x	249.0
+			y	1314.261178970337
+		]
+	]
+	node
+	[
+		id	5
+		graphics
+		[
+			x	450.0
+			y	1300.0
+			w	185.0
+			h	125.08485794067383
+			customconfiguration	"DEFAULT"
+			fill	"#FFFFCC"
+			outline	"#808080"
+		]
+		LabelGraphics
+		[
+			text	"Colors"
+			fontSize	12
+			fontName	"Inter"
+			anchor	"t"
+		]
+		LabelGraphics
+		[
+		]
+		LabelGraphics
+		[
+			text	"Id"
+			fontSize	11
+			fontStyle	"bold"
+			fontName	"Inter"
+			x	381.5
+			y	1265.979928970337
+		]
+		LabelGraphics
+		[
+			text	"INTEGER"
+			fontSize	11
+			fontName	"Inter"
+			x	463.5
+			y	1265.979928970337
+		]
+		LabelGraphics
+		[
+		]
+		LabelGraphics
+		[
+			text	"HexValue"
+			fontSize	11
+			fontName	"Inter"
+			x	381.5
+			y	1285.292428970337
+		]
+		LabelGraphics
+		[
+			text	"TEXT"
+			fontSize	11
+			fontName	"Inter"
+			x	463.5
+			y	1285.292428970337
+		]
+		LabelGraphics
+		[
+		]
+		LabelGraphics
+		[
+			text	"Name"
+			fontSize	11
+			fontStyle	"bold"
+			fontName	"Inter"
+			x	381.5
+			y	1304.604928970337
+		]
+		LabelGraphics
+		[
+			text	"TEXT"
+			fontSize	11
+			fontName	"Inter"
+			x	463.5
+			y	1304.604928970337
+		]
+		LabelGraphics
+		[
+		]
+		LabelGraphics
+		[
+			text	"Description"
+			fontSize	11
+			fontName	"Inter"
+			x	381.5
+			y	1323.917428970337
+		]
+		LabelGraphics
+		[
+			text	"TEXT"
+			fontSize	11
+			fontName	"Inter"
+			x	463.5
+			y	1323.917428970337
+		]
+		LabelGraphics
+		[
+		]
+		LabelGraphics
+		[
+			text	"ParentColorId"
+			fontSize	11
+			fontStyle	"bold"
+			fontName	"Inter"
+			x	381.5
+			y	1343.229928970337
+		]
+		LabelGraphics
+		[
+			text	"INTEGER"
+			fontSize	11
+			fontName	"Inter"
+			x	463.5
+			y	1343.229928970337
+		]
+	]
+	node
+	[
+		id	6
+		graphics
+		[
+			x	1125.0
+			y	1300.0
+			w	162.0
+			h	67.14735794067383
+			customconfiguration	"DEFAULT"
+			fill	"#FFFFCC"
+			outline	"#808080"
+		]
+		LabelGraphics
+		[
+			text	"ProductColors"
+			fontSize	12
+			fontName	"Inter"
+			anchor	"t"
+		]
+		LabelGraphics
+		[
+		]
+		LabelGraphics
+		[
+			text	"ProductId"
+			fontSize	11
+			fontStyle	"bold"
+			fontName	"Inter"
+			x	1068.0
+			y	1294.948678970337
+		]
+		LabelGraphics
+		[
+			text	"INTEGER"
+			fontSize	11
+			fontName	"Inter"
+			x	1127.0
+			y	1294.948678970337
+		]
+		LabelGraphics
+		[
+		]
+		LabelGraphics
+		[
+			text	"ColorId"
+			fontSize	11
+			fontStyle	"bold"
+			fontName	"Inter"
+			x	1068.0
+			y	1314.261178970337
+		]
+		LabelGraphics
+		[
+			text	"INTEGER"
+			fontSize	11
+			fontName	"Inter"
+			x	1127.0
+			y	1314.261178970337
+		]
+	]
+	node
+	[
+		id	7
+		graphics
+		[
+			x	450.0
+			y	950.0
+			w	196.0
+			h	86.45985794067383
+			customconfiguration	"DEFAULT"
+			fill	"#FFFFCC"
+			outline	"#808080"
+		]
+		LabelGraphics
+		[
+			text	"SkinToneColorCompatibilities"
+			fontSize	12
+			fontName	"Inter"
+			anchor	"t"
+		]
+		LabelGraphics
+		[
+		]
+		LabelGraphics
+		[
+			text	"ColorId"
+			fontSize	11
+			fontStyle	"bold"
+			fontName	"Inter"
+			x	360.0
+			y	935.2924289703369
+		]
+		LabelGraphics
+		[
+			text	"INTEGER"
+			fontSize	11
+			fontName	"Inter"
+			x	469.0
+			y	935.2924289703369
+		]
+		LabelGraphics
+		[
+		]
+		LabelGraphics
+		[
+			text	"SkinToneId"
+			fontSize	11
+			fontStyle	"bold"
+			fontName	"Inter"
+			x	360.0
+			y	954.6049289703369
+		]
+		LabelGraphics
+		[
+			text	"INTEGER"
+			fontSize	11
+			fontName	"Inter"
+			x	469.0
+			y	954.6049289703369
+		]
+		LabelGraphics
+		[
+		]
+		LabelGraphics
+		[
+			text	"CompatibilityScore"
+			fontSize	11
+			fontStyle	"bold"
+			fontName	"Inter"
+			x	360.0
+			y	973.9174289703369
+		]
+		LabelGraphics
+		[
+			text	"INTEGER"
+			fontSize	11
+			fontName	"Inter"
+			x	469.0
+			y	973.9174289703369
+		]
+	]
+	node
+	[
+		id	8
+		graphics
+		[
+			x	75.0
+			y	700.0
+			w	124.0
+			h	67.14735794067383
+			customconfiguration	"DEFAULT"
+			fill	"#FFFFCC"
+			outline	"#808080"
+		]
+		LabelGraphics
+		[
+			text	"ParentFabrics"
+			fontSize	12
+			fontName	"Inter"
+			anchor	"t"
+		]
+		LabelGraphics
+		[
+		]
+		LabelGraphics
+		[
+			text	"Id"
+			fontSize	11
+			fontStyle	"bold"
+			fontName	"Inter"
+			x	37.0
+			y	694.9486789703369
+		]
+		LabelGraphics
+		[
+			text	"INTEGER"
+			fontSize	11
+			fontName	"Inter"
+			x	74.0
+			y	694.9486789703369
+		]
+		LabelGraphics
+		[
+		]
+		LabelGraphics
+		[
+			text	"Name"
+			fontSize	11
+			fontStyle	"bold"
+			fontName	"Inter"
+			x	37.0
+			y	714.2611789703369
+		]
+		LabelGraphics
+		[
+			text	"TEXT"
+			fontSize	11
+			fontName	"Inter"
+			x	74.0
+			y	714.2611789703369
+		]
+	]
+	node
+	[
+		id	9
+		graphics
+		[
+			x	75.0
+			y	825.0
+			w	184.0
+			h	86.45985794067383
+			customconfiguration	"DEFAULT"
+			fill	"#FFFFCC"
+			outline	"#808080"
+		]
+		LabelGraphics
+		[
+			text	"Fabrics"
+			fontSize	12
+			fontName	"Inter"
+			anchor	"t"
+		]
+		LabelGraphics
+		[
+		]
+		LabelGraphics
+		[
+			text	"Id"
+			fontSize	11
+			fontStyle	"bold"
+			fontName	"Inter"
+			x	7.0
+			y	810.2924289703369
+		]
+		LabelGraphics
+		[
+			text	"INTEGER"
+			fontSize	11
+			fontName	"Inter"
+			x	88.0
+			y	810.2924289703369
+		]
+		LabelGraphics
+		[
+		]
+		LabelGraphics
+		[
+			text	"Name"
+			fontSize	11
+			fontStyle	"bold"
+			fontName	"Inter"
+			x	7.0
+			y	829.6049289703369
+		]
+		LabelGraphics
+		[
+			text	"TEXT"
+			fontSize	11
+			fontName	"Inter"
+			x	88.0
+			y	829.6049289703369
+		]
+		LabelGraphics
+		[
+		]
+		LabelGraphics
+		[
+			text	"ParentFabricId"
+			fontSize	11
+			fontName	"Inter"
+			x	7.0
+			y	848.9174289703369
+		]
+		LabelGraphics
+		[
+			text	"INTEGER"
+			fontSize	11
+			fontName	"Inter"
+			x	88.0
+			y	848.9174289703369
+		]
+	]
+	node
+	[
+		id	10
+		graphics
+		[
+			x	900.0
+			y	825.0
+			w	162.0
+			h	67.14735794067383
+			customconfiguration	"DEFAULT"
+			fill	"#FFFFCC"
+			outline	"#808080"
+		]
+		LabelGraphics
+		[
+			text	"ProductFabrics"
+			fontSize	12
+			fontName	"Inter"
+			anchor	"t"
+		]
+		LabelGraphics
+		[
+		]
+		LabelGraphics
+		[
+			text	"ProductId"
+			fontSize	11
+			fontStyle	"bold"
+			fontName	"Inter"
+			x	843.0
+			y	819.9486789703369
+		]
+		LabelGraphics
+		[
+			text	"INTEGER"
+			fontSize	11
+			fontName	"Inter"
+			x	902.0
+			y	819.9486789703369
+		]
+		LabelGraphics
+		[
+		]
+		LabelGraphics
+		[
+			text	"FabricId"
+			fontSize	11
+			fontStyle	"bold"
+			fontName	"Inter"
+			x	843.0
+			y	839.2611789703369
+		]
+		LabelGraphics
+		[
+			text	"INTEGER"
+			fontSize	11
+			fontName	"Inter"
+			x	902.0
+			y	839.2611789703369
+		]
+	]
+	node
+	[
+		id	11
+		graphics
+		[
+			x	1125.0
+			y	350.0
+			w	219.0
+			h	202.33485794067383
+			customconfiguration	"DEFAULT"
+			fill	"#FFFFCC"
+			outline	"#808080"
+		]
+		LabelGraphics
+		[
+			text	"Products"
+			fontSize	12
+			fontName	"Inter"
+			anchor	"t"
+		]
+		LabelGraphics
+		[
+		]
+		LabelGraphics
+		[
+			text	"Id"
+			fontSize	11
+			fontStyle	"bold"
+			fontName	"Inter"
+			x	1039.5
+			y	277.3549289703369
+		]
+		LabelGraphics
+		[
+			text	"INTEGER"
+			fontSize	11
+			fontName	"Inter"
+			x	1151.5
+			y	277.3549289703369
+		]
+		LabelGraphics
+		[
+		]
+		LabelGraphics
+		[
+			text	"Name"
+			fontSize	11
+			fontStyle	"bold"
+			fontName	"Inter"
+			x	1039.5
+			y	296.6674289703369
+		]
+		LabelGraphics
+		[
+			text	"TEXT"
+			fontSize	11
+			fontName	"Inter"
+			x	1151.5
+			y	296.6674289703369
+		]
+		LabelGraphics
+		[
+		]
+		LabelGraphics
+		[
+			text	"Description"
+			fontSize	11
+			fontName	"Inter"
+			x	1039.5
+			y	315.9799289703369
+		]
+		LabelGraphics
+		[
+			text	"TEXT"
+			fontSize	11
+			fontName	"Inter"
+			x	1151.5
+			y	315.9799289703369
+		]
+		LabelGraphics
+		[
+		]
+		LabelGraphics
+		[
+			text	"Price"
+			fontSize	11
+			fontStyle	"bold"
+			fontName	"Inter"
+			x	1039.5
+			y	335.2924289703369
+		]
+		LabelGraphics
+		[
+			text	"NUMERIC"
+			fontSize	11
+			fontName	"Inter"
+			x	1151.5
+			y	335.2924289703369
+		]
+		LabelGraphics
+		[
+		]
+		LabelGraphics
+		[
+			text	"Stock"
+			fontSize	11
+			fontName	"Inter"
+			x	1039.5
+			y	354.6049289703369
+		]
+		LabelGraphics
+		[
+			text	"INTEGER"
+			fontSize	11
+			fontName	"Inter"
+			x	1151.5
+			y	354.6049289703369
+		]
+		LabelGraphics
+		[
+		]
+		LabelGraphics
+		[
+			text	"ForChildren"
+			fontSize	11
+			fontStyle	"bold"
+			fontName	"Inter"
+			x	1039.5
+			y	373.9174289703369
+		]
+		LabelGraphics
+		[
+			text	"BOOLEAN"
+			fontSize	11
+			fontName	"Inter"
+			x	1151.5
+			y	373.9174289703369
+		]
+		LabelGraphics
+		[
+		]
+		LabelGraphics
+		[
+			text	"ProductSizeId"
+			fontSize	11
+			fontStyle	"bold"
+			fontName	"Inter"
+			x	1039.5
+			y	393.2299289703369
+		]
+		LabelGraphics
+		[
+			text	"INTEGER"
+			fontSize	11
+			fontName	"Inter"
+			x	1151.5
+			y	393.2299289703369
+		]
+		LabelGraphics
+		[
+		]
+		LabelGraphics
+		[
+			text	"Weight"
+			fontSize	11
+			fontStyle	"bold"
+			fontName	"Inter"
+			x	1039.5
+			y	412.5424289703369
+		]
+		LabelGraphics
+		[
+			text	"NUMERIC"
+			fontSize	11
+			fontName	"Inter"
+			x	1151.5
+			y	412.5424289703369
+		]
+		LabelGraphics
+		[
+		]
+		LabelGraphics
+		[
+			text	"ProductPicturePath"
+			fontSize	11
+			fontStyle	"bold"
+			fontName	"Inter"
+			x	1039.5
+			y	431.8549289703369
+		]
+		LabelGraphics
+		[
+			text	"TEXT"
+			fontSize	11
+			fontName	"Inter"
+			x	1151.5
+			y	431.8549289703369
+		]
+	]
+	node
+	[
+		id	12
+		graphics
+		[
+			x	675.0
+			y	725.0
+			w	176.0
+			h	67.14735794067383
+			customconfiguration	"DEFAULT"
+			fill	"#FFFFCC"
+			outline	"#808080"
+		]
+		LabelGraphics
+		[
+			text	"ProductPromotion"
+			fontSize	12
+			fontName	"Inter"
+			anchor	"t"
+		]
+		LabelGraphics
+		[
+		]
+		LabelGraphics
+		[
+			text	"ProductId"
+			fontSize	11
+			fontStyle	"bold"
+			fontName	"Inter"
+			x	611.0
+			y	719.9486789703369
+		]
+		LabelGraphics
+		[
+			text	"INTEGER"
+			fontSize	11
+			fontName	"Inter"
+			x	684.0
+			y	719.9486789703369
+		]
+		LabelGraphics
+		[
+		]
+		LabelGraphics
+		[
+			text	"PromotionId"
+			fontSize	11
+			fontStyle	"bold"
+			fontName	"Inter"
+			x	611.0
+			y	739.2611789703369
+		]
+		LabelGraphics
+		[
+			text	"INTEGER"
+			fontSize	11
+			fontName	"Inter"
+			x	684.0
+			y	739.2611789703369
+		]
+	]
+	node
+	[
+		id	13
+		graphics
+		[
+			x	375.0
+			y	725.0
+			w	331.0
+			h	144.39735794067383
+			customconfiguration	"DEFAULT"
+			fill	"#FFFFCC"
+			outline	"#808080"
+		]
+		LabelGraphics
+		[
+			text	"Promotion"
+			fontSize	12
+			fontName	"Inter"
+			anchor	"t"
+		]
+		LabelGraphics
+		[
+		]
+		LabelGraphics
+		[
+			text	"Id"
+			fontSize	11
+			fontStyle	"bold"
+			fontName	"Inter"
+			x	233.5
+			y	681.3236789703369
+		]
+		LabelGraphics
+		[
+			text	"INTEGER"
+			fontSize	11
+			fontName	"Inter"
+			x	350.5
+			y	681.3236789703369
+		]
+		LabelGraphics
+		[
+		]
+		LabelGraphics
+		[
+			text	"Name"
+			fontSize	11
+			fontStyle	"bold"
+			fontName	"Inter"
+			x	233.5
+			y	700.6361789703369
+		]
+		LabelGraphics
+		[
+			text	"TEXT"
+			fontSize	11
+			fontName	"Inter"
+			x	350.5
+			y	700.6361789703369
+		]
+		LabelGraphics
+		[
+		]
+		LabelGraphics
+		[
+			text	"Description"
+			fontSize	11
+			fontStyle	"bold"
+			fontName	"Inter"
+			x	233.5
+			y	719.9486789703369
+		]
+		LabelGraphics
+		[
+			text	"TEXT"
+			fontSize	11
+			fontName	"Inter"
+			x	350.5
+			y	719.9486789703369
+		]
+		LabelGraphics
+		[
+		]
+		LabelGraphics
+		[
+			text	"DiscountPercentage"
+			fontSize	11
+			fontStyle	"bold"
+			fontName	"Inter"
+			x	233.5
+			y	739.2611789703369
+		]
+		LabelGraphics
+		[
+			text	"NUMERIC"
+			fontSize	11
+			fontName	"Inter"
+			x	350.5
+			y	739.2611789703369
+		]
+		LabelGraphics
+		[
+		]
+		LabelGraphics
+		[
+			text	"StartDate"
+			fontSize	11
+			fontStyle	"bold"
+			fontName	"Inter"
+			x	233.5
+			y	758.5736789703369
+		]
+		LabelGraphics
+		[
+			text	"TIMESTAMP(6) WITH TIME ZONE"
+			fontSize	11
+			fontName	"Inter"
+			x	350.5
+			y	758.5736789703369
+		]
+		LabelGraphics
+		[
+		]
+		LabelGraphics
+		[
+			text	"EndDate"
+			fontSize	11
+			fontStyle	"bold"
+			fontName	"Inter"
+			x	233.5
+			y	777.8861789703369
+		]
+		LabelGraphics
+		[
+			text	"TIMESTAMP(6) WITH TIME ZONE"
+			fontSize	11
+			fontName	"Inter"
+			x	350.5
+			y	777.8861789703369
+		]
+	]
+	node
+	[
+		id	14
+		graphics
+		[
+			x	1350.0
+			y	350.0
+			w	129.0
+			h	86.45985794067383
+			customconfiguration	"DEFAULT"
+			fill	"#FFFFCC"
+			outline	"#808080"
+		]
+		LabelGraphics
+		[
+			text	"Sizes"
+			fontSize	12
+			fontName	"Inter"
+			anchor	"t"
+		]
+		LabelGraphics
+		[
+		]
+		LabelGraphics
+		[
+			text	"Id"
+			fontSize	11
+			fontStyle	"bold"
+			fontName	"Inter"
+			x	1309.5
+			y	335.2924289703369
+		]
+		LabelGraphics
+		[
+			text	"INTEGER"
+			fontSize	11
+			fontName	"Inter"
+			x	1351.5
+			y	335.2924289703369
+		]
+		LabelGraphics
+		[
+		]
+		LabelGraphics
+		[
+			text	"Height"
+			fontSize	11
+			fontStyle	"bold"
+			fontName	"Inter"
+			x	1309.5
+			y	354.6049289703369
+		]
+		LabelGraphics
+		[
+			text	"INTEGER"
+			fontSize	11
+			fontName	"Inter"
+			x	1351.5
+			y	354.6049289703369
+		]
+		LabelGraphics
+		[
+		]
+		LabelGraphics
+		[
+			text	"Width"
+			fontSize	11
+			fontStyle	"bold"
+			fontName	"Inter"
+			x	1309.5
+			y	373.9174289703369
+		]
+		LabelGraphics
+		[
+			text	"INTEGER"
+			fontSize	11
+			fontName	"Inter"
+			x	1351.5
+			y	373.9174289703369
+		]
+	]
+	node
+	[
+		id	15
+		graphics
+		[
+			x	550.0
+			y	550.0
+			w	162.0
+			h	67.14735794067383
+			customconfiguration	"DEFAULT"
+			fill	"#FFFFCC"
+			outline	"#808080"
+		]
+		LabelGraphics
+		[
+			text	"ProductTag"
+			fontSize	12
+			fontName	"Inter"
+			anchor	"t"
+		]
+		LabelGraphics
+		[
+		]
+		LabelGraphics
+		[
+			text	"ProductId"
+			fontSize	11
+			fontStyle	"bold"
+			fontName	"Inter"
+			x	493.0
+			y	544.9486789703369
+		]
+		LabelGraphics
+		[
+			text	"INTEGER"
+			fontSize	11
+			fontName	"Inter"
+			x	552.0
+			y	544.9486789703369
+		]
+		LabelGraphics
+		[
+		]
+		LabelGraphics
+		[
+			text	"TagId"
+			fontSize	11
+			fontStyle	"bold"
+			fontName	"Inter"
+			x	493.0
+			y	564.2611789703369
+		]
+		LabelGraphics
+		[
+			text	"INTEGER"
+			fontSize	11
+			fontName	"Inter"
+			x	552.0
+			y	564.2611789703369
+		]
+	]
+	node
+	[
+		id	16
+		graphics
+		[
+			x	400.0
+			y	350.0
+			w	202.0
+			h	67.14735794067383
+			customconfiguration	"DEFAULT"
+			fill	"#FFFFCC"
+			outline	"#808080"
+		]
+		LabelGraphics
+		[
+			text	"ProductTexturePatterns"
+			fontSize	12
+			fontName	"Inter"
+			anchor	"t"
+		]
+		LabelGraphics
+		[
+		]
+		LabelGraphics
+		[
+			text	"ProductId"
+			fontSize	11
+			fontStyle	"bold"
+			fontName	"Inter"
+			x	323.0
+			y	344.9486789703369
+		]
+		LabelGraphics
+		[
+			text	"INTEGER"
+			fontSize	11
+			fontName	"Inter"
+			x	422.0
+			y	344.9486789703369
+		]
+		LabelGraphics
+		[
+		]
+		LabelGraphics
+		[
+			text	"TexturePatternId"
+			fontSize	11
+			fontStyle	"bold"
+			fontName	"Inter"
+			x	323.0
+			y	364.2611789703369
+		]
+		LabelGraphics
+		[
+			text	"INTEGER"
+			fontSize	11
+			fontName	"Inter"
+			x	422.0
+			y	364.2611789703369
+		]
+	]
+	node
+	[
+		id	17
+		graphics
+		[
+			x	325.0
+			y	550.0
+			w	153.0
+			h	105.77235794067383
+			customconfiguration	"DEFAULT"
+			fill	"#FFFFCC"
+			outline	"#808080"
+		]
+		LabelGraphics
+		[
+			text	"Tags"
+			fontSize	12
+			fontName	"Inter"
+			anchor	"t"
+		]
+		LabelGraphics
+		[
+		]
+		LabelGraphics
+		[
+			text	"Id"
+			fontSize	11
+			fontStyle	"bold"
+			fontName	"Inter"
+			x	272.5
+			y	525.6361789703369
+		]
+		LabelGraphics
+		[
+			text	"INTEGER"
+			fontSize	11
+			fontName	"Inter"
+			x	338.5
+			y	525.6361789703369
+		]
+		LabelGraphics
+		[
+		]
+		LabelGraphics
+		[
+			text	"Name"
+			fontSize	11
+			fontStyle	"bold"
+			fontName	"Inter"
+			x	272.5
+			y	544.9486789703369
+		]
+		LabelGraphics
+		[
+			text	"TEXT"
+			fontSize	11
+			fontName	"Inter"
+			x	338.5
+			y	544.9486789703369
+		]
+		LabelGraphics
+		[
+		]
+		LabelGraphics
+		[
+			text	"Description"
+			fontSize	11
+			fontName	"Inter"
+			x	272.5
+			y	564.2611789703369
+		]
+		LabelGraphics
+		[
+			text	"TEXT"
+			fontSize	11
+			fontName	"Inter"
+			x	338.5
+			y	564.2611789703369
+		]
+		LabelGraphics
+		[
+		]
+		LabelGraphics
+		[
+			text	"Type"
+			fontSize	11
+			fontStyle	"bold"
+			fontName	"Inter"
+			x	272.5
+			y	583.5736789703369
+		]
+		LabelGraphics
+		[
+			text	"INTEGER"
+			fontSize	11
+			fontName	"Inter"
+			x	338.5
+			y	583.5736789703369
+		]
+	]
+	node
+	[
+		id	18
+		graphics
+		[
+			x	400.0
+			y	225.0
+			w	124.0
+			h	67.14735794067383
+			customconfiguration	"DEFAULT"
+			fill	"#FFFFCC"
+			outline	"#808080"
+		]
+		LabelGraphics
+		[
+			text	"TexturePatterns"
+			fontSize	12
+			fontName	"Inter"
+			anchor	"t"
+		]
+		LabelGraphics
+		[
+		]
+		LabelGraphics
+		[
+			text	"Id"
+			fontSize	11
+			fontStyle	"bold"
+			fontName	"Inter"
+			x	362.0
+			y	219.9486789703369
+		]
+		LabelGraphics
+		[
+			text	"INTEGER"
+			fontSize	11
+			fontName	"Inter"
+			x	399.0
+			y	219.9486789703369
+		]
+		LabelGraphics
+		[
+		]
+		LabelGraphics
+		[
+			text	"Name"
+			fontSize	11
+			fontStyle	"bold"
+			fontName	"Inter"
+			x	362.0
+			y	239.2611789703369
+		]
+		LabelGraphics
+		[
+			text	"TEXT"
+			fontSize	11
+			fontName	"Inter"
+			x	399.0
+			y	239.2611789703369
+		]
+	]
+	node
+	[
+		id	19
+		graphics
+		[
+			x	550.0
+			y	1150.0
+			w	143.0
+			h	67.14735794067383
+			customconfiguration	"DEFAULT"
+			fill	"#FFFFCC"
+			outline	"#808080"
+		]
+		LabelGraphics
+		[
+			text	"Roles"
+			fontSize	12
+			fontName	"Inter"
+			anchor	"t"
+		]
+		LabelGraphics
+		[
+		]
+		LabelGraphics
+		[
+			text	"Id"
+			fontSize	11
+			fontStyle	"bold"
+			fontName	"Inter"
+			x	502.5
+			y	1144.948678970337
+		]
+		LabelGraphics
+		[
+			text	"INTEGER"
+			fontSize	11
+			fontName	"Inter"
+			x	558.5
+			y	1144.948678970337
+		]
+		LabelGraphics
+		[
+		]
+		LabelGraphics
+		[
+			text	"UserRole"
+			fontSize	11
+			fontStyle	"bold"
+			fontName	"Inter"
+			x	502.5
+			y	1164.261178970337
+		]
+		LabelGraphics
+		[
+			text	"TEXT"
+			fontSize	11
+			fontName	"Inter"
+			x	558.5
+			y	1164.261178970337
+		]
+	]
+	node
+	[
+		id	20
+		graphics
+		[
+			x	825.0
+			y	1150.0
+			w	310.0
+			h	240.95985794067383
+			customconfiguration	"DEFAULT"
+			fill	"#FFFFCC"
+			outline	"#808080"
+		]
+		LabelGraphics
+		[
+			text	"Users"
+			fontSize	12
+			fontName	"Inter"
+			anchor	"t"
+		]
+		LabelGraphics
+		[
+		]
+		LabelGraphics
+		[
+			text	"Id"
+			fontSize	11
+			fontStyle	"bold"
+			fontName	"Inter"
+			x	694.0
+			y	1058.042428970337
+		]
+		LabelGraphics
+		[
+			text	"INTEGER"
+			fontSize	11
+			fontName	"Inter"
+			x	774.0
+			y	1058.042428970337
+		]
+		LabelGraphics
+		[
+		]
+		LabelGraphics
+		[
+			text	"Email"
+			fontSize	11
+			fontStyle	"bold"
+			fontName	"Inter"
+			x	694.0
+			y	1077.354928970337
+		]
+		LabelGraphics
+		[
+			text	"TEXT"
+			fontSize	11
+			fontName	"Inter"
+			x	774.0
+			y	1077.354928970337
+		]
+		LabelGraphics
+		[
+		]
+		LabelGraphics
+		[
+			text	"Password"
+			fontSize	11
+			fontStyle	"bold"
+			fontName	"Inter"
+			x	694.0
+			y	1096.667428970337
+		]
+		LabelGraphics
+		[
+			text	"TEXT"
+			fontSize	11
+			fontName	"Inter"
+			x	774.0
+			y	1096.667428970337
+		]
+		LabelGraphics
+		[
+		]
+		LabelGraphics
+		[
+			text	"FirstName"
+			fontSize	11
+			fontStyle	"bold"
+			fontName	"Inter"
+			x	694.0
+			y	1115.979928970337
+		]
+		LabelGraphics
+		[
+			text	"TEXT"
+			fontSize	11
+			fontName	"Inter"
+			x	774.0
+			y	1115.979928970337
+		]
+		LabelGraphics
+		[
+		]
+		LabelGraphics
+		[
+			text	"LastName"
+			fontSize	11
+			fontStyle	"bold"
+			fontName	"Inter"
+			x	694.0
+			y	1135.292428970337
+		]
+		LabelGraphics
+		[
+			text	"TEXT"
+			fontSize	11
+			fontName	"Inter"
+			x	774.0
+			y	1135.292428970337
+		]
+		LabelGraphics
+		[
+		]
+		LabelGraphics
+		[
+			text	"PhoneNumber"
+			fontSize	11
+			fontName	"Inter"
+			x	694.0
+			y	1154.604928970337
+		]
+		LabelGraphics
+		[
+			text	"TEXT"
+			fontSize	11
+			fontName	"Inter"
+			x	774.0
+			y	1154.604928970337
+		]
+		LabelGraphics
+		[
+		]
+		LabelGraphics
+		[
+			text	"Address"
+			fontSize	11
+			fontName	"Inter"
+			x	694.0
+			y	1173.917428970337
+		]
+		LabelGraphics
+		[
+			text	"TEXT"
+			fontSize	11
+			fontName	"Inter"
+			x	774.0
+			y	1173.917428970337
+		]
+		LabelGraphics
+		[
+		]
+		LabelGraphics
+		[
+			text	"Gender"
+			fontSize	11
+			fontStyle	"bold"
+			fontName	"Inter"
+			x	694.0
+			y	1193.229928970337
+		]
+		LabelGraphics
+		[
+			text	"TEXT"
+			fontSize	11
+			fontName	"Inter"
+			x	774.0
+			y	1193.229928970337
+		]
+		LabelGraphics
+		[
+		]
+		LabelGraphics
+		[
+			text	"DateOfBirth"
+			fontSize	11
+			fontStyle	"bold"
+			fontName	"Inter"
+			x	694.0
+			y	1212.542428970337
+		]
+		LabelGraphics
+		[
+			text	"TIMESTAMP(6) WITH TIME ZONE"
+			fontSize	11
+			fontName	"Inter"
+			x	774.0
+			y	1212.542428970337
+		]
+		LabelGraphics
+		[
+		]
+		LabelGraphics
+		[
+			text	"RoleId"
+			fontSize	11
+			fontStyle	"bold"
+			fontName	"Inter"
+			x	694.0
+			y	1231.854928970337
+		]
+		LabelGraphics
+		[
+			text	"INTEGER"
+			fontSize	11
+			fontName	"Inter"
+			x	774.0
+			y	1231.854928970337
+		]
+		LabelGraphics
+		[
+		]
+		LabelGraphics
+		[
+			text	"SkinToneId"
+			fontSize	11
+			fontName	"Inter"
+			x	694.0
+			y	1251.167428970337
+		]
+		LabelGraphics
+		[
+			text	"INTEGER"
+			fontSize	11
+			fontName	"Inter"
+			x	774.0
+			y	1251.167428970337
+		]
+	]
+	node
+	[
+		id	21
+		graphics
+		[
+			x	825.0
+			y	950.0
+			w	145.0
+			h	86.45985794067383
+			customconfiguration	"DEFAULT"
+			fill	"#FFFFCC"
+			outline	"#808080"
+		]
+		LabelGraphics
+		[
+			text	"SkinTones"
+			fontSize	12
+			fontName	"Inter"
+			anchor	"t"
+		]
+		LabelGraphics
+		[
+		]
+		LabelGraphics
+		[
+			text	"Id"
+			fontSize	11
+			fontStyle	"bold"
+			fontName	"Inter"
+			x	776.5
+			y	935.2924289703369
+		]
+		LabelGraphics
+		[
+			text	"INTEGER"
+			fontSize	11
+			fontName	"Inter"
+			x	834.5
+			y	935.2924289703369
+		]
+		LabelGraphics
+		[
+		]
+		LabelGraphics
+		[
+			text	"HexValue"
+			fontSize	11
+			fontStyle	"bold"
+			fontName	"Inter"
+			x	776.5
+			y	954.6049289703369
+		]
+		LabelGraphics
+		[
+			text	"TEXT"
+			fontSize	11
+			fontName	"Inter"
+			x	834.5
+			y	954.6049289703369
+		]
+		LabelGraphics
+		[
+		]
+		LabelGraphics
+		[
+			text	"Name"
+			fontSize	11
+			fontName	"Inter"
+			x	776.5
+			y	973.9174289703369
+		]
+		LabelGraphics
+		[
+			text	"TEXT"
+			fontSize	11
+			fontName	"Inter"
+			x	834.5
+			y	973.9174289703369
+		]
+	]
+	edge
+	[
+		source	2
+		target	1
+		graphics
+		[
+			fill	"#808080"
+			targetArrow	"standard"
+		]
+		edgeAnchor
+		[
+			ySource	-1.0
+			yTarget	1.0
+		]
+	]
+	edge
+	[
+		source	3
+		target	2
+		graphics
+		[
+			fill	"#808080"
+			targetArrow	"standard"
+		]
+		edgeAnchor
+		[
+			xSource	-1.0
+			xTarget	1.0
+		]
+	]
+	edge
+	[
+		source	5
+		target	4
+		graphics
+		[
+			fill	"#808080"
+			targetArrow	"standard"
+		]
+		edgeAnchor
+		[
+			xSource	-1.0
+			xTarget	1.0
+		]
+	]
+	edge
+	[
+		source	6
+		target	5
+		graphics
+		[
+			fill	"#808080"
+			targetArrow	"standard"
+		]
+		edgeAnchor
+		[
+			xSource	-1.0
+			xTarget	1.0
+		]
+	]
+	edge
+	[
+		source	7
+		target	5
+		graphics
+		[
+			fill	"#808080"
+			targetArrow	"standard"
+		]
+		edgeAnchor
+		[
+			ySource	1.0
+			yTarget	-1.0
+		]
+	]
+	edge
+	[
+		source	9
+		target	8
+		graphics
+		[
+			fill	"#808080"
+			targetArrow	"standard"
+		]
+		edgeAnchor
+		[
+			ySource	-1.0
+			yTarget	1.0
+		]
+	]
+	edge
+	[
+		source	10
+		target	9
+		graphics
+		[
+			fill	"#808080"
+			targetArrow	"standard"
+		]
+		edgeAnchor
+		[
+			xSource	-1.0
+			xTarget	1.0
+		]
+	]
+	edge
+	[
+		source	3
+		target	11
+		graphics
+		[
+			fill	"#808080"
+			targetArrow	"standard"
+		]
+		edgeAnchor
+		[
+			ySource	1.0
+			yTarget	-1.0
+		]
+	]
+	edge
+	[
+		source	6
+		target	11
+		graphics
+		[
+			fill	"#808080"
+			targetArrow	"standard"
+		]
+		edgeAnchor
+		[
+			ySource	-1.0
+			yTarget	1.0
+		]
+	]
+	edge
+	[
+		source	10
+		target	11
+		graphics
+		[
+			fill	"#808080"
+			targetArrow	"standard"
+			Line
+			[
+				point
+				[
+					x	900.0
+					y	825.0
+				]
+				point
+				[
+					x	900.0
+					y	425.0
+				]
+				point
+				[
+					x	1125.0
+					y	350.0
+				]
+			]
+		]
+		edgeAnchor
+		[
+			ySource	-1.0
+			xTarget	-1.0
+			yTarget	0.7413453459739685
+		]
+	]
+	edge
+	[
+		source	12
+		target	11
+		graphics
+		[
+			fill	"#808080"
+			targetArrow	"standard"
+			Line
+			[
+				point
+				[
+					x	675.0
+					y	725.0
+				]
+				point
+				[
+					x	675.0
+					y	400.0
+				]
+				point
+				[
+					x	1125.0
+					y	350.0
+				]
+			]
+		]
+		edgeAnchor
+		[
+			ySource	-1.0
+			xTarget	-1.0
+			yTarget	0.4942302107810974
+		]
+	]
+	edge
+	[
+		source	12
+		target	13
+		graphics
+		[
+			fill	"#808080"
+			targetArrow	"standard"
+		]
+		edgeAnchor
+		[
+			xSource	-1.0
+			xTarget	1.0
+		]
+	]
+	edge
+	[
+		source	11
+		target	14
+		graphics
+		[
+			fill	"#808080"
+			targetArrow	"standard"
+		]
+		edgeAnchor
+		[
+			xSource	1.0
+			xTarget	-1.0
+		]
+	]
+	edge
+	[
+		source	15
+		target	11
+		graphics
+		[
+			fill	"#808080"
+			targetArrow	"standard"
+			Line
+			[
+				point
+				[
+					x	550.0
+					y	550.0
+				]
+				point
+				[
+					x	550.0
+					y	375.0
+				]
+				point
+				[
+					x	1125.0
+					y	350.0
+				]
+			]
+		]
+		edgeAnchor
+		[
+			ySource	-1.0
+			xTarget	-1.0
+			yTarget	0.2471151053905487
+		]
+	]
+	edge
+	[
+		source	16
+		target	11
+		graphics
+		[
+			fill	"#808080"
+			targetArrow	"standard"
+		]
+		edgeAnchor
+		[
+			xSource	1.0
+			xTarget	-1.0
+		]
+	]
+	edge
+	[
+		source	15
+		target	17
+		graphics
+		[
+			fill	"#808080"
+			targetArrow	"standard"
+		]
+		edgeAnchor
+		[
+			xSource	-1.0
+			xTarget	1.0
+		]
+	]
+	edge
+	[
+		source	16
+		target	18
+		graphics
+		[
+			fill	"#808080"
+			targetArrow	"standard"
+		]
+		edgeAnchor
+		[
+			ySource	-1.0
+			yTarget	1.0
+		]
+	]
+	edge
+	[
+		source	20
+		target	19
+		graphics
+		[
+			fill	"#808080"
+			targetArrow	"standard"
+		]
+		edgeAnchor
+		[
+			xSource	-1.0
+			xTarget	1.0
+		]
+	]
+	edge
+	[
+		source	7
+		target	21
+		graphics
+		[
+			fill	"#808080"
+			targetArrow	"standard"
+		]
+		edgeAnchor
+		[
+			xSource	1.0
+			xTarget	-1.0
+		]
+	]
+	edge
+	[
+		source	20
+		target	21
+		graphics
+		[
+			fill	"#808080"
+			targetArrow	"standard"
+		]
+		edgeAnchor
+		[
+			ySource	-1.0
+			yTarget	1.0
+		]
+	]
+]
