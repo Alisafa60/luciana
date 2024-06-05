@@ -13,4 +13,5 @@ public class Tag {
         Occasion,
         Pattern,
     }
+     public ICollection<ProductTag> ProductTags { get; set; }
 }

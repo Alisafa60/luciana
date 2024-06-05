@@ -52,6 +52,7 @@ namespace backend.Data
                 .HasOne(ptp => ptp.TexturePattern)
                 .WithMany()
                 .HasForeignKey(ptp => ptp.TexturePatternId);
+
                 
             modelBuilder.Entity<ProductColor>()
                 .HasKey(pc => new { pc.ProductId, pc.ColorId});   
@@ -66,6 +67,7 @@ namespace backend.Data
                 .WithMany()
                 .HasForeignKey(pc => pc.ColorId);
 
+
             modelBuilder.Entity<ProductFabric>()
                 .HasKey(pf => new { pf.ProductId, pf.FabricId});   
 
@@ -78,6 +80,7 @@ namespace backend.Data
                 .HasOne(pf => pf.Fabric)
                 .WithMany()
                 .HasForeignKey(pf => pf.FabricId);
+
 
             modelBuilder.Entity<ProductCategory>()
                 .HasKey(pct => new { pct.ProductId, pct.CategoryId});
@@ -92,6 +95,7 @@ namespace backend.Data
                 .WithMany()
                 .HasForeignKey(pct => pct.CategoryId);
 
+
             modelBuilder.Entity<ProductPromotion>()
                 .HasKey(pp => new { pp.ProductId, pp.PromotionId });
 
@@ -104,6 +108,20 @@ namespace backend.Data
                 .HasOne(pp => pp.Promotion)
                 .WithMany(p => p.ProductPromotions)
                 .HasForeignKey(pp => pp.PromotionId);
+
+
+            modelBuilder.Entity<ProductTag>()
+                .HasKey(pt => new { pt.ProductId, pt.TagId });
+
+            modelBuilder.Entity<ProductTag>()
+                .HasOne(pt => pt.Product)
+                .WithMany(p => p.ProductTags)
+                .HasForeignKey(pt => pt.ProductId);
+            
+            modelBuilder.Entity<ProductTag>()
+                .HasOne(pt => pt.Tag)
+                .WithMany(pt => pt.ProductTags)
+                .HasForeignKey(pt => pt.TagId);
         }
     }
 }

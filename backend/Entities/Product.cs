@@ -32,4 +32,5 @@ public class Product{
     public ICollection<ProductFabric> ProductFabrics{ get; set;}
     public ICollection<ProductCategory> ProductCategories{ get; set;}
     public ICollection<ProductPromotion> ProductPromotions { get; set; }
+    public ICollection<ProductTag> ProductTags { get; set; }
 }
