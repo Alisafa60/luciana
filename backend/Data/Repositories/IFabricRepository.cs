@@ -4,4 +4,5 @@ public interface IFabricRepository {
     Task<IEnumerable<Fabric>> GetAllAsync();
     Task<Fabric> AddAsync(Fabric fabric);
     Task DeleteAsync(int id);
+    Task<IEnumerable<Fabric>> GetByIdsAsync(IEnumerable<int> ids);
 }

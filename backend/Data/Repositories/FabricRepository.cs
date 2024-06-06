@@ -35,4 +35,8 @@ public class FabricRepository : IFabricRepository {
             await _context.SaveChangesAsync();
         }
     }
+
+    public async Task<IEnumerable<Fabric>> GetByIdsAsync(IEnumerable<int> ids) {
+        return await _context.Fabrics.Where(f => ids.Contains(f.Id)).ToListAsync();
+    }
 }

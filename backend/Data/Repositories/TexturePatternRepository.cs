@@ -1,6 +1,7 @@
 using backend.Data;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
+using Xunit.Sdk;
 #pragma warning disable CS8603 // Possible null reference return.
 
 public class TexturePatternRepository : ITexturePatternRepository {
@@ -36,6 +37,10 @@ public class TexturePatternRepository : ITexturePatternRepository {
             _context.TexturePatterns.Remove(texturePattern);
             await _context.SaveChangesAsync();
         }
+    }
+
+    public async Task<IEnumerable<TexturePattern>> GetByIdsAsync(IEnumerable<int> ids){
+        return await _context.TexturePatterns.Where(tp => ids.Contains(tp.Id)).ToListAsync();
     }
 }
 

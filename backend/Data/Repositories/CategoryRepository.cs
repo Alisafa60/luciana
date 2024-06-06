@@ -35,6 +35,10 @@ public class CategoryRepository : ICategoryRepository{
             await _context.SaveChangesAsync();
         }
     }
+
+    public async Task<IEnumerable<Category>> GetByIdsAsync(IEnumerable<int> ids){
+        return await _context.Categories.Where(c => ids.Contains(c.Id)).ToListAsync();
+    }
 }
 
 #pragma warning restore CS8603 // Possible null reference return

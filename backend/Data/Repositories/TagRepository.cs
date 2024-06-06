@@ -33,6 +33,10 @@ public class TagRepository : ITagRepository {
             await _context.SaveChangesAsync();
         }
     }
+
+    public async Task<IEnumerable<Tag>> GetByIdsAsync(IEnumerable<int> ids) {
+        return await _context.Tags.Where(t => ids.Contains(t.Id)).ToListAsync();
+    }
 }
 
 #pragma warning restore CS8603 // Possible null reference return.

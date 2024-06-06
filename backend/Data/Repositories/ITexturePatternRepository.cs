@@ -4,4 +4,5 @@ public interface ITexturePatternRepository {
     Task<IEnumerable<TexturePattern>> GetAllAsync();
     Task<TexturePattern> AddAsync(TexturePattern TexturePattern);
     Task DeleteAsync(int id);
+    Task<IEnumerable<TexturePattern>> GetByIdsAsync(IEnumerable<int> ids);
 }
