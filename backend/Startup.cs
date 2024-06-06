@@ -38,6 +38,7 @@ public class Startup {
         services.AddScoped<ISizeRepository, SizeRepository>();
         services.AddScoped<ITexturePatternRepository, TexturePatternRepository>();
         services.AddScoped<IProductRepository, ProductRepository>();
+        services.AddScoped<IAttributeService, AttributesService>();
 
         var secretKey = Configuration["JwtSettings:SecretKey"];
         if (secretKey == null) {
