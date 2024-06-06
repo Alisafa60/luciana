@@ -13,9 +13,12 @@ using Microsoft.AspNetCore.Authorization;
 [ApiController]
 public class ProductController : ControllerBase {
     private readonly IProductRepository _productRepository;
+    private readonly LuceneSearchService _searchService;
 
-    public ProductController(IProductRepository productRepository) {
+    public ProductController(IProductRepository productRepository, LuceneSearchService searchService) {
         _productRepository = productRepository;
+        _searchService = searchService;
+        
     }
 
     [HttpPost]
@@ -104,6 +107,16 @@ public class ProductController : ControllerBase {
         try {
             await _productRepository.DeleteAsync(id);
             return NoContent();
+        } catch (Exception ex) {
+            return StatusCode(500, $"Internal server error: {ex.Message}");
+        }
+    }
+
+    [HttpPost("search")]
+    public ActionResult<IEnumerable<ProductModel>> SearchProducts([FromBody] SearchRequest request) {
+        try {
+            var products = _searchService.SearchProducts(request.SearchTerm, request.FuzzySearch);
+            return Ok(products);
         } catch (Exception ex) {
             return StatusCode(500, $"Internal server error: {ex.Message}");
         }
