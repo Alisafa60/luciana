@@ -9,8 +9,10 @@ using System.Threading.Tasks;
 [ApiController]
 public class ColorController : ControllerBase {
     private readonly IColorRepository _colorRepository;
-    public ColorController(IColorRepository colorRepository) {
+    private readonly IAttributeService _attributeService;
+    public ColorController(IColorRepository colorRepository, IAttributeService attributeService) {
         _colorRepository = colorRepository;
+        _attributeService = attributeService;
     }
 
     [HttpPost]
@@ -105,6 +107,16 @@ public class ColorController : ControllerBase {
 
         } catch (Exception ex) {
             return StatusCode(500, $"Internal Server Error: {ex.Message}");
+        }
+    }
+
+    [HttpPost("many")]
+    public async Task<IActionResult> GetColorByIds([FromBody] IdsModel idsModel ) {
+        try {
+            var colorNames = await _attributeService.GetColorNames(idsModel.Ids);
+            return Ok(colorNames);
+        } catch (Exception ex){
+            return StatusCode(500, $"Internal Server Error ${ex.Message}");
         }
     }
 }
