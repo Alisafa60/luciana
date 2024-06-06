@@ -4,5 +4,4 @@ public interface IParentCategoryRepository {
     Task<IEnumerable<ParentCategory>> GetAllAsync();
     Task<ParentCategory> AddAsync(ParentCategory parentCategory);
     Task DeleteAsync(int id);
-    Task<IEnumerable<Category>> GetByIdsAsync(IEnumerable<int> ids);
 }
