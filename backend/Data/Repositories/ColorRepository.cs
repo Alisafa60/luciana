@@ -35,4 +35,8 @@ public class ColorRepository : IColorRepository {
             await _context.SaveChangesAsync();
         }
     }
+
+    public async Task<IEnumerable<Color>> GetByIdsAsync(IEnumerable<int> ids){
+        return await _context.Colors.Where(c => ids.Contains(c.Id)).ToListAsync();
+    }
 }
