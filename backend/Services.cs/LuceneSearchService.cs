@@ -34,13 +34,28 @@ public class CustomAnalyzer : Analyzer {
 public class LuceneSearchService {
     private readonly FSDirectory _indexDirectory;
     private readonly CustomAnalyzer _analyzer;
+    private readonly IAttributeService _attributeService;
+    private readonly string _connectionString;
 
-    public LuceneSearchService(string indexDirectoryPath) {
+    public LuceneSearchService( string connectionString, string indexDirectoryPath, IAttributeService attributeService) {
         _indexDirectory = FSDirectory.Open(new DirectoryInfo(indexDirectoryPath));
         _analyzer = new CustomAnalyzer(LuceneVersion.LUCENE_48);
+        _attributeService = attributeService;
+        _connectionString = connectionString;
     }
 
-    public void AddOrUpdateProductToIndex(ProductModel product) {
+    public async Task AddOrUpdateProductToIndexAsync(ProductModel product) {
+        var colorNamesTask = _attributeService.GetColorNames(product.ProductColorIds);
+        var colorNames = await colorNamesTask;
+        var fabricNameTask = _attributeService.GetFabricNames(product.ProductFabricIds);
+        var fabricNames = await fabricNameTask;
+        var categoryNamesTask = _attributeService.GetCategoryNames(product.ProductCategoryIds);
+        var categoryNames = await categoryNamesTask;
+        var texturePatternNamesTask = _attributeService.GetTexturePatternNames(product.ProductTexturePatternIds);
+        var texturePatternNames = await texturePatternNamesTask;
+        var tagNamesTask = _attributeService.GetTagNames(product.ProductTagIds);
+        var tagNames = await tagNamesTask;
+        
         using (var writer = new IndexWriter(_indexDirectory, new IndexWriterConfig(LuceneVersion.LUCENE_48, _analyzer))) {
             var document = new Document {
                 new StringField("Id", product.Id.ToString(), Field.Store.YES),
@@ -48,28 +63,39 @@ public class LuceneSearchService {
                 new TextField("Desctiption", product.Description ?? string.Empty, Field.Store.YES),
             };
 
-            foreach (var texturePatternId in product.ProductTexturePatternIds) {
-                document.Add(new Int32Field("TexturePatternId", texturePatternId, Field.Store.YES));
-            }
-
             foreach (var colorId in product.ProductColorIds) {
                 document.Add(new Int32Field("ColorId", colorId, Field.Store.YES));
+                if (colorNames.TryGetValue(colorId, out var colorName)) {
+                    document.Add(new TextField("ColorName", colorName, Field.Store.YES));
+                }
             }
 
             foreach(var fabricId in product.ProductFabricIds) {
                 document.Add(new Int32Field("FabricId", fabricId, Field.Store.YES));
+                if(fabricNames.TryGetValue(fabricId, out var fabricName)) {
+                    document.Add(new TextField("FabricName", fabricName, Field.Store.YES));
+                }
             }
 
             foreach(var categoryId in product.ProductCategoryIds) {
                 document.Add(new Int32Field("CategoryId", categoryId, Field.Store.YES));
+                if (categoryNames.TryGetValue(categoryId, out var categoryName)) {
+                    document.Add(new TextField("CategoryName", categoryName, Field.Store.YES));
+                }
+            }
+
+            foreach (var texturePatternId in product.ProductTexturePatternIds) {
+                document.Add(new Int32Field("TexturePatternId", texturePatternId, Field.Store.YES));
+                if (texturePatternNames.TryGetValue(texturePatternId, out var texturePatternName)) {
+                    document.Add(new TextField("TexturePatternName", texturePatternName, Field.Store.YES));
+                }
             }
 
             foreach(var tagId in product.ProductTagIds) {
                 document.Add(new Int32Field("TagId", tagId, Field.Store.YES));
-            }
-
-            foreach(var promotionId in product.ProductPromotionIds) {
-                document.Add(new Int32Field("PromotionId", promotionId, Field.Store.YES));
+                if (tagNames.TryGetValue(tagId, out var tagName)) {
+                    document.Add(new TextField("TagName", tagName, Field.Store.YES));
+                }
             }
 
             writer.UpdateDocument(new Term("Id", product.Id.ToString()), document);
@@ -85,8 +111,8 @@ public class LuceneSearchService {
             if (fuzzySearch){
                 query = new FuzzyQuery(new Term("Name", searchTerm.ToLower()), 2);
             } else {
-                var parser = new MultiFieldQueryParser(LuceneVersion.LUCENE_48, new[] { "Name", "Description", "TexturePatternId",
-                    "FabricId", "ColorId", "TagId", "CategoryId", "PromotionId"}, _analyzer);
+                var parser = new MultiFieldQueryParser(LuceneVersion.LUCENE_48, new[] { "Name", "Description", "ColorName", "FabricName",
+                    "CategoryName", "TexturePatternName", "TagName"}, _analyzer);
                 query = parser.Parse(searchTerm);
             }
 
@@ -101,7 +127,6 @@ public class LuceneSearchService {
                     ProductTexturePatternIds = doc.GetFields("TexturePatternId").Select(f => int.Parse(f.GetStringValue())).ToList(),
                     ProductColorIds = doc.GetFields("ColorId").Select(f => int.Parse(f.GetStringValue())).ToList(),
                     ProductFabricIds = doc.GetFields("FabricId").Select(f => int.Parse(f.GetStringValue())).ToList(),
-                    ProductPromotionIds = doc.GetFields("PromotionId").Select(f => int.Parse(f.GetStringValue())).ToList(),
                     ProductCategoryIds = doc.GetFields("CatgoryId").Select(f => int.Parse(f.GetStringValue())).ToList(),
                     ProductTagIds = doc.GetFields("TagId").Select(f => int.Parse(f.GetStringValue())).ToList(),
                 };
