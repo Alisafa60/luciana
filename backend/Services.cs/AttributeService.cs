@@ -31,11 +31,11 @@ public class AttributesService : IAttributeService {
     
     public async Task<Dictionary<int, string>> GetColorNames(IEnumerable<int> ids) {
         var colorNames = new Dictionary<int, string>();
+        var colors = await _colorRepository.GetByIdsAsync(ids);
 
-        foreach(var id in ids) {
-            var color = await _colorRepository.GetByIdAsync(id);
+        foreach(var color in colors) {
             if (color != null) {
-                colorNames[id] = color.Name;
+                colorNames[color.Id] = color.Name;
             }
         }
 
