@@ -44,11 +44,11 @@ public class AttributesService : IAttributeService {
 
     public async Task<Dictionary<int, string>> GetFabricNames(IEnumerable<int> ids) {
         var fabricNames = new Dictionary<int, string>();
+        var fabrics = await _fabricRepository.GetByIdsAsync(ids);
 
-        foreach(var id in ids) {
-            var fabric = await _fabricRepository.GetByIdAsync(id);
+        foreach(var fabric in fabrics) {
             if (fabric != null) {
-                fabricNames[id] = fabric.Name;
+                fabricNames[fabric.Id] = fabric.Name;
             }
         }
 
@@ -57,11 +57,11 @@ public class AttributesService : IAttributeService {
 
     public async Task<Dictionary<int, string>> GetCategoryNames(IEnumerable<int> ids) {
         var categoryNames = new Dictionary<int, string>();
+        var categories = await _categoryRepository.GetByIdsAsync(ids);
 
-        foreach(var id in ids) {
-            var category = await _categoryRepository.GetByIdAsync(id);
+        foreach(var category in categories) {
             if (category != null) {
-                categoryNames[id] = category.Name;
+                categoryNames[category.Id] = category.Name;
             }
         }
 
@@ -70,11 +70,11 @@ public class AttributesService : IAttributeService {
 
     public async Task<Dictionary<int, string>> GetTagNames(IEnumerable<int> ids) {
         var tagNames = new Dictionary<int, string>();
+        var tags = await _tagRepository.GetByIdsAsync(ids);
 
-        foreach (var id in ids) {
-            var tag = await _tagRepository.GetByIdAsync(id);
+        foreach (var tag in tags) {
             if (tag != null) {
-                tagNames[id] = tag.Name;
+                tagNames[tag.Id] = tag.Name;
             }
         }
 
@@ -83,11 +83,11 @@ public class AttributesService : IAttributeService {
 
     public async Task<Dictionary<int, string>> GetTexturePatternNames(IEnumerable<int> ids) {
         var texturePatternNames = new Dictionary<int, string>();
+        var texturePatterns = await _texturePatternRepository.GetByIdsAsync(ids);
 
-        foreach (var id in ids) {
-            var texturePattern = await _texturePatternRepository.GetByIdAsync(id);
+        foreach (var texturePattern in texturePatterns) {
             if (texturePattern != null){
-                texturePatternNames[id] = texturePattern.Name;
+                texturePatternNames[texturePattern.Id] = texturePattern.Name;
             }
         }
 
