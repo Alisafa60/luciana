@@ -37,6 +37,8 @@ public class FabricRepository : IFabricRepository {
     }
 
     public async Task<IEnumerable<Fabric>> GetByIdsAsync(IEnumerable<int> ids) {
-        return await _context.Fabrics.Where(f => ids.Contains(f.Id)).ToListAsync();
+        return await _context.Fabrics
+            .Include(f => f.ParentFabric)
+            .Where(f => ids.Contains(f.Id)).ToListAsync();
     }
 }

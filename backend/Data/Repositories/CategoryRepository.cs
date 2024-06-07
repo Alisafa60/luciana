@@ -37,7 +37,10 @@ public class CategoryRepository : ICategoryRepository{
     }
 
     public async Task<IEnumerable<Category>> GetByIdsAsync(IEnumerable<int> ids){
-        return await _context.Categories.Where(c => ids.Contains(c.Id)).ToListAsync();
+        return await _context.Categories
+            .Include(c => c.ParentCategory)
+            .Where(c => ids.Contains(c.Id))
+            .ToListAsync();
     }
 }
 
