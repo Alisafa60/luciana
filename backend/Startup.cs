@@ -40,6 +40,14 @@ public class Startup {
         services.AddScoped<IProductRepository, ProductRepository>();
         services.AddScoped<IAttributeService, AttributesService>();
 
+        services.AddScoped<LuceneSearchService>(provider => {
+            var configuration = provider.GetRequiredService<IConfiguration>();
+            var connectionString = configuration.GetConnectionString("DefaultConnection");
+            var indexDirectoryPath = configuration["LuceneSettings:IndexDirectoryPath"];
+            var attributeService = provider.GetRequiredService<IAttributeService>();
+            return new LuceneSearchService(connectionString, indexDirectoryPath, attributeService);
+        });
+
         var secretKey = Configuration["JwtSettings:SecretKey"];
         if (secretKey == null) {
             throw new InvalidOperationException("JwtSettings:SecretKey configuration is missing or null.");
