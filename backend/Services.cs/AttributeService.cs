@@ -1,5 +1,6 @@
 using Lucene.Net.Analysis.Hunspell;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.EntityFrameworkCore.Internal;
 
 public interface IAttributeService {
     Task<Dictionary<int, string>> GetColorNames(IEnumerable<int> ids);
@@ -35,7 +36,12 @@ public class AttributesService : IAttributeService {
 
         foreach(var color in colors) {
             if (color != null) {
-                colorNames[color.Id] = color.Name;
+                string fullName = color.Name;
+                if (color.ParentColor != null){
+                    fullName = $"{color.ParentColor.Name} {color.Name}";
+                }
+
+                colorNames[color.Id] = fullName;
             }
         }
 
@@ -48,7 +54,12 @@ public class AttributesService : IAttributeService {
 
         foreach(var fabric in fabrics) {
             if (fabric != null) {
-                fabricNames[fabric.Id] = fabric.Name;
+                string fullName = fabric.Name;
+                if(fabric.ParentFabric != null){
+                    fullName = $"{fabric.ParentFabric.Name} {fabric.Name}";
+                }
+
+                fabricNames[fabric.Id] = fullName;
             }
         }
 
@@ -61,7 +72,12 @@ public class AttributesService : IAttributeService {
 
         foreach(var category in categories) {
             if (category != null) {
-                categoryNames[category.Id] = category.Name;
+                string fullName = category.Name;
+                if(category.ParentCategory != null) {
+                    fullName = $"{category.ParentCategory.Name} {category.Name}";
+                }
+
+                categoryNames[category.Id] = fullName;
             }
         }
 
