@@ -52,9 +52,9 @@ public class ProductController : ControllerBase {
             };
 
             await _productRepository.AddAsync(product);
-
+            
             productModel.Id = product.Id;
-
+            await _searchService.AddOrUpdateProductToIndexAsync(productModel);
             return CreatedAtAction(nameof(GetProduct), new { id = product.Id }, productModel);
         } catch (Exception ex) {
             return StatusCode(500, $"Internal server error: {ex.Message}");
