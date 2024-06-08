@@ -14,19 +14,19 @@ public class ParentColorController : ControllerBase {
 
     [HttpPost]
     [Authorize(Roles = "Admin")]
-    public async Task<ActionResult<ParentColorModel>> CreateParentColor(ParentColorModel parentColorModel) {
+    public async Task<ActionResult<ParentColorDto>> CreateParentColor(ParentColorDto parentColorDto) {
         if (!ModelState.IsValid) {
             return BadRequest(ModelState);
         }
         
         try {
             var parentColor = new ParentColor {
-                Name = parentColorModel.Name,
+                Name = parentColorDto.Name,
             };
 
             await _parentColorRepository.AddAsync(parentColor);
 
-            var createdColorModel = new ParentColorModel {
+            var createdColorModel = new ParentColorDto {
                 Name = parentColor.Name,
                 Id = parentColor.Id,
             };
@@ -38,7 +38,7 @@ public class ParentColorController : ControllerBase {
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<ParentColorModel>>> GetParentColors() {
+    public async Task<ActionResult<IEnumerable<ParentColorDto>>> GetParentColors() {
        try{
             var parentColors = await _parentColorRepository.GetAllAsync();
             return Ok(parentColors);
@@ -49,35 +49,35 @@ public class ParentColorController : ControllerBase {
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<ParentColorModel>> GetParentColor(int id) {
+    public async Task<ActionResult<ParentColorDto>> GetParentColor(int id) {
         try {
             var parentColor = await _parentColorRepository.GetByIdAsync(id);
 
-            var parentColorModel = new ParentColorModel {
+            var parentColorDto = new ParentColorDto {
                 Id = parentColor.Id,
                 Name = parentColor.Name,
             };
 
-            return Ok(parentColorModel);
+            return Ok(parentColorDto);
         } catch (Exception ex) {
             return StatusCode(500, $"Internal Server Error {ex.Message}");
         }
     }
 
     [HttpGet("name/{name}")]
-    public async Task<ActionResult<ParentColorModel>> GetParentColorByName(string name) {
+    public async Task<ActionResult<ParentColorDto>> GetParentColorByName(string name) {
         try {
             var parentColor = await _parentColorRepository.GetByNameAsync(name);
             if (parentColor == null) {
                 return NotFound();
             }
 
-            var parentColorModel = new ParentColorModel {
+            var parentColorDto = new ParentColorDto {
                 Id = parentColor.Id,
                 Name = parentColor.Name
             };
 
-            return Ok(parentColorModel);
+            return Ok(parentColorDto);
         } catch (Exception ex) {
             return StatusCode(500, $"Internal Server Error {ex.Message}");
         }

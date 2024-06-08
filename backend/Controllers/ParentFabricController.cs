@@ -18,27 +18,27 @@ public class ParentFabricController : ControllerBase {
 
     [HttpPost]
     [Authorize(Roles = "Admin")]
-    public async Task<ActionResult<ParentFabricModel>> CreateParentFabric(ParentFabricModel parentFabricModel) {
+    public async Task<ActionResult<ParentFabricDto>> CreateParentFabric(ParentFabricDto parentFabricDto) {
         try {
             var parentFabric = new ParentFabric {
-                Name = parentFabricModel.Name,
+                Name = parentFabricDto.Name,
             };
 
             await _parentFabricRepository.AddAsync(parentFabric);
 
-            var createdParentFabricModel = new ParentFabricModel {
+            var createdParentFabricDto = new ParentFabricDto {
                 Id = parentFabric.Id, 
                 Name = parentFabric.Name,
             };
 
-            return CreatedAtAction(nameof(GetParentFabric), new { id = parentFabric.Id }, createdParentFabricModel);
+            return CreatedAtAction(nameof(GetParentFabric), new { id = parentFabric.Id }, createdParentFabricDto);
         } catch (Exception ex) {
             return StatusCode(500, $"Internal server error: {ex.Message}");
         }
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<ParentFabricModel>>> GetParentFabrics() {
+    public async Task<ActionResult<IEnumerable<ParentFabricDto>>> GetParentFabrics() {
         try {
             var parentFabrics = await _parentFabricRepository.GetAllAsync();
 
@@ -49,38 +49,38 @@ public class ParentFabricController : ControllerBase {
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<ParentFabricModel>> GetParentFabric(int id) {
+    public async Task<ActionResult<ParentFabricDto>> GetParentFabric(int id) {
         try {
             var parentFabric = await _parentFabricRepository.GetByIdAsync(id);
             if (parentFabric == null) {
                 return NotFound();
             }
 
-            var parentFabricModel = new ParentFabricModel {
+            var parentFabricDto = new ParentFabricDto {
                 Id = parentFabric.Id,
                 Name = parentFabric.Name,
             };
 
-            return Ok(parentFabricModel);
+            return Ok(parentFabricDto);
         } catch (Exception ex) {
             return StatusCode(500, $"Internal server error: {ex.Message}");
         }
     }
 
     [HttpGet("name/{name}")]
-    public async Task<ActionResult<ParentFabricModel>> GetParentFabricByName(string name) {
+    public async Task<ActionResult<ParentFabricDto>> GetParentFabricByName(string name) {
         try {
             var parentFabric = await _parentFabricRepository.GetByNameAsync(name);
             if (parentFabric == null) {
                 return NotFound();
             }
 
-            var parentFabricModel = new ParentFabricModel {
+            var parentFabricDto = new ParentFabricDto {
                 Id = parentFabric.Id,
                 Name = parentFabric.Name,
             };
 
-            return Ok(parentFabricModel);
+            return Ok(parentFabricDto);
         } catch (Exception ex) {
             return StatusCode(500, $"Internal server error: {ex.Message}");
         }

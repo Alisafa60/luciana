@@ -23,46 +23,46 @@ public class ProductController : ControllerBase {
 
     [HttpPost]
     [Authorize(Roles = "Admin")]
-    public async Task<ActionResult<ProductModel>> CreateProduct(ProductModel productModel) {
+    public async Task<ActionResult<ProductDto>> CreateProduct(ProductDto productDto) {
         if (!ModelState.IsValid) {
             return BadRequest(ModelState);
         }
         try {
             string picturePath = null;
 
-            if (productModel.Picture != null && productModel.Picture.Length > 0) {
-                picturePath = await SavePicture(productModel.Picture);
+            if (productDto.Picture != null && productDto.Picture.Length > 0) {
+                picturePath = await SavePicture(productDto.Picture);
             }
 
             var product = new Product {
-                Name = productModel.Name,
-                Description = productModel.Description,
-                Price = productModel.Price,
-                Stock = productModel.Stock,
-                ForChildren = productModel.ForChildren,
-                Weight = productModel.Weight,
-                ProductSizeId = productModel.ProductSizeId,
+                Name = productDto.Name,
+                Description = productDto.Description,
+                Price = productDto.Price,
+                Stock = productDto.Stock,
+                ForChildren = productDto.ForChildren,
+                Weight = productDto.Weight,
+                ProductSizeId = productDto.ProductSizeId,
                 ProductPicturePath = picturePath,
-                ProductTexturePatterns = productModel.ProductTexturePatternIds.Select(id => new ProductTexturePattern { TexturePatternId = id }).ToList(),
-                ProductCategories = productModel.ProductCategoryIds.Select(id => new ProductCategory { CategoryId = id }).ToList(),
-                ProductColors = productModel.ProductColorIds.Select(id => new ProductColor { ColorId = id }).ToList(),
-                ProductFabrics = productModel.ProductFabricIds.Select(id => new ProductFabric { FabricId = id }).ToList(),
-                ProductPromotions = productModel.ProductPromotionIds.Select(id => new ProductPromotion { PromotionId = id }).ToList(),
-                ProductTags = productModel.ProductTagIds.Select(id => new ProductTag { TagId = id }).ToList()
+                ProductTexturePatterns = productDto.ProductTexturePatternIds.Select(id => new ProductTexturePattern { TexturePatternId = id }).ToList(),
+                ProductCategories = productDto.ProductCategoryIds.Select(id => new ProductCategory { CategoryId = id }).ToList(),
+                ProductColors = productDto.ProductColorIds.Select(id => new ProductColor { ColorId = id }).ToList(),
+                ProductFabrics = productDto.ProductFabricIds.Select(id => new ProductFabric { FabricId = id }).ToList(),
+                ProductPromotions = productDto.ProductPromotionIds.Select(id => new ProductPromotion { PromotionId = id }).ToList(),
+                ProductTags = productDto.ProductTagIds.Select(id => new ProductTag { TagId = id }).ToList()
             };
 
             await _productRepository.AddAsync(product);
             
-            productModel.Id = product.Id;
-            await _searchService.AddOrUpdateProductToIndexAsync(productModel);
-            return CreatedAtAction(nameof(GetProduct), new { id = product.Id }, productModel);
+            productDto.Id = product.Id;
+            await _searchService.AddOrUpdateProductToIndexAsync(productDto);
+            return CreatedAtAction(nameof(GetProduct), new { id = product.Id }, productDto);
         } catch (Exception ex) {
             return StatusCode(500, $"Internal server error: {ex.Message}");
         }
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<ProductModel>>> GetProducts() {
+    public async Task<ActionResult<IEnumerable<ProductDto>>> GetProducts() {
         try {
             var products = await _productRepository.GetAllAsync();
             return Ok(products);
@@ -72,7 +72,7 @@ public class ProductController : ControllerBase {
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<ProductModel>> GetProduct(int id) {
+    public async Task<ActionResult<ProductDto>> GetProduct(int id) {
         try {
             var product = await _productRepository.GetByIdAsync(id);
 
@@ -87,7 +87,7 @@ public class ProductController : ControllerBase {
     }
 
     [HttpGet("name/{name}")]
-    public async Task<ActionResult<ProductModel>> GetProductByName(string name) {
+    public async Task<ActionResult<ProductDto>> GetProductByName(string name) {
         try {
             var product = await _productRepository.GetByNameAsync(name);
             if (product == null) {
@@ -113,7 +113,7 @@ public class ProductController : ControllerBase {
     }
 
     [HttpPost("search")]
-    public ActionResult<IEnumerable<ProductModel>> SearchProducts([FromBody] SearchRequest request) {
+    public ActionResult<IEnumerable<ProductDto>> SearchProducts([FromBody] SearchRequest request) {
         try {
             var products = _searchService.SearchProducts(request.SearchTerm, request.FuzzySearch);
             return Ok(products);

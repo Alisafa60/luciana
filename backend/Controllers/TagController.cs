@@ -13,24 +13,24 @@ public class TagController : ControllerBase {
 
     [HttpPost]
     [Authorize(Roles = "Admin")]
-    public async Task<ActionResult<TagModel>> CreateTag(TagModel tagModel) {
+    public async Task<ActionResult<TagDto>> CreateTag(TagDto tagDto) {
         if (!ModelState.IsValid){
             return BadRequest(ModelState);
         }
 
         try {
             var tag = new Tag {
-                Name = tagModel.Name,
-                Description = tagModel.Description,
-                Type = (Tag.TagType)tagModel.Type,
+                Name = tagDto.Name,
+                Description = tagDto.Description,
+                Type = (Tag.TagType)tagDto.Type,
             };
 
             await _tagRepository.AddAsync(tag);
 
-            var createdTag = new TagModel {
+            var createdTag = new TagDto {
                 Name = tag.Name,
                 Description = tag.Description,
-                Type = (TagModel.TagType)tag.Type,
+                Type = (TagDto.TagType)tag.Type,
             };
 
             return CreatedAtAction(nameof(GetTag), new {id = createdTag.Id}, createdTag);
@@ -40,24 +40,24 @@ public class TagController : ControllerBase {
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<TagModel>>> GetTags() {
+    public async Task<ActionResult<IEnumerable<TagDto>>> GetTags() {
         var tags = await _tagRepository.GetAllAsync();
             return Ok(tags);
 
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<TagModel>> GetTag(int id) {
+    public async Task<ActionResult<TagDto>> GetTag(int id) {
         var tag = await _tagRepository.GetByIdAsync(id);
 
-        var tagModel = new TagModel {
+        var tagDto = new TagDto {
             Id = tag.Id,
             Name = tag.Name,
             Description = tag.Description,
-            Type = (TagModel.TagType)tag.Type,
+            Type = (TagDto.TagType)tag.Type,
         };
 
-        return Ok(tagModel);
+        return Ok(tagDto);
     }
 
     [HttpDelete("{id}")]

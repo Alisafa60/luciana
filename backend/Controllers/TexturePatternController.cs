@@ -13,31 +13,31 @@ public class TexturePatternController : ControllerBase {
 
     [HttpPost]
     [Authorize(Roles = "Admin")]
-    public async Task<ActionResult<TexturePatternModel>> CreateTexturePattern (TexturePatternModel texturePatternModel) {
+    public async Task<ActionResult<TexturePatternDto>> CreateTexturePattern (TexturePatternDto texturePatternDto) {
         if (!ModelState.IsValid) {
             return BadRequest(ModelState);
         }
 
         try {
             var texturePattern = new TexturePattern {
-                Name = texturePatternModel.Name,
+                Name = texturePatternDto.Name,
             };
 
             await _texturePatternRepository.AddAsync(texturePattern);
 
-            var createdTP = new TexturePatternModel {
+            var createdTP = new TexturePatternDto {
                 Name = texturePattern.Name,
                 Id = texturePattern.Id,
             };
 
-            return CreatedAtAction(nameof(GetTexturePattern), new {id = texturePatternModel.Id}, createdTP);
+            return CreatedAtAction(nameof(GetTexturePattern), new {id = texturePatternDto.Id}, createdTP);
         } catch(Exception ex) {
             return StatusCode(500, $"Internal Server Error {ex.Message}");
         }
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<TexturePatternModel>>> GetTexturePatterns () {
+    public async Task<ActionResult<IEnumerable<TexturePatternDto>>> GetTexturePatterns () {
         try {
             var texturePatterns = await _texturePatternRepository.GetAllAsync();
 
@@ -48,15 +48,15 @@ public class TexturePatternController : ControllerBase {
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<TexturePatternModel>> GetTexturePattern (int id) {
+    public async Task<ActionResult<TexturePatternDto>> GetTexturePattern (int id) {
         try {
             var texturePattern = await _texturePatternRepository.GetByIdAsync(id);
-            var texturePatternModel = new TexturePatternModel {
+            var texturePatternDto = new TexturePatternDto {
                 Name = texturePattern.Name,
                 Id = texturePattern.Id,
             };
 
-            return Ok(texturePatternModel);
+            return Ok(texturePatternDto);
         } catch(Exception ex) {
             return StatusCode(500, $"Internal Server Error {ex.Message}");
         }

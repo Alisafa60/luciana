@@ -17,33 +17,33 @@ public class CategoryController : ControllerBase {
 
     [HttpPost]
     [Authorize(Roles = "Admin")]
-    public async Task<ActionResult<CategoryModel>> CreateCategory(CategoryModel categoryModel) {
+    public async Task<ActionResult<CategoryDto>> CreateCategory(CategoryDto categoryDto) {
         if (!ModelState.IsValid) {
             return BadRequest(ModelState);
         }
         
         try {
             var category = new Category {
-                Name = categoryModel.Name,
-                ParentCategoryId = categoryModel.ParentCategoryId
+                Name = categoryDto.Name,
+                ParentCategoryId = categoryDto.ParentCategoryId
             };
 
             await _categoryRepository.AddAsync(category);
 
-            var createdCategoryModel = new CategoryModel {
+            var createdCategoryDto = new CategoryDto {
                 Name = category.Name,
                 Id = category.Id,
                 ParentCategoryId = category.ParentCategoryId
             };
 
-            return CreatedAtAction(nameof(GetCategory), new { id = category.Id }, createdCategoryModel);
+            return CreatedAtAction(nameof(GetCategory), new { id = category.Id }, createdCategoryDto);
         } catch (Exception ex) {
             return StatusCode(500, $"Internal server error: {ex.Message}");
         }
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<CategoryModel>>> GetCategories() {
+    public async Task<ActionResult<IEnumerable<CategoryDto>>> GetCategories() {
         try {
             var categories = await _categoryRepository.GetAllAsync();
 
@@ -54,7 +54,7 @@ public class CategoryController : ControllerBase {
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<CategoryModel>> GetCategory(int id) {
+    public async Task<ActionResult<CategoryDto>> GetCategory(int id) {
         try {
             var category = await _categoryRepository.GetByIdAsync(id);
 
@@ -62,33 +62,33 @@ public class CategoryController : ControllerBase {
                 return NotFound();
             }
 
-            var categoryModel = new CategoryModel {
+            var categoryDto = new CategoryDto {
                 Id = category.Id,
                 Name = category.Name,
                 ParentCategoryId = category.ParentCategoryId
             };
 
-            return Ok(categoryModel);
+            return Ok(categoryDto);
         } catch (Exception ex) {
             return StatusCode(500, $"Internal server error: {ex.Message}");
         }
     }
 
     [HttpGet("name/{name}")]
-    public async Task<ActionResult<CategoryModel>> GetCategoryByName(string name) {
+    public async Task<ActionResult<CategoryDto>> GetCategoryByName(string name) {
         try {
             var category = await _categoryRepository.GetByNameAsync(name);
             if (category == null) {
                 return NotFound();
             }
 
-            var categoryModel = new CategoryModel {
+            var categoryDto = new CategoryDto {
                 Id = category.Id,
                 Name = category.Name,
                 ParentCategoryId = category.ParentCategoryId
             };
 
-            return Ok(categoryModel);
+            return Ok(categoryDto);
         } catch (Exception ex) {
             return StatusCode(500, $"Internal server error: {ex.Message}");
         }
