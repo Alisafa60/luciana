@@ -5,7 +5,8 @@ The frontend of this project is being built using React with Typescript.
 
 ## Backend
 The backend is being developed with ASP.NET core.
-Add appsettings.local.json file with:
+Add `appsettings.local.json` file with:
+```json
 {
     "ConnectionStrings": {
         "DefaultConnection": "Database_host;"
@@ -19,6 +20,7 @@ Add appsettings.local.json file with:
     "IndexDirectoryPath": "LuceneIndex"
   }
 }
+```
 
 ## Database
 The database management system used in this project is PostgreSQL.
