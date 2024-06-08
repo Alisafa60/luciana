@@ -104,7 +104,19 @@ public class LuceneSearchService {
             Query query;
 
             if (fuzzySearch) {
-                query = new FuzzyQuery(new Term("Name", searchTerm.ToLower()), 2);
+                var booleanQuery = new BooleanQuery();
+                var terms = searchTerm.ToLower().Split(' ');
+                
+                var fields = new[] {"Name", "Discription", "ColorName", "FabricName",
+                    "CategoryName", "TexturePatternName", "TagName"};
+                    foreach (var term in terms) {
+                        foreach (var field in fields) {
+                            var fuzzeQuery = new FuzzyQuery(new Term(field, term), 2);
+                            booleanQuery.Add(fuzzeQuery, Occur.SHOULD);
+                        }
+                    }
+
+                query = booleanQuery;
             } else {
                 var parser = new MultiFieldQueryParser(LuceneVersion.LUCENE_48, [
                     "Name", "Description", "ColorName", "FabricName",
