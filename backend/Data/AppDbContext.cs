@@ -24,6 +24,7 @@ namespace backend.Data
         public DbSet<ParentFabric> ParentFabrics { get; set; }
         public DbSet<Size> Sizes { get; set; }
         public DbSet<Tag> Tags{ get; set; }
+        public DbSet<ProductHistory> ProductHistories{ get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             modelBuilder
             .Entity<Role>()
