@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-public class SizeModel {
+public class SizeDto {
     public int Id { get; set; }
     
     [Required]

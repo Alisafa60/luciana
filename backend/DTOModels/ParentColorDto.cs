@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 
-public class ParentColorModel {
+public class ParentColorDto
+ {
     public int Id {get; set;}
 
     [Required]

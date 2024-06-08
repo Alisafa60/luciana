@@ -1,4 +1,3 @@
-public class IdsModel
-{
+public class IdsDto {
     public List<int> Ids { get; set; }
 }
