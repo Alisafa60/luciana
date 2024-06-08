@@ -44,7 +44,7 @@ public class LuceneSearchService {
         _connectionString = connectionString;
     }
 
-    public async Task AddOrUpdateProductToIndexAsync(ProductModel product) {
+    public async Task AddOrUpdateProductToIndexAsync(ProductDto product) {
         var colorNames = await _attributeService.GetColorNames(product.ProductColorIds);
         var fabricNames = await _attributeService.GetFabricNames(product.ProductFabricIds);
         var categoryNames = await _attributeService.GetCategoryNames(product.ProductCategoryIds);
@@ -98,7 +98,7 @@ public class LuceneSearchService {
         }
     }
     
-    public IEnumerable<ProductModel> SearchProducts(string searchTerm, bool fuzzySearch = false) {
+    public IEnumerable<ProductDto> SearchProducts(string searchTerm, bool fuzzySearch = false) {
         using (var reader = DirectoryReader.Open(_indexDirectory)) {
             var searcher = new IndexSearcher(reader);
             Query query;
@@ -117,7 +117,7 @@ public class LuceneSearchService {
 
             foreach (var hit in hits) {
                 var doc = searcher.Doc(hit.Doc);
-                yield return new ProductModel {
+                yield return new ProductDto {
                     Id = int.Parse(doc.Get("Id")),
                     Name = doc.Get("Name"),
                     Description = doc.Get("Description"),
