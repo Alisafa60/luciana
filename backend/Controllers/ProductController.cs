@@ -106,6 +106,7 @@ public class ProductController : ControllerBase {
         
         try {
             await _productRepository.DeleteAsync(id);
+            await _searchService.RemoveProductFromIndex(id);
             return NoContent();
         } catch (Exception ex) {
             return StatusCode(500, $"Internal server error: {ex.Message}");
