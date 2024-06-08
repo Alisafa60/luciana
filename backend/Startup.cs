@@ -39,6 +39,7 @@ public class Startup {
         services.AddScoped<ITexturePatternRepository, TexturePatternRepository>();
         services.AddScoped<IProductRepository, ProductRepository>();
         services.AddScoped<IAttributeService, AttributesService>();
+        services.AddScoped<IProductHistoryRepository, ProductHistoryRepository>();
 
         services.AddScoped<LuceneSearchService>(provider => {
             var configuration = provider.GetRequiredService<IConfiguration>();
