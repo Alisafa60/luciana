@@ -11,7 +11,7 @@ public class ProductRepository : IProductRepository {
         _context = context;
     }
 
-    public async Task<ProductModel> GetByIdAsync(int id) {
+    public async Task<ProductDto> GetByIdAsync(int id) {
         var product = await _context.Products
             .Include(p => p.ProductTexturePatterns)
                 .ThenInclude(ptp => ptp.TexturePattern)
@@ -29,7 +29,7 @@ public class ProductRepository : IProductRepository {
             return null;
         }
 
-        return new ProductModel {
+        return new ProductDto {
             Id = product.Id,
             Name = product.Name,
             Description = product.Description,
@@ -46,7 +46,7 @@ public class ProductRepository : IProductRepository {
         };
     }
 
-    public async Task<ProductModel> GetByNameAsync(string name) {
+    public async Task<ProductDto> GetByNameAsync(string name) {
         var product = await _context.Products
             .Include(p => p.ProductTexturePatterns)
                 .ThenInclude(ptp => ptp.TexturePattern)
@@ -65,7 +65,7 @@ public class ProductRepository : IProductRepository {
             return null;
         }
 
-        return new ProductModel {
+        return new ProductDto {
             Id = product.Id,
             Name = product.Name,
             Description = product.Description,
@@ -82,7 +82,7 @@ public class ProductRepository : IProductRepository {
         };
     }
 
-    public async Task<IEnumerable<ProductModel>> GetAllAsync() {
+    public async Task<IEnumerable<ProductDto>> GetAllAsync() {
         return await _context.Products
             .Include(p => p.ProductTexturePatterns)
                 .ThenInclude(ptp => ptp.TexturePattern)
@@ -94,7 +94,7 @@ public class ProductRepository : IProductRepository {
                 .ThenInclude(pc => pc.Category)
             .Include(p => p.ProductPromotions)
                 .ThenInclude(pp => pp.Promotion)
-            .Select(p => new ProductModel {
+            .Select(p => new ProductDto {
                 Id = p.Id,
                 Name = p.Name,
                 Description = p.Description,
