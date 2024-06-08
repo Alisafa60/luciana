@@ -115,7 +115,7 @@ public class ProductController : ControllerBase {
     [HttpPost("search")]
     public ActionResult<IEnumerable<ProductDto>> SearchProducts([FromBody] SearchRequest request) {
         try {
-            var products = _searchService.SearchProducts(request.SearchTerm, request.FuzzySearch);
+            var products = _searchService.SearchProducts(request.SearchTerm);
             return Ok(products);
         } catch (Exception ex) {
             return StatusCode(500, $"Internal server error: {ex.Message}");

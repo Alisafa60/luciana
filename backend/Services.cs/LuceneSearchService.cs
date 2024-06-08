@@ -97,50 +97,109 @@ public class LuceneSearchService {
             writer.Commit();
         }
     }
-    
-    public IEnumerable<ProductDto> SearchProducts(string searchTerm, bool fuzzySearch = false) {
+
+    public IEnumerable<ProductDto> SearchProducts(string searchTerm) {
+        IEnumerable<ProductDto> results = PerformExactSearch(searchTerm);
+
+        if(!results.Any()) {
+            results = PerformFuzzySearch(searchTerm);
+        }
+
+        return results;
+    }
+
+    private IEnumerable<ProductDto> PerformExactSearch(string searchTerm) {
         using (var reader = DirectoryReader.Open(_indexDirectory)) {
             var searcher = new IndexSearcher(reader);
-            Query query;
+            var parser = new MultiFieldQueryParser(LuceneVersion.LUCENE_48, new[] {
+                "Name", "Description", "ColorName", "FabricName",
+                "CategoryName", "TexturePatternName", "TagName"
+            }, _analyzer);
 
-            if (fuzzySearch) {
-                var booleanQuery = new BooleanQuery();
-                var terms = searchTerm.ToLower().Split(' ');
-                
-                var fields = new[] {"Name", "Discription", "ColorName", "FabricName",
-                    "CategoryName", "TexturePatternName", "TagName"};
-                    foreach (var term in terms) {
-                        foreach (var field in fields) {
-                            var fuzzeQuery = new FuzzyQuery(new Term(field, term), 2);
-                            booleanQuery.Add(fuzzeQuery, Occur.SHOULD);
-                        }
-                    }
-
-                query = booleanQuery;
-            } else {
-                var parser = new MultiFieldQueryParser(LuceneVersion.LUCENE_48, [
-                    "Name", "Description", "ColorName", "FabricName",
-                    "CategoryName", "TexturePatternName", "TagName"
-                ], _analyzer);
-                query = parser.Parse(searchTerm);
-            }
-
+            Query query = parser.Parse(searchTerm);
             var hits = searcher.Search(query, 10).ScoreDocs;
+            return hits.Select(hit => CreateProductDtoFromDocument(searcher.Doc(hit.Doc))).ToList();
+        }
 
-            foreach (var hit in hits) {
-                var doc = searcher.Doc(hit.Doc);
-                yield return new ProductDto {
-                    Id = int.Parse(doc.Get("Id")),
-                    Name = doc.Get("Name"),
-                    Description = doc.Get("Description"),
-                    ProductTexturePatternIds = doc.GetFields("TexturePatternId").Select(f => int.Parse(f.GetStringValue())).ToList(),
-                    ProductColorIds = doc.GetFields("ColorId").Select(f => int.Parse(f.GetStringValue())).ToList(),
-                    ProductFabricIds = doc.GetFields("FabricId").Select(f => int.Parse(f.GetStringValue())).ToList(),
-                    ProductCategoryIds = doc.GetFields("CategoryId").Select(f => int.Parse(f.GetStringValue())).ToList(),
-                    ProductTagIds = doc.GetFields("TagId").Select(f => int.Parse(f.GetStringValue())).ToList(),
-                };
+    }
+    private IEnumerable<ProductDto> PerformFuzzySearch(string searchTerm) {
+        using (var reader = DirectoryReader.Open(_indexDirectory)) {
+            var searcher = new IndexSearcher(reader);
+            var booleanQuery = new BooleanQuery();
+            var terms = searchTerm.ToLower().Split(' ');
+
+            var fields = new[] {"Name", "Discription", "ColorName", "FabricName",
+            "CategoryName", "TexturePatternName", "TagName"};
+            foreach (var term in terms) {
+                foreach (var field in fields) {
+                    var fuzzeQuery = new FuzzyQuery(new Term(field, term), 2);
+                    booleanQuery.Add(fuzzeQuery, Occur.SHOULD);
+                }
             }
+
+            var hits = searcher.Search(booleanQuery, 10).ScoreDocs;
+             return hits.Select(hit => CreateProductDtoFromDocument(searcher.Doc(hit.Doc))).ToList();
         }
     }
 
+    private ProductDto CreateProductDtoFromDocument(Document doc) {
+        return new ProductDto{
+            Id = int.Parse(doc.Get("Id")),
+            Name = doc.Get("Name"),
+            Description = doc.Get("Description"),
+            ProductTexturePatternIds = doc.GetFields("TexturePatternId").Select(f => int.Parse(f.GetStringValue())).ToList(),
+            ProductColorIds = doc.GetFields("ColorId").Select(f => int.Parse(f.GetStringValue())).ToList(),
+            ProductFabricIds = doc.GetFields("FabricId").Select(f => int.Parse(f.GetStringValue())).ToList(),
+            ProductCategoryIds = doc.GetFields("CategoryId").Select(f => int.Parse(f.GetStringValue())).ToList(),
+            ProductTagIds = doc.GetFields("TagId").Select(f => int.Parse(f.GetStringValue())).ToList(),
+        };
+    }
 }
+
+    
+    //**************************************************************
+    // public IEnumerable<ProductDto> SearchProducts(string searchTerm, bool fuzzySearch = false) {
+    //     using (var reader = DirectoryReader.Open(_indexDirectory)) {
+    //         var searcher = new IndexSearcher(reader);
+    //         Query query;
+
+    //         if (fuzzySearch) {
+    //             var booleanQuery = new BooleanQuery();
+    //             var terms = searchTerm.ToLower().Split(' ');
+                
+                // var fields = new[] {"Name", "Discription", "ColorName", "FabricName",
+                //     "CategoryName", "TexturePatternName", "TagName"};
+                //     foreach (var term in terms) {
+                //         foreach (var field in fields) {
+                //             var fuzzeQuery = new FuzzyQuery(new Term(field, term), 2);
+                //             booleanQuery.Add(fuzzeQuery, Occur.SHOULD);
+                //         }
+                //     }
+
+                // query = booleanQuery;
+    //         } else {
+    //             var parser = new MultiFieldQueryParser(LuceneVersion.LUCENE_48, [
+    //                 "Name", "Description", "ColorName", "FabricName",
+    //                 "CategoryName", "TexturePatternName", "TagName"
+    //             ], _analyzer);
+    //             query = parser.Parse(searchTerm);
+    //         }
+
+    //         var hits = searcher.Search(query, 10).ScoreDocs;
+
+    //         foreach (var hit in hits) {
+    //             var doc = searcher.Doc(hit.Doc);
+    //             yield return new ProductDto {
+    //                 Id = int.Parse(doc.Get("Id")),
+    //                 Name = doc.Get("Name"),
+    //                 Description = doc.Get("Description"),
+    //                 ProductTexturePatternIds = doc.GetFields("TexturePatternId").Select(f => int.Parse(f.GetStringValue())).ToList(),
+    //                 ProductColorIds = doc.GetFields("ColorId").Select(f => int.Parse(f.GetStringValue())).ToList(),
+    //                 ProductFabricIds = doc.GetFields("FabricId").Select(f => int.Parse(f.GetStringValue())).ToList(),
+    //                 ProductCategoryIds = doc.GetFields("CategoryId").Select(f => int.Parse(f.GetStringValue())).ToList(),
+    //                 ProductTagIds = doc.GetFields("TagId").Select(f => int.Parse(f.GetStringValue())).ToList(),
+    //             };
+    //         }
+    //     }
+    // }
+
