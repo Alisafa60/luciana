@@ -154,6 +154,15 @@ public class LuceneSearchService {
             ProductTagIds = doc.GetFields("TagId").Select(f => int.Parse(f.GetStringValue())).ToList(),
         };
     }
+
+    public async Task RemoveProductFromIndex(int productId) {
+        await Task.Run(() => {
+            using (var writer = new IndexWriter(_indexDirectory, new IndexWriterConfig(LuceneVersion.LUCENE_48, _analyzer))) {
+                writer.DeleteDocuments(new Term("Id", productId.ToString()));
+                writer.Commit();
+            }
+        });
+    }
 }
 
     
