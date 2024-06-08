@@ -120,9 +120,19 @@ public class ProductRepository : IProductRepository {
 
     public async Task DeleteAsync(int id) {
         var product = await _context.Products.FindAsync(id);
-        if (product != null) {
-            _context.Products.Remove(product);
-            await _context.SaveChangesAsync();
+        if (product == null) {
+            return;
         }
+
+        var productHistory = new ProductHistory {
+            ProductId = product.Id,
+            ProductName = product.Name,
+            ProductDescription = product.Description,
+            ChangeDate = DateTime.Now.ToUniversalTime(),
+        };
+        _context.ProductHistories.Add(productHistory);
+        _context.Products.Remove(product);
+
+        await _context.SaveChangesAsync();
     }
 }
