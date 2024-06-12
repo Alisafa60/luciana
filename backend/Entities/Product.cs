@@ -27,11 +27,11 @@ public class Product{
     [ForeignKey(nameof(ProductSizeId))]
     public Size Size { get; set; }
 
-    public ICollection<ProductTexturePattern> ProductTexturePatterns {get; set;}
-    public ICollection<ProductColor> ProductColors { get; set; }
-    public ICollection<ProductFabric> ProductFabrics{ get; set;}
-    public ICollection<ProductCategory> ProductCategories{ get; set;}
-    public ICollection<ProductPromotion> ProductPromotions { get; set; }
-    public ICollection<ProductTag> ProductTags { get; set; }
+    public virtual ICollection<ProductTexturePattern> ProductTexturePatterns {get; set;}
+    public virtual ICollection<ProductColor> ProductColors { get; set; }
+    public virtual ICollection<ProductFabric> ProductFabrics{ get; set;}
+    public virtual ICollection<ProductCategory> ProductCategories{ get; set;}
+    public virtual ICollection<ProductPromotion> ProductPromotions { get; set; }
+    public virtual ICollection<ProductTag> ProductTags { get; set; }
 }
 
