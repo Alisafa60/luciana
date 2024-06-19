@@ -23,18 +23,9 @@ public class CategoryController : ControllerBase {
         }
         
         try {
-            var category = new Category {
-                Name = categoryDto.Name,
-                ParentCategoryId = categoryDto.ParentCategoryId
-            };
-
+            var category = MapToCategory(categoryDto);
             await _categoryRepository.AddAsync(category);
-
-            var createdCategoryDto = new CategoryDto {
-                Name = category.Name,
-                Id = category.Id,
-                ParentCategoryId = category.ParentCategoryId
-            };
+            var createdCategoryDto = MapToCategoryDto(category);
 
             return CreatedAtAction(nameof(GetCategory), new { id = category.Id }, createdCategoryDto);
         } catch (Exception ex) {
@@ -57,16 +48,11 @@ public class CategoryController : ControllerBase {
     public async Task<ActionResult<CategoryDto>> GetCategory(int id) {
         try {
             var category = await _categoryRepository.GetByIdAsync(id);
-
             if (category == null) {
                 return NotFound();
             }
 
-            var categoryDto = new CategoryDto {
-                Id = category.Id,
-                Name = category.Name,
-                ParentCategoryId = category.ParentCategoryId
-            };
+            var categoryDto = MapToCategoryDto(category);
 
             return Ok(categoryDto);
         } catch (Exception ex) {
@@ -82,11 +68,7 @@ public class CategoryController : ControllerBase {
                 return NotFound();
             }
 
-            var categoryDto = new CategoryDto {
-                Id = category.Id,
-                Name = category.Name,
-                ParentCategoryId = category.ParentCategoryId
-            };
+            var categoryDto = MapToCategoryDto(category);
 
             return Ok(categoryDto);
         } catch (Exception ex) {
@@ -103,5 +85,22 @@ public class CategoryController : ControllerBase {
         } catch (Exception ex) {
             return StatusCode(500, $"Internal server error: {ex.Message}");
         }
+    }
+
+    private Category MapToCategory(CategoryDto categoryDto) {
+        return new Category {
+            Id = categoryDto.Id,
+            Name = categoryDto.Name,
+            ParentCategoryId = categoryDto.ParentCategoryId,
+        };
+    
+    }
+
+    private CategoryDto MapToCategoryDto (Category category) {
+        return new CategoryDto {
+            Id = category.Id,
+            Name = category.Name,
+            ParentCategoryId = category.ParentCategoryId,
+        };
     }
 }
