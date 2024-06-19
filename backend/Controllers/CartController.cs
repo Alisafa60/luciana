@@ -13,8 +13,20 @@ public class CartController : ControllerBase {
     }
 
     [HttpGet("{cartId}")]
-    public async Task<ActionResult<CartDto>> GetCartById (int cartId) {
+    public async Task<ActionResult<CartDto>> GetCartById(int cartId) {
         var cart = await _cartRepository.GetByIdAsync(cartId);
+        if (cart == null) {
+            return NotFound();
+        }
+
+        var cartDto = MapToCartDto(cart);
+        return Ok(cartDto);
+    }
+
+    [HttpGet]
+    public async Task<ActionResult<CartDto>> GetCart() {
+        var sessionId = HttpContext.Session.GetOrCreateSessionId();
+        var cart = await _cartRepository.GetBySessionIdAsync(sessionId);
         if (cart == null) {
             return NotFound();
         }
@@ -26,10 +38,12 @@ public class CartController : ControllerBase {
     [HttpPost]
     public async Task<ActionResult<CartDto>> AddCart(CartDto cartDto) {
         try {
+            var sessionId = HttpContext.Session.GetOrCreateSessionId();
             var cart = MapToCart(cartDto);
+            cart.SessionId = sessionId;
             var createdCart = await _cartRepository.AddAsync(cart);
             var createdCartDto = MapToCartDto(createdCart);
-            return CreatedAtAction(nameof(GetCartById), new { id = createdCartDto.Id}, createdCartDto);
+            return CreatedAtAction(nameof(GetCartById), new { cartId = createdCartDto.Id}, createdCartDto);
         } catch (Exception ex) {
             return StatusCode(500, $"Internal Server Error {ex.Message}");
         }
