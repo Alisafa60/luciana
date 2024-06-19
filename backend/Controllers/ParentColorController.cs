@@ -20,16 +20,9 @@ public class ParentColorController : ControllerBase {
         }
         
         try {
-            var parentColor = new ParentColor {
-                Name = parentColorDto.Name,
-            };
-
+            var parentColor = MapToParentColor(parentColorDto);
             await _parentColorRepository.AddAsync(parentColor);
-
-            var createdColorModel = new ParentColorDto {
-                Name = parentColor.Name,
-                Id = parentColor.Id,
-            };
+            var createdColorModel = MapToParentColorDto(parentColor);
 
             return CreatedAtAction(nameof(GetParentColor), new { id = parentColor.Id }, parentColor);
         } catch (Exception ex){
@@ -53,10 +46,7 @@ public class ParentColorController : ControllerBase {
         try {
             var parentColor = await _parentColorRepository.GetByIdAsync(id);
 
-            var parentColorDto = new ParentColorDto {
-                Id = parentColor.Id,
-                Name = parentColor.Name,
-            };
+            var parentColorDto = MapToParentColorDto(parentColor);
 
             return Ok(parentColorDto);
         } catch (Exception ex) {
@@ -72,10 +62,7 @@ public class ParentColorController : ControllerBase {
                 return NotFound();
             }
 
-            var parentColorDto = new ParentColorDto {
-                Id = parentColor.Id,
-                Name = parentColor.Name
-            };
+            var parentColorDto = MapToParentColorDto(parentColor);
 
             return Ok(parentColorDto);
         } catch (Exception ex) {
@@ -92,6 +79,20 @@ public class ParentColorController : ControllerBase {
         } catch(Exception ex) {
             return StatusCode(500, $"Internal Server Error {ex.Message}");
         }
+    }
+
+    private ParentColor MapToParentColor(ParentColorDto parentColorDto) {
+        return new ParentColor {
+            Id = parentColorDto.Id,
+            Name = parentColorDto.Name,
+        };
+    }
+
+    private ParentColorDto MapToParentColorDto(ParentColor parentColor) {
+        return new ParentColorDto {
+            Id = parentColor.Id,
+            Name = parentColor.Name,
+        };
     }
 
 }
