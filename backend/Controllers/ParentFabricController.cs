@@ -20,16 +20,9 @@ public class ParentFabricController : ControllerBase {
     [Authorize(Roles = "Admin")]
     public async Task<ActionResult<ParentFabricDto>> CreateParentFabric(ParentFabricDto parentFabricDto) {
         try {
-            var parentFabric = new ParentFabric {
-                Name = parentFabricDto.Name,
-            };
-
+            var parentFabric = MapToParentFabric(parentFabricDto);
             await _parentFabricRepository.AddAsync(parentFabric);
-
-            var createdParentFabricDto = new ParentFabricDto {
-                Id = parentFabric.Id, 
-                Name = parentFabric.Name,
-            };
+            var createdParentFabricDto = MapToParentFabricDto(parentFabric);
 
             return CreatedAtAction(nameof(GetParentFabric), new { id = parentFabric.Id }, createdParentFabricDto);
         } catch (Exception ex) {
@@ -56,10 +49,7 @@ public class ParentFabricController : ControllerBase {
                 return NotFound();
             }
 
-            var parentFabricDto = new ParentFabricDto {
-                Id = parentFabric.Id,
-                Name = parentFabric.Name,
-            };
+            var parentFabricDto = MapToParentFabricDto(parentFabric);
 
             return Ok(parentFabricDto);
         } catch (Exception ex) {
@@ -75,10 +65,7 @@ public class ParentFabricController : ControllerBase {
                 return NotFound();
             }
 
-            var parentFabricDto = new ParentFabricDto {
-                Id = parentFabric.Id,
-                Name = parentFabric.Name,
-            };
+            var parentFabricDto = MapToParentFabricDto(parentFabric);
 
             return Ok(parentFabricDto);
         } catch (Exception ex) {
@@ -99,5 +86,19 @@ public class ParentFabricController : ControllerBase {
         } catch (Exception ex) {
             return StatusCode(500, $"Internal server error: {ex.Message}");
         }
+    }
+
+    private ParentFabric MapToParentFabric(ParentFabricDto parentFabricDto) {
+        return new ParentFabric {
+            Id = parentFabricDto.Id,
+            Name = parentFabricDto.Name,
+        };
+    }
+
+    private ParentFabricDto MapToParentFabricDto(ParentFabric parentFabric) {
+        return new ParentFabricDto {
+            Id = parentFabric.Id,
+            Name = parentFabric.Name,
+        };
     }
 }
