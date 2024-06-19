@@ -14,6 +14,12 @@ public class CartRepository : ICartRepository {
             .FirstOrDefaultAsync(c => c.Id == id);
     }
 
+    public async Task<Cart> GetBySessionIdAsync(string sessionId) {
+        return await _context.Carts
+            .Include(c => c.CartItems)
+            .FirstOrDefaultAsync(c => c.SessionId == sessionId);
+    }
+
     public async Task<Cart> AddAsync(Cart cart) {
         await _context.Carts.AddAsync(cart);
         await _context.SaveChangesAsync();

@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-[Route("api/Cart")]
+[Route("api/cart")]
 [ApiController]
 public class CartController : ControllerBase {
     private readonly ICartRepository _cartRepository;
