@@ -19,6 +19,13 @@ public class Startup {
     public IConfiguration Configuration { get; }
 
     public void ConfigureServices(IServiceCollection services) {
+        services.AddDistributedMemoryCache();
+        services.AddSession(options => {
+            options.IdleTimeout = TimeSpan.FromHours(1);
+            options.Cookie.HttpOnly = true;
+            options.Cookie.IsEssential = true;
+        });
+
         services.AddControllers();
 
         var connectionString = Configuration.GetConnectionString("DefaultConnection");
@@ -40,6 +47,8 @@ public class Startup {
         services.AddScoped<IProductRepository, ProductRepository>();
         services.AddScoped<IAttributeService, AttributesService>();
         services.AddScoped<IProductHistoryRepository, ProductHistoryRepository>();
+        services.AddScoped<ICartRepository, CartRepository>();
+        services.AddScoped<ICartItemRepository, CartItemRepository>();
 
         services.AddScoped<LuceneSearchService>(provider => {
             var configuration = provider.GetRequiredService<IConfiguration>();
@@ -71,11 +80,9 @@ public class Startup {
 
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILogger<Startup> logger) {
-    // Create a scope to resolve scoped services
+    
         using (var scope = app.ApplicationServices.CreateScope()) {
-            var serviceProvider = scope.ServiceProvider;
-
-            // Retrieve the necessary services
+            var serviceProvider = scope.ServiceProvider; 
             var dbContext = serviceProvider.GetRequiredService<AppDbContext>();
 
             DataSeeder.SeedAdmin(dbContext);
@@ -94,6 +101,7 @@ public class Startup {
         app.UseCors("AllowAllOrigins");
         app.UseAuthentication();
         app.UseAuthorization();
+        app.UseSession();
 
         app.Map("/api/admin", adminApp => {
             adminApp.UseMiddleware<AdminMiddleware>();
