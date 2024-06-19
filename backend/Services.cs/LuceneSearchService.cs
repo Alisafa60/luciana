@@ -58,40 +58,11 @@ public class LuceneSearchService {
                 new TextField("Description", product.Description ?? string.Empty, Field.Store.YES),
             };
 
-            foreach (var colorId in product.ProductColorIds) {
-                document.Add(new Int32Field("ColorId", colorId, Field.Store.YES));
-                if (colorNames.TryGetValue(colorId, out var colorName)) {
-                    document.Add(new TextField("ColorName", colorName, Field.Store.YES));
-                }
-            }
-
-            foreach (var fabricId in product.ProductFabricIds) {
-                document.Add(new Int32Field("FabricId", fabricId, Field.Store.YES));
-                if (fabricNames.TryGetValue(fabricId, out var fabricName)) {
-                    document.Add(new TextField("FabricName", fabricName, Field.Store.YES));
-                }
-            }
-
-            foreach (var categoryId in product.ProductCategoryIds) {
-                document.Add(new Int32Field("CategoryId", categoryId, Field.Store.YES));
-                if (categoryNames.TryGetValue(categoryId, out var categoryName)) {
-                    document.Add(new TextField("CategoryName", categoryName, Field.Store.YES));
-                }
-            }
-
-            foreach (var texturePatternId in product.ProductTexturePatternIds) {
-                document.Add(new Int32Field("TexturePatternId", texturePatternId, Field.Store.YES));
-                if (texturePatternNames.TryGetValue(texturePatternId, out var texturePatternName)) {
-                    document.Add(new TextField("TexturePatternName", texturePatternName, Field.Store.YES));
-                }
-            }
-
-            foreach (var tagId in product.ProductTagIds) {
-                document.Add(new Int32Field("TagId", tagId, Field.Store.YES));
-                if (tagNames.TryGetValue(tagId, out var tagName)) {
-                    document.Add(new TextField("TagName", tagName, Field.Store.YES));
-                }
-            }
+            AddFields(document, "ColorId", "ColorName", product.ProductColorIds, colorNames);
+            AddFields(document, "FabricId", "FabricName", product.ProductFabricIds, fabricNames);
+            AddFields(document, "CategoryId", "CategoryName", product.ProductCategoryIds, categoryNames);
+            AddFields(document, "TexturePatternId", "TexturePatternName", product.ProductTexturePatternIds, texturePatternNames);
+            AddFields(document, "TagId", "TagName", product.ProductTagIds, tagNames);
 
             writer.UpdateDocument(new Term("Id", product.Id.ToString()), document);
             writer.Commit();
@@ -162,6 +133,15 @@ public class LuceneSearchService {
                 writer.Commit();
             }
         });
+    }
+
+    private void AddFields(Document document, string idFieldName, string nameFieldName, ICollection<int> ids, Dictionary<int, string> names) {
+        foreach (var id in ids) {
+            document.Add(new Int32Field(idFieldName, id, Field.Store.YES));
+            if (names.TryGetValue(id, out var name)) {
+                document.Add(new TextField(nameFieldName, name, Field.Store.YES));
+            }
+        }
     }
 }
 
