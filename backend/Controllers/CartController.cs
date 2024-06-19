@@ -61,6 +61,47 @@ public class CartController : ControllerBase {
         }
     }
 
+    [HttpPost("{cartId}/items")]
+    public async Task<ActionResult<CartItemDto>> AddCartItem(int cartId, CartItemDto cartItemDto) {
+        try {
+            var cartItem = MapToCartItem(cartItemDto);
+            cartItem.CartId = cartId;
+            var createdCartItem = await _cartItemRepository.AddAsync(cartItem);
+            var createdCartItemDto = MapToCartItemDto(createdCartItem);
+
+            return CreatedAtAction(nameof(GetCartById), new { cartId }, createdCartItemDto);
+        } catch (Exception ex) {
+            return StatusCode(500, $"Internal Server Error {ex.Message}");
+        }
+    }
+
+    [HttpPut("items/{cartItemId}")]
+    public async Task <ActionResult<CartItemDto>> UpdateCartItem(int cartItemId, CartItemDto cartItemDto) {
+       try {
+           if (cartItemId != cartItemDto.Id) {
+                return BadRequest();
+            }
+
+            var cartItem = MapToCartItem(cartItemDto);
+            var updatedCartItem = await _cartItemRepository.UpdateAsync(cartItem);
+            var updatedCartItemDto = MapToCartItemDto(updatedCartItem);
+
+            return Ok(updatedCartItemDto);
+       } catch (Exception ex) {
+            return StatusCode(500, $"Internal Server Error {ex.Message}");
+       }
+    }
+
+    [HttpDelete("items/{cartItemId}")]
+    public async Task<IActionResult> DeleteCartItem(int cartItemId) {
+        try {
+            await _cartItemRepository.DeleteAsync(cartItemId);
+            return NoContent();
+        } catch (Exception ex) {
+            return StatusCode(500, $"Internal Server Error {ex.Message}");
+        }
+    }
+
     private CartDto MapToCartDto(Cart cart) {
         return new CartDto {
             Id = cart.Id,
