@@ -24,13 +24,9 @@ public class ParentCategoryController : ControllerBase {
         }
         
         try {
-            var category = new ParentCategory{Name = categoryDto.Name};
+            var category = MapToParentCategory(categoryDto);
             await _parentCategoryRepository.AddAsync(category);
-
-            var createdCategoryDto = new ParentCategoryDto {
-                Name = category.Name,
-                Id = category.Id,
-            };
+            var createdCategoryDto = MapToParentCategoryDto(category);
 
             return CreatedAtAction(nameof(GetParentCategory), new { id = category.Id }, category);
         } catch (Exception ex) {
@@ -57,10 +53,7 @@ public class ParentCategoryController : ControllerBase {
                 return NotFound();
             }
 
-            var categoryDto = new ParentCategoryDto {
-                Id = category.Id,
-                Name = category.Name,
-            };
+            var categoryDto = MapToParentCategoryDto(category);
 
             return Ok(categoryDto);
         } catch (Exception ex) {
@@ -76,10 +69,7 @@ public class ParentCategoryController : ControllerBase {
                 return NotFound();
             }
 
-            var categoryDto = new ParentCategoryDto {
-                Id = category.Id,
-                Name = category.Name
-            };
+            var categoryDto = MapToParentCategoryDto(category);
 
             return Ok(categoryDto);
         } catch (Exception ex) {
@@ -95,5 +85,19 @@ public class ParentCategoryController : ControllerBase {
         } catch (Exception ex) {
             return StatusCode(500, $"Internal server error: {ex.Message}");
         }
+    }
+
+    private ParentCategory MapToParentCategory(ParentCategoryDto parentCategoryDto) {
+        return new ParentCategory {
+            Id = parentCategoryDto.Id,
+            Name = parentCategoryDto.Name,
+        };
+    }
+
+    private ParentCategoryDto MapToParentCategoryDto (ParentCategory parentCategory) {
+        return new ParentCategoryDto {
+            Id = parentCategory.Id,
+            Name = parentCategory.Name,
+        };
     }
 }
