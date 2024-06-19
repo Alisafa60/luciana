@@ -23,18 +23,9 @@ public class FabricController : ControllerBase {
         }
         
         try {
-            var fabric = new Fabric {
-                Name = fabricDto.Name,
-                ParentFabricId = fabricDto.ParentFabricId,
-            };
-
+            var fabric = MapToFabric(fabricDto);
             await _fabricRepository.AddAsync(fabric);
-
-            var createdFabricDto = new FabricDto {
-                Name = fabric.Name,
-                ParentFabricId = fabric.ParentFabricId,
-                Id = fabric.Id,
-            };
+            var createdFabricDto = MapToFabricDto(fabric);
 
             return CreatedAtAction(nameof(GetFabric), new { id = fabric.Id }, createdFabricDto);
         } catch (Exception ex) {
@@ -62,11 +53,7 @@ public class FabricController : ControllerBase {
                 return NotFound();
             }
 
-            var fabricDto = new FabricDto {
-                Id = fabric.Id,
-                Name = fabric.Name,
-                ParentFabricId = fabric.ParentFabricId,
-            };
+            var fabricDto = MapToFabricDto(fabric);
 
             return Ok(fabricDto);
         } catch (Exception ex) {
@@ -83,11 +70,7 @@ public class FabricController : ControllerBase {
                 return NotFound();
             }
 
-            var fabricDto = new FabricDto {
-                Id = fabric.Id,
-                Name = fabric.Name,
-                ParentFabricId = fabric.ParentFabricId
-            };
+            var fabricDto = MapToFabricDto(fabric);
 
             return Ok(fabricDto);
         } catch (Exception ex) {
@@ -103,5 +86,21 @@ public class FabricController : ControllerBase {
         } catch (Exception ex) {
             return StatusCode(500, $"Internal server error: {ex.Message}");
         }
+    }
+
+    private Fabric MapToFabric(FabricDto fabricDto) {
+        return new Fabric {
+            Id = fabricDto.Id,
+            Name = fabricDto.Name,
+            ParentFabricId = fabricDto.ParentFabricId,
+        };
+    }
+
+    private FabricDto MapToFabricDto(Fabric fabric) {
+        return new FabricDto {
+            Id = fabric.Id,
+            Name = fabric.Name,
+            ParentFabricId = fabric.ParentFabricId,
+        };
     }
 }
