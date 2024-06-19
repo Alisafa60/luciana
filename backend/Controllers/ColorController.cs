@@ -23,20 +23,9 @@ public class ColorController : ControllerBase {
         }
 
         try {
-            var color = new Color {
-                Name = colorDto.Name,
-                ParentColorId = colorDto.ParentColorId,
-            };
-
+            var color = MapToColor(colorDto);
             await _colorRepository.AddAsync(color);
-
-            var createdColorDto = new ColorDto {
-                Id = color.Id,
-                Name = color.Name,
-                HexValue = color.HexValue,
-                Description = color.Description,
-                ParentColorId = color.ParentColorId
-            };
+            var createdColorDto = MapToColorDto(color);
 
             return CreatedAtAction(nameof(GetColor), new { id = color.Id }, createdColorDto);
         } catch (Exception ex) {
@@ -62,13 +51,7 @@ public class ColorController : ControllerBase {
                 return NotFound();
             }
 
-            var colorDto = new ColorDto {
-                Id = color.Id,
-                Name = color.Name,
-                Description = color.Description,
-                HexValue = color.HexValue,
-                ParentColorId = color.ParentColorId
-            };
+            var colorDto = MapToColorDto(color);
 
             return Ok(colorDto);
         } catch (Exception ex) {
@@ -84,13 +67,7 @@ public class ColorController : ControllerBase {
                 return NotFound();
             }
 
-            var colorDto = new ColorDto {
-                Id = color.Id,
-                Name = color.Name,
-                Description = color.Description,
-                HexValue = color.HexValue,
-                ParentColorId = color.ParentColorId,
-            };
+            var colorDto = MapToColorDto(color);
 
             return Ok(colorDto);
         } catch (Exception ex) {
@@ -118,5 +95,25 @@ public class ColorController : ControllerBase {
         } catch (Exception ex){
             return StatusCode(500, $"Internal Server Error ${ex.Message}");
         }
+    }
+
+    private Color MapToColor(ColorDto colorDto) {
+        return new Color {
+            Id = colorDto.Id,
+            Name = colorDto.Name,
+            HexValue = colorDto.HexValue,
+            Description = colorDto.Description,
+            ParentColorId = colorDto.ParentColorId,
+        };
+    }
+
+    private ColorDto MapToColorDto(Color color) {
+        return new ColorDto {
+            Id = color.Id,
+            Name = color.Name,
+            HexValue = color.HexValue,
+            Description = color.Description,
+            ParentColorId = color.ParentColorId,
+        };
     }
 }
