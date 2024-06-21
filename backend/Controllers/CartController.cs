@@ -121,6 +121,7 @@ public class CartController : ControllerBase {
             Id = cart.Id,
             CartItems = cart.CartItems.Select(MapToCartItemDto).ToList(),
             TotalPrice = cart.TotalPrice,
+            CreatedDate = cart.CreatedDate,
         };
     }
 
@@ -128,6 +129,7 @@ public class CartController : ControllerBase {
         return new Cart {
             Id = cartDto.Id,
             CartItems = cartDto.CartItems.Select(MapToCartItem).ToList(),
+            CreatedDate = cartDto.CreatedDate,
         };
     }
 
