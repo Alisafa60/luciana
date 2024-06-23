@@ -31,12 +31,13 @@ public class CustomAnalyzer : Analyzer {
         return new TokenStreamComponents(source, result);
     }
 }
-public class LuceneSearchService {
+public class LuceneSearchService : IDisposable {
     private readonly FSDirectory _indexDirectory;
     private readonly CustomAnalyzer _analyzer;
     private readonly IAttributeService _attributeService;
     private readonly string _connectionString;
     private IndexWriter _writer;
+    private bool _disposed = false;
 
     public LuceneSearchService( string connectionString, string indexDirectoryPath, IAttributeService attributeService) {
         _indexDirectory = FSDirectory.Open(new DirectoryInfo(indexDirectoryPath));
@@ -142,6 +143,25 @@ public class LuceneSearchService {
                 document.Add(new TextField(nameFieldName, name, Field.Store.YES));
             }
         }
+    }
+
+    public void Dispose() {
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+
+    protected virtual void Dispose(bool disposing) {
+        if (!_disposed) {
+            if (disposing) {
+                _writer?.Dispose();
+                _indexDirectory?.Dispose();
+            }
+        }
+        _disposed = true;
+    }
+
+    ~LuceneSearchService() {
+        Dispose(false);
     }
 }
 
