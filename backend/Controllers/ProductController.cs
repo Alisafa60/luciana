@@ -27,6 +27,8 @@ public class ProductController : ControllerBase {
         if (!ModelState.IsValid) {
             return BadRequest(ModelState);
         }
+
+        LuceneSearchService searchService = null;
         try {
             string picturePath = null;
 
@@ -58,6 +60,10 @@ public class ProductController : ControllerBase {
             return CreatedAtAction(nameof(GetProduct), new { id = product.Id }, productDto);
         } catch (Exception ex) {
             return StatusCode(500, $"Internal server error: {ex.Message}");
+        } finally {
+            if (searchService != null) {
+                searchService.Dispose();
+            }
         }
     }
 
