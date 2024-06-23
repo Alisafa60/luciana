@@ -85,10 +85,18 @@ public class LuceneSearchService : IDisposable {
     private IEnumerable<ProductDto> PerformExactSearch(string searchTerm) {
         using (var reader = DirectoryReader.Open(_indexDirectory)) {
             var searcher = new IndexSearcher(reader);
-            var parser = new MultiFieldQueryParser(LuceneVersion.LUCENE_48, new[] {
-                "Name", "Description", "ColorName", "FabricName",
-                "CategoryName", "TexturePatternName", "TagName"
-            }, _analyzer);
+
+            var boosts = new Dictionary<string, float>{
+                {"Name", 2.0f},
+                {"Description", 1.0f},
+                {"ColorName", 2.0f},
+                {"FabricName", 2.0f},
+                {"CategoryName", 2.0f},
+                {"TexturePatternName", 1.5f},
+                {"TagName", 1.5f},
+            };
+
+            var parser = new MultiFieldQueryParser(LuceneVersion.LUCENE_48, boosts.Keys.ToArray(), _analyzer, boosts);
 
             Query query = parser.Parse(searchTerm);
             var hits = searcher.Search(query, 10).ScoreDocs;
@@ -102,17 +110,28 @@ public class LuceneSearchService : IDisposable {
             var booleanQuery = new BooleanQuery();
             var terms = searchTerm.ToLower().Split(' ');
 
-            var fields = new[] {"Name", "Discription", "ColorName", "FabricName",
-            "CategoryName", "TexturePatternName", "TagName"};
+            var fields = new[] {"Name", "Description", "ColorName", "FabricName",
+                "CategoryName", "TexturePatternName", "TagName"};
+            var boosts = new Dictionary<string, float>{
+                {"Name", 2.0f},
+                {"Description", 1.0f},
+                {"ColorName", 2.0f},
+                {"FabricName", 2.0f},
+                {"CategoryName", 2.0f},
+                {"TexturePatternName", 1.5f},
+                {"TagName", 1.5f},
+            };
+
             foreach (var term in terms) {
                 foreach (var field in fields) {
-                    var fuzzeQuery = new FuzzyQuery(new Term(field, term), 2);
-                    booleanQuery.Add(fuzzeQuery, Occur.SHOULD);
+                    var fuzzyQuery = new FuzzyQuery(new Term(field, term), 2);
+                    fuzzyQuery.Boost = boosts.ContainsKey(field) ? boosts[field] : 1.0f;
+                    booleanQuery.Add(fuzzyQuery, Occur.SHOULD);
                 }
             }
 
             var hits = searcher.Search(booleanQuery, 10).ScoreDocs;
-             return hits.Select(hit => CreateProductDtoFromDocument(searcher.Doc(hit.Doc))).ToList();
+            return hits.Select(hit => CreateProductDtoFromDocument(searcher.Doc(hit.Doc))).ToList();
         }
     }
 
