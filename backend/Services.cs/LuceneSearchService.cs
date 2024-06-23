@@ -36,12 +36,15 @@ public class LuceneSearchService {
     private readonly CustomAnalyzer _analyzer;
     private readonly IAttributeService _attributeService;
     private readonly string _connectionString;
+    private IndexWriter _writer;
 
     public LuceneSearchService( string connectionString, string indexDirectoryPath, IAttributeService attributeService) {
         _indexDirectory = FSDirectory.Open(new DirectoryInfo(indexDirectoryPath));
         _analyzer = new CustomAnalyzer(LuceneVersion.LUCENE_48);
         _attributeService = attributeService;
         _connectionString = connectionString;
+        var config = new IndexWriterConfig(LuceneVersion.LUCENE_48, _analyzer);
+        _writer = new IndexWriter(_indexDirectory, config);
     }
 
     public async Task AddOrUpdateProductToIndexAsync(ProductDto product) {
@@ -51,22 +54,21 @@ public class LuceneSearchService {
         var texturePatternNames = await _attributeService.GetTexturePatternNames(product.ProductTexturePatternIds);
         var tagNames = await _attributeService.GetTagNames(product.ProductTagIds);
 
-        using (var writer = new IndexWriter(_indexDirectory, new IndexWriterConfig(LuceneVersion.LUCENE_48, _analyzer))) {
-            var document = new Document {
-                new StringField("Id", product.Id.ToString(), Field.Store.YES),
-                new TextField("Name", product.Name, Field.Store.YES),
-                new TextField("Description", product.Description ?? string.Empty, Field.Store.YES),
-            };
+        
+        var document = new Document {
+            new StringField("Id", product.Id.ToString(), Field.Store.YES),
+            new TextField("Name", product.Name, Field.Store.YES),
+            new TextField("Description", product.Description ?? string.Empty, Field.Store.YES),
+        };
+            
+        AddFields(document, "ColorId", "ColorName", product.ProductColorIds, colorNames);
+        AddFields(document, "FabricId", "FabricName", product.ProductFabricIds, fabricNames);
+        AddFields(document, "CategoryId", "CategoryName", product.ProductCategoryIds, categoryNames);
+        AddFields(document, "TexturePatternId", "TexturePatternName", product.ProductTexturePatternIds, texturePatternNames);
+        AddFields(document, "TagId", "TagName", product.ProductTagIds, tagNames);
 
-            AddFields(document, "ColorId", "ColorName", product.ProductColorIds, colorNames);
-            AddFields(document, "FabricId", "FabricName", product.ProductFabricIds, fabricNames);
-            AddFields(document, "CategoryId", "CategoryName", product.ProductCategoryIds, categoryNames);
-            AddFields(document, "TexturePatternId", "TexturePatternName", product.ProductTexturePatternIds, texturePatternNames);
-            AddFields(document, "TagId", "TagName", product.ProductTagIds, tagNames);
-
-            writer.UpdateDocument(new Term("Id", product.Id.ToString()), document);
-            writer.Commit();
-        }
+        _writer.UpdateDocument(new Term("Id", product.Id.ToString()), document);
+        _writer.Commit();
     }
 
     public IEnumerable<ProductDto> SearchProducts(string searchTerm) {
@@ -128,10 +130,8 @@ public class LuceneSearchService {
 
     public async Task RemoveProductFromIndex(int productId) {
         await Task.Run(() => {
-            using (var writer = new IndexWriter(_indexDirectory, new IndexWriterConfig(LuceneVersion.LUCENE_48, _analyzer))) {
-                writer.DeleteDocuments(new Term("Id", productId.ToString()));
-                writer.Commit();
-            }
+            _writer.DeleteDocuments(new Term("Id", productId.ToString()));
+            _writer.Commit();
         });
     }
 
