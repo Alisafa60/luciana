@@ -1,14 +1,14 @@
-import React, { FC, ReactNode, MouseEvent } from 'react';
+import React, { FC, ReactNode, MouseEvent, ButtonHTMLAttributes} from 'react';
 
-interface ButtonProps {
-    onClick: ( event: MouseEvent<HTMLButtonElement>) => void;
+interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+    onClick?: ( event: MouseEvent<HTMLButtonElement>) => void;
     children: ReactNode;
 
 }
 
-const Button: FC<ButtonProps> = ({ onClick, children}) => {
+const Button: FC<ButtonProps> = ({ onClick, children, ...rest}) => {
     return (
-        <button className='button' onClick={ onClick }> 
+        <button className='button' onClick={ onClick } {...rest}> 
             { children }
         </button>
     );
