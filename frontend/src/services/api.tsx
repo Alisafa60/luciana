@@ -12,7 +12,7 @@ interface LoginResponse {
 
 export const login = async (email: string, password: string): Promise<LoginResponse> => {
     try {
-        const response: AxiosResponse<LoginResponse> = await apiService.post('auth/login', { email, password });
+        const response: AxiosResponse<LoginResponse> = await apiService.post('api/auth/login', { email, password });
         return response.data;
     } catch (error) {
         console.log("error logging in");
