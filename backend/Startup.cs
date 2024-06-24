@@ -28,6 +28,14 @@ public class Startup {
 
         services.AddControllers();
 
+        services.AddCors(options => {
+            options.AddPolicy("AllowAllOrigins", builder => {
+                builder.AllowAnyOrigin()
+                       .AllowAnyMethod()
+                       .AllowAnyHeader();
+            });
+        });
+
         var connectionString = Configuration.GetConnectionString("DefaultConnection");
         Console.WriteLine($"Connection String: {connectionString}");
 
@@ -65,26 +73,20 @@ public class Startup {
 
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options => {
-                options.TokenValidationParameters = new TokenValidationParameters{
+                options.TokenValidationParameters = new TokenValidationParameters {
                     ValidateIssuer = false,
                     ValidateAudience = false,
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
-                    //ValidIssuer = Configuration["JwtSettings:Issuer"],
-                    //ValidAudience = Configuration["JwtSettings:Audience"],
-                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey)),
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey)),
                 };
             });
     }
 
-
-
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILogger<Startup> logger) {
-    
         using (var scope = app.ApplicationServices.CreateScope()) {
             var serviceProvider = scope.ServiceProvider; 
             var dbContext = serviceProvider.GetRequiredService<AppDbContext>();
-
             DataSeeder.SeedAdmin(dbContext);
         }
 
@@ -98,7 +100,9 @@ public class Startup {
         logger.LogInformation("Application started.");
 
         app.UseRouting();
+        
         app.UseCors("AllowAllOrigins");
+
         app.UseAuthentication();
         app.UseAuthorization();
         app.UseSession();
